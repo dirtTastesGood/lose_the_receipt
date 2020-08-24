@@ -2,6 +2,8 @@
 # Created by https://www.toptal.com/developers/gitignore/api/django,python,react
 # Edit at https://www.toptal.com/developers/gitignore?templates=django,python,react
 
+.venv-name
+
 ### Django ###
 *.log
 *.pot
@@ -145,6 +147,16 @@ dmypy.json
 
 # pytype static type analyzer
 .pytype/
+
+
+### VisualStudioCode ###
+.vscode/
+
+*.code-workspace
+
+### VisualStudioCode Patch ###
+# Ignore all local history of files
+.history
 
 ### Python ###
 # Byte-compiled / optimized / DLL files

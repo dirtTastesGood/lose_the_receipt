@@ -8,7 +8,7 @@ verify_ssl = true
 [packages]
 django = "*"
 django-rest-framework = "*"
-decouple = "*"
+python-decouple = "*"
 
 [requires]
 python_version = "3.8"

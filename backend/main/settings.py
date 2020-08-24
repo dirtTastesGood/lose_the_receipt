@@ -1,14 +1,15 @@
 from pathlib import Path
+import decouple
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'u)h)-okk(mx!=e^9zr25tyb3%oo&y^#q=sqlhl8&4=l&0n!&r$'
+SECRET_KEY = decouple.config('DJANGO_SECRET_KEY_DEVELOPMENT')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = decouple.config('DJANGO_DEBUG', cast=bool)
 
 ALLOWED_HOSTS = []
 
