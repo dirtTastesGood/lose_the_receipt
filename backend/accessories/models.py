@@ -14,9 +14,8 @@ class Accessory(models.Model):
     appliance = models.ForeignKey(Appliance, on_delete=models.CASCADE)
     rating = models.IntegerField(
         null=True,
-        default=null,
         validators=[MinValueValidator(1), MaxValueValidator(5)]
     )
     purchase_date = models.DateTimeField(blank=True,null=True)
     notes = models.TextField(max_length=10000)
-    
+
