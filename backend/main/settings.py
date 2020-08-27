@@ -26,6 +26,7 @@ INSTALLED_APPS = [
 
     'users',
     'receipts',
+    'appliances',
 ]
 
 MIDDLEWARE = [
