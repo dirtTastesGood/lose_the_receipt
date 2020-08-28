@@ -1,15 +1,25 @@
 from django.contrib.auth import get_user_model
 from django.shortcuts import render, get_object_or_404
 from rest_framework import status
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import (
+    api_view, permission_classes,
+    authentication_classes
+)
+from rest_framework.authentication import (
+    TokenAuthentication,
+    BasicAuthentication
+)
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.authtoken.models import Token
 
 from .models import User
 from .serializers import UserCreateSerializer, UserDetailSerializer
 
 
 @api_view(['GET'])
+@authentication_classes([TokenAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
 def user_list(request):
     users = User.objects.all()
     serializer = UserDetailSerializer(users, many=True)
@@ -32,7 +42,11 @@ def user_create(request):
     )
 
     if new_user_serializer.is_valid():
-        new_user_serializer.save()
+        new_user = new_user_serializer.save()
+
+        # create an auth Token for the user
+        Token.objects.create(user=new_user)
+
         return Response(new_user_serializer.data, status=status.HTTP_201_CREATED)
 
     return Response(new_user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
