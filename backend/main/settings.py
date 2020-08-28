@@ -11,7 +11,10 @@ SECRET_KEY = decouple.config('DJANGO_SECRET_KEY_DEVELOPMENT')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = decouple.config('DJANGO_DEBUG', cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost'
+]
 
 
 # Application definition
@@ -120,3 +123,5 @@ STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'users.User'
 
+handler404 = 'views.custom_404_view'
+handler400 = 'views.custom_404_view'
