@@ -5,20 +5,18 @@ from rest_framework.decorators import (
     api_view, permission_classes,
     authentication_classes
 )
-from rest_framework.authentication import (
-    TokenAuthentication,
-    BasicAuthentication
-)
+
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.authtoken.models import Token
 
 from .models import User
 from .serializers import UserCreateSerializer, UserDetailSerializer
 
 
 @api_view(['GET'])
-@authentication_classes([TokenAuthentication, BasicAuthentication])
+@authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated])
 def user_list(request):
     users = User.objects.all()
@@ -28,6 +26,7 @@ def user_list(request):
 
 
 @api_view(['GET'])
+@authentication_classes([JWTAuthentication])
 def user_detail(request, pk):
     user = get_object_or_404(get_user_model(), pk=pk)
     serializer = UserDetailSerializer(user, many=False)
@@ -75,3 +74,4 @@ def user_edit(request, pk):
             return Response(data=serializer.data, status=status.HTTP_202_ACCEPTED)
 
         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
