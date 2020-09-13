@@ -1,8 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as django_admin
 
-from rest_framework.authtoken.admin import TokenAdmin
-
 from .models import User
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 
@@ -26,6 +24,3 @@ class UserAdmin(django_admin):
     ordering = ('email',)
 
 admin.site.register(User, UserAdmin)
-
-# add Token to admin panel
-TokenAdmin.raw_id_fields = ['user']

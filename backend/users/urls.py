@@ -6,7 +6,6 @@ from rest_framework_simplejwt.views import (
     token_refresh
 )
 
-# from .views import UserList, UserProfile
 from . import views
 urlpatterns = [
     path('', views.user_list),
