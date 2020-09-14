@@ -11,15 +11,6 @@ SECRET_KEY = decouple.config('DJANGO_SECRET_KEY_DEVELOPMENT')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = decouple.config('DJANGO_DEBUG', cast=bool)
 
-ALLOWED_HOSTS = [
-    '127.0.0.1',
-    'localhost'
-]
-
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
-    'http://localhost:8000'
-]
 
 # Application definition
 
@@ -104,9 +95,38 @@ AUTH_PASSWORD_VALIDATORS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        # 'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
 }
+REFRESH_TOKEN_SECRET = decouple.config('DJANGO_REFRESH_TOKEN_SECRET')
+CORS_ALLOW_CREDENTIALS = True  # to accept cookies via axios
+
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3000',
+    'http://localhost:8000'
+]
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+    'http://localhost:8000'
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:3000',
+    'http://localhost:8000'
+]
+
+CORS_ALLOW_HEADERS = [
+    'content-type',
+    'refresh_token'
+    'x-csrftoken',
+    'x-xsrf-token'
+]
+
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost'
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/

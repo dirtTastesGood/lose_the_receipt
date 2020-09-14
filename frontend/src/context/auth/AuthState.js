@@ -26,15 +26,13 @@ const AuthState = (props) => {
 
   // login
   const login = async (formData) => {
-    const headers = {
+    const config = {
       "Content-Type": "application/json",
+      "withCredentials":true
     };
 
     try {
-      const response = await axios.post("users/login/", {
-        email: "keegood8@gmail.com",
-        password: "pass3412",
-      });
+      const response = await axios.post("users/login/", formData, config);
 
       console.log(response);
     } catch (error) {

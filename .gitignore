@@ -4,6 +4,8 @@
 
 .venv-name
 api_test.py
+*.md
+!README.md
 
 ### Django ###
 *.log
