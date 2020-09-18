@@ -3,23 +3,61 @@ import AuthContext from "./authContext";
 import authReducer from "./authReducer";
 
 import axios from "axios";
+import setAccessToken from "../../utils/setAccessToken";
 
-import { LOGIN } from "../types";
+import { LOGIN, LOGIN_SUCCESS } from "../types";
 
 const AuthState = (props) => {
+  const authContext = useContext(AuthContext);
+
   const initialState = {
-    token: null,
+    accessToken: null,
     isAuthenticated: null,
     user: null,
     loading: false,
     error: null,
   };
-  const authContext = useContext(AuthContext);
-
   const [state, dispatch] = useReducer(authReducer, initialState);
+  const { accessToken, user } = state;
+
+  // set 'Authorization' header in axios
+  setAccessToken(accessToken);
+
+  // request a new access token
+  const requestAccessToken = async () => {
+    try {
+      const config = {
+        "Content-Type": "application/json",
+      };
+      const response = await axios.get('users/refresh_token/', config)
+      console.log(response.data);
+    
+    } catch (error) {
+      console.log(error.response.data);
+    }
+  
+    
+  }
 
   // load user
-  const loadUser = () => console.log("load user");
+  const loadUser = async () => {
+    if (state.accessToken) {
+      setAccessToken(state.accessToken);
+    }
+
+    console.log("loadUser called");
+
+    try {
+      const config = {
+        "Content-Type": "application/json",
+      };
+      // const response = await axios.get('users/',config)
+
+      // console.log(response);
+    } catch (error) {
+      console.log("error:", error);
+    }
+  };
 
   // register
   const register = () => console.log("register");
@@ -28,15 +66,27 @@ const AuthState = (props) => {
   const login = async (formData) => {
     const config = {
       "Content-Type": "application/json",
-      "withCredentials":true
+      withCredentials: true,
     };
 
     try {
       const response = await axios.post("users/login/", formData, config);
 
-      console.log(response);
+      dispatch({
+        type: LOGIN_SUCCESS,
+        payload: {
+          access_token: response.data.access_token,
+          user: response.data.user,
+        },
+      });
+
+      loadUser(response.data.access_token);
     } catch (error) {
-      console.log(error.response.data.msg);
+      const { msg } = error.response.data;
+      // console.log(error.response);
+      if (msg === "access_token_expired") {
+        requestAccessToken();
+      }
     }
   };
   // logout
@@ -47,13 +97,14 @@ const AuthState = (props) => {
   return (
     <AuthContext.Provider
       value={{
-        token: state.token,
+        accessToken: state.accessToken,
         isAuthenticated: state.isAuthenticated,
         loading: state.loading,
         user: state.user,
         error: state.error,
         register,
         login,
+        loadUser,
         logout,
       }}
     >

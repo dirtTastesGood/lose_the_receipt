@@ -95,8 +95,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        # 'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'users.authentication.SafeJWTAuthentication'
     ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated'
+    ]
 }
 REFRESH_TOKEN_SECRET = decouple.config('DJANGO_REFRESH_TOKEN_SECRET')
 CORS_ALLOW_CREDENTIALS = True  # to accept cookies via axios
@@ -117,6 +120,7 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 CORS_ALLOW_HEADERS = [
+    'authorization',
     'content-type',
     'refresh_token'
     'x-csrftoken',

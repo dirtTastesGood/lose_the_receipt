@@ -16,7 +16,7 @@ export default (state, action) => {
     case LOGIN_SUCCESS:
       return {
         ...state,
-        ...action.payload, // token
+        accessToken: action.payload.access_token,
         isAuthenticated: true,
         loading: false,
       };

@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.contrib.auth import get_user_model
 
 class UserManager(BaseUserManager):
     """Define a model manager for User model with no username field."""
@@ -40,6 +41,8 @@ class User(AbstractUser):
     username = None
     email = models.EmailField(_('email address'), unique=True)
 
+    
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
@@ -48,3 +51,9 @@ class User(AbstractUser):
     def __str__(self):
         return self.email
 
+class RefreshToken(models.Model):
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    token = models.CharField(max_length=200)
+
+    def __str__(self):
+        return f"{self.user}'s refresh token."
