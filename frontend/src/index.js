@@ -1,7 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { CookiesProvider } from "react-cookie";
-
 import "../node_modules/bootstrap/dist/css/bootstrap.css";
 import $ from "jquery";
 import Popper from "popper.js";
