@@ -8,7 +8,7 @@ from users.models import User, RefreshToken
 def generate_access_token(user):
     access_token_payload = {
         'user_id': user.id,
-        'exp': datetime.datetime.utcnow() + datetime.timedelta(days=0, minutes=0, microseconds=1),
+        'exp': datetime.datetime.utcnow() + datetime.timedelta(days=0, minutes=5, microseconds=1),
         'iat': datetime.datetime.utcnow(),
     }
 
@@ -34,12 +34,6 @@ def generate_refresh_token(user):
         settings.REFRESH_TOKEN_SECRET,
         algorithm='HS256'
     ).decode(encoding='utf-8')
-
-    RefreshToken.objects.create(
-        user = user,
-        token = refresh_token,
-        uuid = uuid4()
-    )
 
     # convert refresh_token bytes object into utf-8 string
     return refresh_token

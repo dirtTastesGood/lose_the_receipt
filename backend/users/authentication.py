@@ -36,7 +36,6 @@ class SafeJWTAuthentication(BaseAuthentication):
             raise exceptions.AuthenticationFailed(
                 detail={
                     'msg': 'access_token_expired',
-                    # 'refreshToken': request.COOKIES.get('refresh_token')
                 }
             )
         except IndexError:

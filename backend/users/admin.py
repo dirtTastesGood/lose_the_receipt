@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as django_admin
 
-from .models import User
+from .models import User, RefreshToken
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 
 class UserAdmin(django_admin):
@@ -24,3 +24,4 @@ class UserAdmin(django_admin):
     ordering = ('email',)
 
 admin.site.register(User, UserAdmin)
+admin.site.register(RefreshToken)

@@ -17,7 +17,7 @@ from rest_framework.response import Response
 
 from .utils import generate_access_token, generate_refresh_token
 
-from .models import User
+from .models import User, RefreshToken
 from .serializers import UserCreateSerializer, UserDetailSerializer
 from .authentication import SafeJWTAuthentication
 
@@ -85,56 +85,67 @@ def login(request):
     # TO DO:
     # Delete old refresh token if it exists
     # Associate refresh token to user in db
+    if request.method == 'POST':
+        email = request.data.get('email')
+        password = request.data.get('password')
+        response = Response()
 
-    email = request.data.get('email')
-    password = request.data.get('password')
-    response = Response()
+        if email is None or password is None:
+            response.data = {'msg': 'Email and password required.'}
+            response.status_code = status.HTTP_400_BAD_REQUEST
+            return response
 
-    if email is None or password is None:
-        response.data = {'msg': 'Email and password required.'}
-        response.status_code = status.HTTP_400_BAD_REQUEST
-        return response
+        user = User.objects.filter(email=email).first()
 
-    user = User.objects.filter(email=email).first()
+        if user is None or not user.check_password(password):
+            response.data = {
+                'msg': 'Incorrect email or password'
+            }
+            response.status_code = status.HTTP_400_BAD_REQUEST
+            return response
 
-    if user is None or not user.check_password(password):
+        # generate access and refresh tokens for the current user
+        access_token = generate_access_token(user)
+        refresh_token = generate_refresh_token(user)
+
+        try:
+            # if the user has a refresh token in the db, 
+            # get the old token
+            old_refresh_token = RefreshToken.objects.get(user=user.id)
+            # delete the old token
+            old_refresh_token.delete()
+            # generate new token
+            RefreshToken.objects.create(user=user, token=refresh_token)
+
+        except RefreshToken.DoesNotExist:
+            # assign a new refresh token to the current user
+            RefreshToken.objects.create(user=user, token=refresh_token)
+
+        response.set_cookie(
+            key='refreshtoken',
+            value=refresh_token,
+            httponly=True,
+            domain='localhost',
+            samesite='strict',
+            # secure=True # for https connections only
+        )
+
         response.data = {
-            'msg': 'Incorrect email or password'
+            'access_token': access_token
         }
-        response.status_code = status.HTTP_400_BAD_REQUEST
+        response.status_code = status.HTTP_200_OK
         return response
-
-    # serialized_user = UserDetailSerializer(user).data
-
-    access_token = generate_access_token(user)
-    refresh_token = generate_refresh_token(user)
-
-    response.set_cookie(
-        key='refreshtoken',
-        value=refresh_token,
-        httponly=True,
-        domain='localhost',
-        samesite='strict',
-        # secure=True # for https connections only
-    )
-
-    response.data = {
-        # 'user': serialized_user,
-        'access_token': access_token
-    }
-    response.status_code = status.HTTP_200_OK
-    return response
 
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
+# @authentication_classes([])
 @csrf_protect
 def refresh_token(request):
     response = Response()
     refresh_token = request.COOKIES.get('refreshtoken')
 
     if refresh_token is None:
-        print('NO REFRESH TOKEN')
         response.data = {
             'msg':'Authentication credentials were not provided'
         }
