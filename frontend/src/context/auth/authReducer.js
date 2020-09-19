@@ -27,5 +27,13 @@ export default (state, action) => {
         ...state,
         user: action.payload,
       };
+    case LOGIN_FAIL:
+    case REGISTER_FAIL:
+      return {
+        ...state,
+        accessToken: null,
+        isAuthenticated: false,
+        loading: false,
+      };
   }
 };

@@ -5,7 +5,12 @@ import authReducer from './authReducer';
 import axios from 'axios';
 import setAccessToken from '../../utils/setAccessToken';
 
-import { LOGIN, LOGIN_SUCCESS, LOAD_USER_SUCCESS } from '../types';
+import {
+  LOGIN,
+  LOGIN_SUCCESS,
+  LOAD_USER_SUCCESS,
+  LOAD_USER_FAIL,
+} from '../types';
 
 const AuthState = props => {
   const authContext = useContext(AuthContext);
@@ -42,8 +47,6 @@ const AuthState = props => {
       setAccessToken(state.accessToken);
     }
 
-    console.log('loadUser called');
-
     try {
       const config = {
         'Content-Type': 'application/json',
@@ -52,7 +55,7 @@ const AuthState = props => {
 
       dispatch({ type: LOAD_USER_SUCCESS, payload: response.data });
     } catch (error) {
-      console.log('error:', error);
+      dispatch({ type: LOAD_USER_FAIL, payload: error.response.data.msg });
     }
   };
 
@@ -79,7 +82,6 @@ const AuthState = props => {
       loadUser(response.data.access_token);
     } catch (error) {
       const { msg } = error.response.data;
-      console.log(msg);
       if (msg === 'access_token_expired') {
         requestAccessToken();
       }
