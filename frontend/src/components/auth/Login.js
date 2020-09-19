@@ -17,7 +17,7 @@ const Login = props => {
   useEffect(() => {
     if (isAuthenticated) {
       // redirect to home
-      props.router.push('/');
+      props.history.push('/');
     }
 
     // setAlert with an error

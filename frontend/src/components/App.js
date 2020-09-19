@@ -19,9 +19,7 @@ const App = () => {
   return (
     <AuthState>
       <Router>
-        <Route exact path="/login">
-          <Login />
-        </Route>
+        <Route exact path="/login" component={Login}/>
         <Route exact path="/">
           <div className="App">
             <h1>hello!</h1>
