@@ -82,59 +82,75 @@ def user_edit(request, pk):
 @permission_classes((AllowAny,))
 @ensure_csrf_cookie
 def login(request):
-    # TO DO:
-    # Delete old refresh token if it exists
-    # Associate refresh token to user in db
-    if request.method == 'POST':
-        email = request.data.get('email')
-        password = request.data.get('password')
-        response = Response()
 
-        if email is None or password is None:
-            response.data = {'msg': 'Email and password required.'}
-            response.status_code = status.HTTP_400_BAD_REQUEST
-            return response
+    email = request.data.get('email')
+    password = request.data.get('password')
+    response = Response()
 
-        user = User.objects.filter(email=email).first()
-
-        if user is None or not user.check_password(password):
-            response.data = {
-                'msg': 'Incorrect email or password'
-            }
-            response.status_code = status.HTTP_400_BAD_REQUEST
-            return response
-
-        # generate access and refresh tokens for the current user
-        access_token = generate_access_token(user)
-        refresh_token = generate_refresh_token(user)
-
-        try:
-            # if the user has a refresh token in the db, 
-            # get the old token
-            old_refresh_token = RefreshToken.objects.get(user=user.id)
-            # delete the old token
-            old_refresh_token.delete()
-            # generate new token
-            RefreshToken.objects.create(user=user, token=refresh_token)
-
-        except RefreshToken.DoesNotExist:
-            # assign a new refresh token to the current user
-            RefreshToken.objects.create(user=user, token=refresh_token)
-
-        response.set_cookie(
-            key='refreshtoken',
-            value=refresh_token,
-            httponly=True,
-            domain='localhost',
-            samesite='strict',
-            # secure=True # for https connections only
-        )
-
-        response.data = {
-            'access_token': access_token
-        }
-        response.status_code = status.HTTP_200_OK
+    if email is None or password is None:
+        response.data = {'msg': 'Email and password required.'}
+        response.status_code = status.HTTP_400_BAD_REQUEST
         return response
+
+    user = User.objects.filter(email=email).first()
+
+    if user is None or not user.check_password(password):
+        response.data = {
+            'msg': 'Incorrect email or password'
+        }
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return response
+
+    # generate access and refresh tokens for the current user
+    access_token = generate_access_token(user)
+    refresh_token = generate_refresh_token(user)
+
+    try:
+        # if the user has a refresh token in the db,
+        # get the old token
+        old_refresh_token = RefreshToken.objects.get(user=user.id)
+        # delete the old token
+        old_refresh_token.delete()
+        # generate new token
+        RefreshToken.objects.create(user=user, token=refresh_token)
+
+    except RefreshToken.DoesNotExist:
+        # assign a new refresh token to the current user
+        RefreshToken.objects.create(user=user, token=refresh_token)
+
+    response.set_cookie(
+        key='refreshtoken',
+        value=refresh_token,
+        httponly=True,
+        domain='localhost',
+        samesite='strict',
+        # secure=True # for https connections only
+    )
+
+    response.data = {
+        'access_token': access_token
+    }
+    response.status_code = status.HTTP_200_OK
+    return response
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+@authentication_classes([SafeJWTAuthentication])
+@ensure_csrf_cookie
+def get_auth_user(request):
+
+    response = Response()
+    response.data={'msg':'AUTH USER'}
+    response.status_code = status.HTTP_418_IM_A_TEAPOT
+    return response
+    # payload = jwt.decode(
+    #     access_token,
+    #     settings.SECRET_KEY,
+    #     algorithms=['HS256']
+    # )
+
+    return Response('What?')
 
 
 @api_view(['GET'])
@@ -147,11 +163,11 @@ def refresh_token(request):
 
     if refresh_token is None:
         response.data = {
-            'msg':'Authentication credentials were not provided'
+            'msg': 'Authentication credentials were not provided'
         }
         response.status_code = status.HTTP_401_UNAUTHORIZED
         return response
-    
+
     try:
         payload = jwt.decode(
             refresh_token,
@@ -183,7 +199,5 @@ def refresh_token(request):
         response.status_code = status.HTTP_401_UNAUTHORIZED
         return response
 
-
     new_access_token = generate_access_token(user)
     return Response(data={'accessToken': new_access_token})
-

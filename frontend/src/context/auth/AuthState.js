@@ -1,18 +1,20 @@
-import React, { useContext, useReducer } from 'react';
-import AuthContext from './authContext';
-import authReducer from './authReducer';
+import React, { useContext, useReducer } from "react";
+import AuthContext from "./authContext";
+import authReducer from "./authReducer";
 
-import axios from 'axios';
-import setAccessToken from '../../utils/setAccessToken';
+import axios from "axios";
+import setAccessToken from "../../utils/setAccessToken";
 
 import {
   LOGIN,
   LOGIN_SUCCESS,
   LOAD_USER_SUCCESS,
   LOAD_USER_FAIL,
-} from '../types';
+  REGISTER_SUCCESS,
+  REGISTER_FAIL,
+} from "../types";
 
-const AuthState = props => {
+const AuthState = (props) => {
   const authContext = useContext(AuthContext);
 
   const initialState = {
@@ -32,12 +34,13 @@ const AuthState = props => {
   const requestAccessToken = async () => {
     try {
       const config = {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       };
-      const response = await axios.get('users/refresh_token/', config);
-      console.log('refresh token response: ', response.data);
+      const response = await axios.get("/users/refresh_token/", config);
+      console.log("refresh token response: ", response.data);
     } catch (error) {
-      console.log(error.response.data);
+      // set alert "Not Authorized"
+      console.log(error.response);
     }
   };
 
@@ -49,28 +52,49 @@ const AuthState = props => {
 
     try {
       const config = {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
+        withCredentials: true,
+        "X-CSRFToken": document.cookie.get("csrftoken"),
       };
-      const response = await axios.get('users/', config);
+      const response = await axios.post("/users/auth/", config);
 
-      dispatch({ type: LOAD_USER_SUCCESS, payload: response.data });
+      console.log(response.data);
+      // dispatch({ type: LOAD_USER_SUCCESS, payload: response.data });
     } catch (error) {
-      dispatch({ type: LOAD_USER_FAIL, payload: error.response.data.msg });
+      console.log(error.response.data)
+      // dispatch({ type: LOAD_USER_FAIL, payload: error.response.data.msg });
     }
   };
 
   // register
-  const register = () => console.log('register');
-
-  // login
-  const login = async formData => {
+  const register = async (formData) => {
     const config = {
-      'Content-Type': 'application/json',
-      withCredentials: true,
+      "Content-Type": "application/json",
     };
 
     try {
-      const response = await axios.post('users/login/', formData, config);
+      const response = await axios.post("/users/register", formData, config);
+
+      dispatch({
+        type: REGISTER_SUCCESS,
+        payload: response.data,
+      });
+    } catch (error) {
+      dispatch({
+        type: REGISTER_FAIL,
+        payload: error.response.data,
+      });
+    }
+  };
+
+  // login
+  const login = async (formData) => {
+    const config = {
+      "Content-Type": "application/json",
+    };
+
+    try {
+      const response = await axios.post("/users/login/", formData, config);
 
       dispatch({
         type: LOGIN_SUCCESS,
@@ -79,16 +103,16 @@ const AuthState = props => {
         },
       });
 
-      loadUser(response.data.access_token);
+      loadUser();
     } catch (error) {
       const { msg } = error.response.data;
-      if (msg === 'access_token_expired') {
+      if (msg === "access_token_expired") {
         requestAccessToken();
       }
     }
   };
   // logout
-  const logout = () => console.log('logout');
+  const logout = () => console.log("logout");
 
   //
 
