@@ -8,7 +8,8 @@ import {
   GET_TOKEN_PAIR,
   REFRESH_ACCESS_TOKEN_SUCCESS,
   REFRESH_ACCESS_TOKEN_FAIL,
-  LOGOUT,
+  LOGOUT_SUCCESS,
+  LOGOUT_FAIL, 
 } from '../types';
 
 export default (state, action) => {
@@ -37,11 +38,30 @@ export default (state, action) => {
       };
     case LOGIN_FAIL:
     case REGISTER_FAIL:
+    case LOAD_USER_FAIL:
       return {
         ...state,
         accessToken: null,
         isAuthenticated: false,
+        user:null,
         loading: false,
       };
+    case LOGOUT_SUCCESS:
+      return {
+        ...state,
+        accessToken: null,
+        isAuthenticated: false,
+        user: null,
+        loading: false,
+      }
+    case LOGOUT_FAIL:
+      return {
+        ...state,
+        accessToken: null,
+        isAuthenticated: false,
+        user: null,
+        loading: false,
+        // error: action.payload.msg
+      }
   }
 };

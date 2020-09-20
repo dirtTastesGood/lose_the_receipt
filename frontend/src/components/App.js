@@ -30,6 +30,10 @@ const App = props => {
       <Route exact path='/'>
         <div className='App'>
           <h1>hello!</h1>
+          <div 
+            className="btn btn-sm btn-primary"
+            onClick={authContext.logout}
+          >Logout</div>
         </div>
       </Route>
     </Router>

@@ -39,7 +39,7 @@ class UserManager(BaseUserManager):
 
 class User(AbstractUser):
     username = None
-    email = models.EmailField(_('email address'), unique=True)    
+    email = models.EmailField(_('email address'), unique=True, error_messages={'unique':"This email has already been registered."})
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []

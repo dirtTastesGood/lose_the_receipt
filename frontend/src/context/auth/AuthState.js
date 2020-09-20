@@ -15,6 +15,8 @@ import {
   REGISTER_FAIL,
   REFRESH_ACCESS_TOKEN_SUCCESS,
   REFRESH_ACCESS_TOKEN_FAIL,
+  LOGOUT_SUCCESS,
+  LOGOUT_FAIL,
 } from '../types';
 
 const AuthState = props => {
@@ -76,16 +78,22 @@ const AuthState = props => {
   const register = async formData => {
     const config = {
       'Content-Type': 'application/json',
+      withCredentials: true,
     };
 
     try {
-      const response = await axios.post('/users/register', formData, config);
+      const response = await axios.post('/users/register/', formData, config);
+
+      console.log(response);
 
       dispatch({
         type: REGISTER_SUCCESS,
         payload: response.data,
       });
+      login(formData)
+      // loadUser();
     } catch (error) {
+      console.log(error.response);
       dispatch({
         type: REGISTER_FAIL,
         payload: error.response.data,
@@ -110,16 +118,42 @@ const AuthState = props => {
         },
       });
 
-      // loadUser();
+      loadUser();
     } catch (error) {
-      // const { msg } = error.response;
-      // if (msg === 'access_token_expired') {
-      //   requestAccessToken();
-      // }
+      const { msg } = error.response;
+      if (msg === 'access_token_expired') {
+        requestAccessToken();
+      }
     }
   };
   // logout
-  const logout = () => console.log('logout');
+  const logout = async () => {
+    const config = {
+      'Content-Type': 'application/json',
+      withCredentials: true,
+    };
+
+    try {
+      const response = await axios.get(
+        '/users/logout/',
+        config
+      )
+      console.log(response)
+
+      dispatch({
+        type:LOGOUT_SUCCESS,
+        payload: response.data.msg
+      })
+
+    } catch (error) {
+      console.log(error.response);
+      // setAlert(error.response.data.msg)
+      dispatch({
+        type: LOGOUT_FAIL,
+        payload: error.response.data.msg
+      })
+    }
+  };
 
   //
 

@@ -42,7 +42,10 @@ def user_detail(request, pk):
 
 
 @api_view(['POST'])
+@permission_classes([AllowAny])
 def user_create(request):
+    response = Response()
+
     new_user_serializer = UserCreateSerializer(
         data=request.data
     )
@@ -50,9 +53,13 @@ def user_create(request):
     if new_user_serializer.is_valid():
         new_user = new_user_serializer.save()
 
-        return Response(new_user_serializer.data, status=status.HTTP_201_CREATED)
+        response.data=new_user_serializer.validated_data
+        response.status_code = status.HTTP_201_CREATED
+        return response
 
-    return Response(new_user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    response.data={'msg':new_user_serializer.errors.get('email')[0]}
+    response.status_code = status.HTTP_400_BAD_REQUEST
+    return response
 
 
 @api_view(['GET', 'POST'])
@@ -192,10 +199,8 @@ def refresh_token(request):
 
         expired_token = RefreshToken.objects.get(token=refresh_token)
         
-        print('expired_token',expired_token)
-        
         # delete the old token
-        # expired_token.delete()
+        expired_token.delete()
 
         response.data = {
             'msg': 'Expired refresh token, please log in again.'
@@ -221,3 +226,25 @@ def refresh_token(request):
 
     new_access_token = generate_access_token(user)
     return Response(data={'accessToken': new_access_token})
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def logout(request):
+    response = Response()
+
+    # get the current user's refresh token
+    refresh_token = RefreshToken.objects.filter(user=request.user.id).first()
+    
+    if refresh_token is None:
+        response.data = {'msg':'No token found.'}
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return response
+
+    # if the token exists, delete it
+    refresh_token.delete()
+
+    # remove the httponly cookie
+    response.delete_cookie('refreshtoken')
+    
+    response.data = {'msg':'Logout successful.'}
+    return response
