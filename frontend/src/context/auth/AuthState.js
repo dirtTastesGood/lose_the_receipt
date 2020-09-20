@@ -99,6 +99,7 @@ const AuthState = props => {
   const login = async formData => {
     const config = {
       'Content-Type': 'application/json',
+      withCredentials: true,
     };
 
     try {
@@ -113,7 +114,7 @@ const AuthState = props => {
 
       // loadUser();
     } catch (error) {
-      const { msg } = error.response.data;
+      const { msg } = error.response;
       if (msg === 'access_token_expired') {
         requestAccessToken();
       }

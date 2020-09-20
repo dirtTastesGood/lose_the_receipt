@@ -52,6 +52,7 @@ class User(AbstractUser):
 class RefreshToken(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     token = models.CharField(max_length=200)
+    
 
     def __str__(self):
         return f"{self.user}'s refresh token."

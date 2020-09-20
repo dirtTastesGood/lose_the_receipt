@@ -172,9 +172,17 @@ def refresh_token(request):
             settings.REFRESH_TOKEN_SECRET,
             algorithms=["HS256"]
         )
+
+
     except jwt.ExpiredSignatureError:
-        # TO DO:
-        # REMOVE EXPIRED REFRESH TOKEN FROM DB
+
+        expired_token = RefreshToken.objects.get(token=refresh_token)
+        
+        print('expired_token',expired_token)
+        
+        # delete the old token
+        # expired_token.delete()
+
         response.data = {
             'msg': 'Expired refresh token, please log in again.'
         }

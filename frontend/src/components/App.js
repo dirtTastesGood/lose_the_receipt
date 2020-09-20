@@ -19,6 +19,7 @@ const App = props => {
     const baseURL = 'http://localhost:8000/api/v1';
     setAxiosBaseURL(baseURL);
 
+    // if requesttoken cookie exists, request new access token
     requestAccessToken();
   }, []);
 
