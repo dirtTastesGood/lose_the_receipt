@@ -134,22 +134,36 @@ def login(request):
     return response
 
 
-@api_view(['POST'])
+@api_view(['GET'])
 @permission_classes([AllowAny])
 @authentication_classes([SafeJWTAuthentication])
-@ensure_csrf_cookie
+@csrf_protect
 def get_auth_user(request):
-
     response = Response()
-    response.data={'msg':'AUTH USER'}
-    response.status_code = status.HTTP_418_IM_A_TEAPOT
-    return response
-    # payload = jwt.decode(
-    #     access_token,
-    #     settings.SECRET_KEY,
-    #     algorithms=['HS256']
-    # )
+    access_token = request.headers.get('Authorization').split(' ')[1]
 
+    payload = jwt.decode(
+        access_token,
+        settings.SECRET_KEY,
+        algorithms=['HS256']
+    )
+
+    user = User.objects.filter(id=payload.get('user_id')).first()
+    
+    if user is None:
+        response.data = {'msg':'User not found'}
+        response.status_code = status.HTTP_401_UNAUTHORIZED
+        return response
+    
+    if not user.is_active:
+        response.data = {'msg':'User not active'}
+        response.status_code = status.HTTP_401_UNAUTHORIZED
+        return response
+
+    serialized_user = UserDetailSerializer(instance=user)
+    response.data = {'user':serialized_user.data}
+
+    return response
 
 
 @api_view(['GET'])

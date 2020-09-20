@@ -1,8 +1,9 @@
 import React, { useContext, useReducer } from 'react';
+import axios from 'axios';
+
 import AuthContext from './authContext';
 import authReducer from './authReducer';
 
-import axios from 'axios';
 import setAccessToken from '../../utils/setAccessToken';
 
 import {
@@ -46,31 +47,28 @@ const AuthState = props => {
         type: REFRESH_ACCESS_TOKEN_SUCCESS,
         payload: response.data,
       });
+
+      loadUser();
     } catch (error) {
       // set alert "Not Authorized"
-      console.log('requestAccessToken error', error.response);
+      console.log('requestAccessToken ERROR', error.response);
     }
   };
 
   // load user
   const loadUser = async () => {
-    if (state.accessToken) {
-      setAccessToken(state.accessToken);
-    }
-
     try {
       const config = {
         'Content-Type': 'application/json',
         withCredentials: true,
-        // 'X-CSRFToken': document.cookie.get('csrftoken'),
       };
-      const response = await axios.post('/users/auth/', config);
+      const response = await axios.get('/users/auth/', config);
 
-      console.log(response.data);
-      // dispatch({ type: LOAD_USER_SUCCESS, payload: response.data });
+      // console.log(response);
+      dispatch({ type: LOAD_USER_SUCCESS, payload: response.data.user });
     } catch (error) {
-      console.log(error.response);
-      // dispatch({ type: LOAD_USER_FAIL, payload: error.response.data.msg });
+      // console.log(error);
+      dispatch({ type: LOAD_USER_FAIL, payload: error.response.data.msg });
     }
   };
 
@@ -114,10 +112,10 @@ const AuthState = props => {
 
       // loadUser();
     } catch (error) {
-      const { msg } = error.response;
-      if (msg === 'access_token_expired') {
-        requestAccessToken();
-      }
+      // const { msg } = error.response;
+      // if (msg === 'access_token_expired') {
+      //   requestAccessToken();
+      // }
     }
   };
   // logout

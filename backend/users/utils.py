@@ -24,7 +24,7 @@ def generate_access_token(user):
 def generate_refresh_token(user):
     refresh_token_payload = {
         'user_id': user.id,
-        'exp': datetime.datetime.utcnow() + datetime.timedelta(days=0,microseconds=1),
+        'exp': datetime.datetime.utcnow() + datetime.timedelta(days=7, microseconds=1),
         'iat': datetime.datetime.utcnow()
     }
 
