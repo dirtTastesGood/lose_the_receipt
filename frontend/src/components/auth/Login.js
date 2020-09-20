@@ -19,7 +19,6 @@ const Login = props => {
       // redirect to home
       props.history.push('/');
     }
-
     // setAlert with an error
     // if (error === 'Invalid Credentials') {
     //   setAlert(error, 'danger');

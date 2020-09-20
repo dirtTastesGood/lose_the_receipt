@@ -150,13 +150,11 @@ def get_auth_user(request):
     #     algorithms=['HS256']
     # )
 
-    return Response('What?')
 
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
-# @authentication_classes([])
-@csrf_protect
+@ensure_csrf_cookie
 def refresh_token(request):
     response = Response()
     refresh_token = request.COOKIES.get('refreshtoken')

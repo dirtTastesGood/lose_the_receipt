@@ -6,7 +6,8 @@ import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
   GET_TOKEN_PAIR,
-  REFRESH_ACCESS_TOKEN,
+  REFRESH_ACCESS_TOKEN_SUCCESS,
+  REFRESH_ACCESS_TOKEN_FAIL,
   LOGOUT,
 } from '../types';
 
@@ -19,6 +20,13 @@ export default (state, action) => {
       return {
         ...state,
         accessToken: action.payload.access_token,
+        isAuthenticated: true,
+        loading: false,
+      };
+    case REFRESH_ACCESS_TOKEN_SUCCESS:
+      return {
+        ...state,
+        accessToken: action.payload.accessToken,
         isAuthenticated: true,
         loading: false,
       };

@@ -1,20 +1,22 @@
-import React, { useContext, useReducer } from "react";
-import AuthContext from "./authContext";
-import authReducer from "./authReducer";
+import React, { useContext, useReducer } from 'react';
+import AuthContext from './authContext';
+import authReducer from './authReducer';
 
-import axios from "axios";
-import setAccessToken from "../../utils/setAccessToken";
+import axios from 'axios';
+import setAccessToken from '../../utils/setAccessToken';
 
 import {
-  LOGIN,
   LOGIN_SUCCESS,
+  LOGIN_FAIL,
   LOAD_USER_SUCCESS,
   LOAD_USER_FAIL,
   REGISTER_SUCCESS,
   REGISTER_FAIL,
-} from "../types";
+  REFRESH_ACCESS_TOKEN_SUCCESS,
+  REFRESH_ACCESS_TOKEN_FAIL,
+} from '../types';
 
-const AuthState = (props) => {
+const AuthState = props => {
   const authContext = useContext(AuthContext);
 
   const initialState = {
@@ -34,13 +36,19 @@ const AuthState = (props) => {
   const requestAccessToken = async () => {
     try {
       const config = {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
+        withCredentials: true,
       };
-      const response = await axios.get("/users/refresh_token/", config);
-      console.log("refresh token response: ", response.data);
+      const response = await axios.get('/users/refresh_token/', config);
+
+      // Dispatch accessToken to state
+      dispatch({
+        type: REFRESH_ACCESS_TOKEN_SUCCESS,
+        payload: response.data,
+      });
     } catch (error) {
       // set alert "Not Authorized"
-      console.log(error.response);
+      console.log('requestAccessToken error', error.response);
     }
   };
 
@@ -52,28 +60,28 @@ const AuthState = (props) => {
 
     try {
       const config = {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         withCredentials: true,
-        "X-CSRFToken": document.cookie.get("csrftoken"),
+        // 'X-CSRFToken': document.cookie.get('csrftoken'),
       };
-      const response = await axios.post("/users/auth/", config);
+      const response = await axios.post('/users/auth/', config);
 
       console.log(response.data);
       // dispatch({ type: LOAD_USER_SUCCESS, payload: response.data });
     } catch (error) {
-      console.log(error.response.data)
+      console.log(error.response);
       // dispatch({ type: LOAD_USER_FAIL, payload: error.response.data.msg });
     }
   };
 
   // register
-  const register = async (formData) => {
+  const register = async formData => {
     const config = {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     };
 
     try {
-      const response = await axios.post("/users/register", formData, config);
+      const response = await axios.post('/users/register', formData, config);
 
       dispatch({
         type: REGISTER_SUCCESS,
@@ -88,13 +96,13 @@ const AuthState = (props) => {
   };
 
   // login
-  const login = async (formData) => {
+  const login = async formData => {
     const config = {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     };
 
     try {
-      const response = await axios.post("/users/login/", formData, config);
+      const response = await axios.post('/users/login/', formData, config);
 
       dispatch({
         type: LOGIN_SUCCESS,
@@ -103,16 +111,16 @@ const AuthState = (props) => {
         },
       });
 
-      loadUser();
+      // loadUser();
     } catch (error) {
       const { msg } = error.response.data;
-      if (msg === "access_token_expired") {
+      if (msg === 'access_token_expired') {
         requestAccessToken();
       }
     }
   };
   // logout
-  const logout = () => console.log("logout");
+  const logout = () => console.log('logout');
 
   //
 
@@ -128,6 +136,7 @@ const AuthState = (props) => {
         login,
         loadUser,
         logout,
+        requestAccessToken,
       }}
     >
       {props.children}
