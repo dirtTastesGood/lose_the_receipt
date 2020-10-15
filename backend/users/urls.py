@@ -1,16 +1,14 @@
-from django.contrib import admin
+# users/urls.py
+
 from django.urls import path
 
 from . import views
 
 urlpatterns = [
-    path('', views.user_list),
-    path('login/', views.login),
-    path('logout/', views.logout),
-    path('register/', views.user_create),
-    path('auth/', views.get_auth_user),
-    path('refresh_token/', views.refresh_token),
-    path('<int:pk>/', views.user_detail),
-    path('new/', views.user_create),
-    path('edit/<int:pk>', views.user_edit),
+    path('', views.register), # create
+    path('login/', views.login), # login
+    path('auth/', views.auth), # get logged in user via access token
+    path('token/', views.extend_token), # request new access tokens
+    path('<int:pk>/', views.user_detail), # read/update logged in user
+    path('logout/', views.logout), # delete tokens
 ]

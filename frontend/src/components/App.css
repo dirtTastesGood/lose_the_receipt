@@ -1,0 +1,22 @@
+/* App */
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+* {
+  font-family: 'Lato', sans-serif;
+}
+
+ul li {
+  list-style: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+.alerts {
+  position: absolute;
+  left: 50%;
+  /* max-width: 50%; */
+  top: 15px;
+  transform: translateX(-50%);
+  z-index: 1;
+}

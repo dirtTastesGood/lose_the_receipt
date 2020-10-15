@@ -1,38 +1,43 @@
-import React, { useContext, useReducer } from 'react';
+import React, { useReducer } from 'react';
 import axios from 'axios';
+import setAccessToken from '../../utils/setAccessToken';
 
 import AuthContext from './authContext';
 import authReducer from './authReducer';
 
-import setAccessToken from '../../utils/setAccessToken';
-
 import {
+  REGISTER_SUCCESS,
+  REGISTER_FAIL,
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOAD_USER_SUCCESS,
   LOAD_USER_FAIL,
-  REGISTER_SUCCESS,
-  REGISTER_FAIL,
-  REFRESH_ACCESS_TOKEN_SUCCESS,
-  REFRESH_ACCESS_TOKEN_FAIL,
-  LOGOUT_SUCCESS,
-  LOGOUT_FAIL,
-} from '../types';
+  LOGOUT,
+  EXTEND_TOKEN_SUCCESS,
+  EXTEND_TOKEN_FAIL,
+  SET_ALERT,
+  CLEAR_ALERTS,
+} from '../types'; // action types to dispatch to reducer
+
+const BASE_URL = 'http://localhost:8000/api/v1/users';
 
 const AuthState = props => {
-  const authContext = useContext(AuthContext);
-
   const initialState = {
-    accessToken: null,
-    isAuthenticated: null,
-    user: null,
-    loading: false,
-    error: null,
+    accessToken: null, // logged in user's current access token
+    isAuthenticated: false, // boolean indicating if a user is logged in
+    messages: null, // response messages
+    messageType: '',
+    user: null, // object with auth user data
+    loading: true, // no response yet from api
   };
-  const [state, dispatch] = useReducer(authReducer, initialState);
-  const { accessToken, user } = state;
 
-  // set 'Authorization' header in axios
+  // initialize the auth reducer and access auth state
+  const [state, dispatch] = useReducer(authReducer, initialState);
+
+  // destructure state
+  const { accessToken } = state;
+
+  // set 'Authorization' header in Axios
   setAccessToken(accessToken);
 
   // request a new access token
@@ -42,134 +47,167 @@ const AuthState = props => {
         'Content-Type': 'application/json',
         withCredentials: true,
       };
-      const response = await axios.get('/users/refresh_token/', config);
+      const response = await axios.get(BASE_URL + '/token/', config);
 
       // Dispatch accessToken to state
       dispatch({
-        type: REFRESH_ACCESS_TOKEN_SUCCESS,
+        type: EXTEND_TOKEN_SUCCESS,
+        // payload is the new access token
         payload: response.data,
       });
 
       loadUser();
     } catch (error) {
-      // set alert "Not Authorized"
-      console.log('requestAccessToken ERROR', error.response);
+      dispatch({
+        type: EXTEND_TOKEN_FAIL,
+        // no message to display
+        payload: {
+          messages: null,
+          messageType: null,
+        },
+      });
     }
   };
 
-  // load user
-  const loadUser = async () => {
-    try {
-      const config = {
-        'Content-Type': 'application/json',
-        withCredentials: true,
-      };
-      const response = await axios.get('/users/auth/', config);
-
-      // console.log(response);
-      dispatch({ type: LOAD_USER_SUCCESS, payload: response.data.user });
-    } catch (error) {
-      // console.log(error);
-      dispatch({ type: LOAD_USER_FAIL, payload: error.response.data.msg });
-    }
-  };
-
-  // register
+  // register new user. async because of axios call
   const register = async formData => {
     const config = {
-      'Content-Type': 'application/json',
-      withCredentials: true,
+      headers: {
+        'Content-Type': 'application/json',
+        withCredentials: true, // required to set the refreshtoken cookie in the browser!!!
+      },
     };
 
     try {
-      const response = await axios.post('/users/register/', formData, config);
+      // POST to api register view
+      const response = await axios.post(BASE_URL + '/', formData, config);
 
-      console.log(response);
-
+      // dispatch register success to user and pass the user's token as payload
       dispatch({
         type: REGISTER_SUCCESS,
-        payload: response.data,
+        payload: {
+          accessToken: response.data.accessToken,
+          // 'Login successful!
+          messages: response.data.msg,
+          messageType: 'success',
+        },
       });
-      login(formData)
-      // loadUser();
+      loadUser();
     } catch (error) {
-      console.log(error.response);
+      // dispatch register fail to reducer and display alerts
       dispatch({
         type: REGISTER_FAIL,
-        payload: error.response.data,
+        payload: {
+          messages: error.response.data.msg,
+          messageType: 'danger',
+        },
       });
     }
   };
 
-  // login
+  // login user. async because of axios call
   const login = async formData => {
     const config = {
       'Content-Type': 'application/json',
-      withCredentials: true,
+      withCredentials: true, // required to set the refreshtoken cookie in the browser!!!
     };
 
     try {
-      const response = await axios.post('/users/login/', formData, config);
+      // POST to users/login/
+      const response = await axios.post(BASE_URL + '/login/', formData, config);
 
       dispatch({
         type: LOGIN_SUCCESS,
         payload: {
-          access_token: response.data.access_token,
+          accessToken: response.data.accessToken,
+          messages: response.data.msg,
+          messageType: 'success',
         },
       });
 
       loadUser();
     } catch (error) {
-      const { msg } = error.response;
-      if (msg === 'access_token_expired') {
-        requestAccessToken();
-      }
+      dispatch({
+        type: LOGIN_FAIL,
+        payload: {
+          messages: error.response.data.msg,
+          messageType: 'danger',
+        },
+      });
     }
   };
-  // logout
-  const logout = async () => {
-    const config = {
+
+  // get user object from accessToken
+  const loadUser = async () => {
+    const headers = {
       'Content-Type': 'application/json',
       withCredentials: true,
     };
 
     try {
-      const response = await axios.get(
-        '/users/logout/',
-        config
-      )
-      console.log(response)
+      const response = await axios.get(BASE_URL + '/auth/');
 
       dispatch({
-        type:LOGOUT_SUCCESS,
-        payload: response.data.msg
-      })
-
+        // payload is the user object
+        type: LOAD_USER_SUCCESS,
+        payload: response.data.user,
+      });
     } catch (error) {
-      console.log(error.response);
-      // setAlert(error.response.data.msg)
+      // if the access token is expired when the request is made,
+      // use the refresh token to request a new one
+      if (error.response.data.msg === 'Access token expired') {
+        requestAccessToken();
+      }
+
       dispatch({
-        type: LOGOUT_FAIL,
-        payload: error.response.data.msg
-      })
+        type: LOAD_USER_FAIL,
+        payload: { messages: null, messageType: null },
+      });
     }
   };
 
-  //
+  const logout = async () => {
+    const headers = {
+      'Content-Type': 'application/json',
+      withCredentials: true,
+    };
+
+    try {
+      const response = await axios.post(BASE_URL + '/logout/', {
+        user: state.user.id,
+      });
+
+      dispatch({
+        type: LOGOUT,
+        payload: { messages: response.data.msg, messageType: 'success' },
+      });
+    } catch (error) {
+      dispatch({
+        type: LOGOUT,
+        payload: { messages: null, messageType: null },
+      });
+    }
+  };
+
+  // clear alerts
+  const clearAlerts = () => dispatch({ type: CLEAR_ALERTS });
 
   return (
     <AuthContext.Provider
       value={{
+        // provide auth state items and methods to app
+        user: state.user,
         accessToken: state.accessToken,
         isAuthenticated: state.isAuthenticated,
         loading: state.loading,
-        user: state.user,
-        error: state.error,
+        messages: state.messages,
+        messageType: state.messageType,
         register,
         login,
         loadUser,
-        logout,
         requestAccessToken,
+        logout,
+        clearAlerts,
       }}
     >
       {props.children}

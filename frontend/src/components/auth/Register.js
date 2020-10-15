@@ -1,98 +1,103 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect } from 'react';
 
-import AuthContext from "../../context/auth/authContext";
-
+import AuthContext from '../../context/auth/authContext';
+import AlertContext from '../../context/alerts/alertContext';
 const Register = props => {
+  // initialize auth context
   const authContext = useContext(AuthContext);
+  const alertContext = useContext(AlertContext);
 
+  // destructure context items
   const { register, isAuthenticated } = authContext;
+  const { setAlert } = alertContext;
 
-  const [user, setUser] = useState({
-    email: "",
-    password: "",
-    password2: "",
-  });
-
-  const { email, password, password2 } = user;
-
+  // run effect when isAuthenticated or props.history change
   useEffect(() => {
+    // redirect if an authenticated user exists
     if (isAuthenticated) {
-      // redirect to home
-      props.history.push("/");
-      // setAlert('Logged in as user.email')
+      // redirect to the homepage
+      props.history.push('/');
     }
-    // setAlert with an error
-    // if (error === 'Invalid Credentials') {
-    //   setAlert(error, 'danger');
-    //   clearErrors();
-    // }
   }, [isAuthenticated, props.history]);
 
-  const onChange = (e) => setUser({ ...user, [e.target.name]: e.target.value });
+  // setup component-level state to hold form data
+  const [userForm, setUser] = useState({
+    email: '',
+    password: '',
+    password2: '',
+  });
 
-  const onSubmit = (e) => {
-    e.preventDefault();
+  const { email, password, password2 } = userForm;
 
-    if (email === "" || password === "" || password2 === "") {
-      // set alert 'Please fill in all fields'
-      console.log("Please fill in all fields");
+  // add new form changes to state
+  const onChange = e =>
+    setUser({ ...userForm, [e.target.name]: e.target.value });
+
+  // call when form is submitted
+  const onSubmit = e => {
+    e.preventDefault(); // ignore default form submit action
+
+    // if username, email or password are blank
+    // or password doesn't match password 2, raise an alert
+    if (email === '' || password === '') {
+      setAlert('Please enter all fields', 'danger');
     } else if (password !== password2) {
-      // set alert 'Passwords don't match'
-      console.log("Passwords don't match");
+      setAlert("Passwords don't match", 'danger');
     } else {
+      // if all info is valid, pass the form data to register() from AuthState
       register({
         email,
         password,
+        password2,
       });
     }
   };
 
   return (
-    <div>
-      <h1>Register</h1>
-      <form className="container" onSubmit={onSubmit}>
-        <div className="form-group">
-          <label htmlFor="email">Email</label>
-          <input
-            className="form-control"
-            type="text"
-            id="email"
-            name="email"
-            value={email}
-            onChange={onChange}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="password">Password</label>
-          <input
-            className="form-control"
-            type="password"
-            id="password"
-            name="password"
-            value={password}
-            onChange={onChange}
-            required
-          />
-        </div>
+    <div className='container'>
+      <div className='row'>
+        <div className='col col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2'>
+          <h1 className='text-center'>Register</h1>
+          <form onSubmit={onSubmit}>
+            <div className='form-group'>
+              <label htmlFor='username'>Email</label>
+              <input
+                className='form-control'
+                type='text'
+                name='email'
+                id='email'
+                onChange={onChange}
+              />
+            </div>
+            <div className='form-group'>
+              <label htmlFor='password'>Password</label>
+              <input
+                className='form-control'
+                type='password'
+                name='password'
+                id='password'
+                onChange={onChange}
+              />
+            </div>
+            <div className='form-group'>
+              <label htmlFor='password2'>Password Confirm</label>
+              <input
+                className='form-control'
+                type='password'
+                name='password2'
+                id='password2'
+                onChange={onChange}
+              />
+            </div>
 
-        <div className="form-group">
-          <label htmlFor="password2">Password</label>
-          <input
-            className="form-control"
-            type="password"
-            id="password2"
-            name="password2"
-            value={password2}
-            onChange={onChange}
-            required
-          />
+            <input
+              className='btn btn-lg btn-primary'
+              type='submit'
+              value='Register'
+            />
+          </form>
         </div>
-
-        <button className="btn btn-primary" type="submit" value="Log In">
-          Log In
-        </button>
-      </form>
+      </div>
     </div>
   );
 };

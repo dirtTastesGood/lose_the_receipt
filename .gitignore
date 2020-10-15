@@ -1,7 +1,7 @@
 
 # Created by https://www.toptal.com/developers/gitignore/api/django,python,react
 # Edit at https://www.toptal.com/developers/gitignore?templates=django,python,react
-
+.env
 .venv-name
 api_test.py
 *.md

@@ -1,101 +1,93 @@
 import jwt
+
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.shortcuts import render, get_object_or_404
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect
 
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import exceptions
 from rest_framework.decorators import (
     api_view, permission_classes,
     authentication_classes
 )
-# from rest_framework_simplejwt.authentication import JWTAuthentication
-# from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework.permissions import AllowAny, IsAuthenticated
-from rest_framework.response import Response
 
-from .utils import generate_access_token, generate_refresh_token
-
+from .authentication import SafeJWTAuthentication
 from .models import User, RefreshToken
 from .serializers import UserCreateSerializer, UserDetailSerializer
-from .authentication import SafeJWTAuthentication
-
-
-@api_view(['GET'])
-@authentication_classes([SafeJWTAuthentication])
-@permission_classes([IsAuthenticated])
-def user_list(request):
-    users = User.objects.all()
-    serializer = UserDetailSerializer(users, many=True)
-
-    return Response(data=serializer.data)
-
-
-@api_view(['GET'])
-@authentication_classes([])
-def user_detail(request, pk):
-    user = get_object_or_404(get_user_model(), pk=pk)
-    serializer = UserDetailSerializer(user, many=False)
-
-    return Response(data=serializer.data)
+from .utils import generate_access_token, generate_refresh_token
 
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
-def user_create(request):
+def register(request):
+    '''Validate request POST data and create new User objects in database
+    Set refresh cookie and return access token on successful registration'''
+    # create response object
     response = Response()
 
-    new_user_serializer = UserCreateSerializer(
-        data=request.data
-    )
+    # serialize request JSON data
+    new_user_serializer = UserCreateSerializer(data=request.data)
 
-    if new_user_serializer.is_valid():
-        new_user = new_user_serializer.save()
-
-        response.data=new_user_serializer.validated_data
-        response.status_code = status.HTTP_201_CREATED
+    if request.data.get('password') != request.data.get('password2'):
+        # if password and password2 don't match return status 400
+        response.data = {'msg': ["Passwords don't match"]}
+        response.status_code = status.HTTP_400_BAD_REQUEST
         return response
 
-    response.data={'msg':new_user_serializer.errors.get('email')[0]}
+    if new_user_serializer.is_valid():
+        # If the data is valid, create the item in the database
+        new_user = new_user_serializer.save()
+
+        # generate access and refresh tokens for the new user
+        access_token = generate_access_token(new_user)
+        refresh_token = generate_refresh_token(new_user)
+
+        # attach the access token to the response data
+        # and set the response status code to 201
+        new_email = new_user.email
+        response.data = {'accessToken': access_token,
+                         'msg': ['Account created. Welcome!']}
+        response.status_code = status.HTTP_201_CREATED
+
+        # create refreshtoken cookie
+        response.set_cookie(
+            key='refreshtoken',
+            value=refresh_token,
+            httponly=True,  # to help prevent XSS
+            samesite='strict',  # to help prevent XSS
+            domain='localhost',  # change in production
+            # secure=True # for https connections only
+        )
+
+        # return successful response
+        return response
+
+    # if the serialized data is NOT valid
+    # send a response with error messages and status code 400
+    response.data = {
+        'msg': [msg for msg in new_user_serializer.errors.values()]}
+
     response.status_code = status.HTTP_400_BAD_REQUEST
+    # return failed response
     return response
 
 
-@api_view(['GET', 'POST'])
-@permission_classes([IsAuthenticated])
-def user_edit(request, pk):
-    if request.method == 'GET':
-        user = get_object_or_404(get_user_model(), pk=pk)
-        serializer = UserCreateSerializer(user, many=False)
-
-        return Response(data=serializer.data)
-
-    elif request.method == 'POST':
-        serializer = UserSerializer(
-            data=request.data,
-            partial=True,
-        )
-
-        if serializer.is_valid():
-            serializer.save()
-
-            return Response(data=serializer.data, status=status.HTTP_202_ACCEPTED)
-
-        return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
 @api_view(['POST'])
-@permission_classes((AllowAny,))
-@ensure_csrf_cookie
+@permission_classes([AllowAny])
 def login(request):
+    '''
+    POST: Validate User credentials and generate refresh and access tokens
+    '''
+    # create response object
+    response = Response()
 
     email = request.data.get('email')
     password = request.data.get('password')
-    response = Response()
 
     if email is None or password is None:
-        response.data = {'msg': 'Email and password required.'}
+        response.data = {'msg': ['Email and password required.']}
         response.status_code = status.HTTP_400_BAD_REQUEST
         return response
 
@@ -103,7 +95,7 @@ def login(request):
 
     if user is None or not user.check_password(password):
         response.data = {
-            'msg': 'Incorrect email or password'
+            'msg': ['Incorrect email or password']
         }
         response.status_code = status.HTTP_400_BAD_REQUEST
         return response
@@ -122,129 +114,293 @@ def login(request):
         RefreshToken.objects.create(user=user, token=refresh_token)
 
     except RefreshToken.DoesNotExist:
+
         # assign a new refresh token to the current user
         RefreshToken.objects.create(user=user, token=refresh_token)
 
+    # create refreshtoken cookie
     response.set_cookie(
-        key='refreshtoken',
-        value=refresh_token,
-        httponly=True,
-        domain='localhost',
-        samesite='strict',
+        key='refreshtoken',  # cookie name
+        value=refresh_token,  # cookie value
+        httponly=True,  # to help prevent XSS
+        domain='localhost',  # change in production
+        samesite='strict',  # to help prevent XSS
         # secure=True # for https connections only
     )
 
+    # return the access token in the reponse
     response.data = {
-        'access_token': access_token
+        'accessToken': access_token,
+        'msg': ['Login successful!']
     }
     response.status_code = status.HTTP_200_OK
     return response
 
 
 @api_view(['GET'])
-@permission_classes([AllowAny])
+@permission_classes([IsAuthenticated])
 @authentication_classes([SafeJWTAuthentication])
-@csrf_protect
-def get_auth_user(request):
+@ensure_csrf_cookie
+def auth(request):
+    '''Return the user data for the user id contained in a valid access token'''
+    # create response object
     response = Response()
-    access_token = request.headers.get('Authorization').split(' ')[1]
 
+    # Get the access token from headers
+    access_token = request.headers.get('Authorization')
+
+    # if the access token doesn't exist, return 401
+    if access_token is None:
+        response.data = {'msg': ['No access token']}
+        response.status_code = status.HTTP_401_UNAUTHORIZED
+        return response
+
+    # remove 'token' prefix
+    access_token = access_token.split(' ')[1]
+
+    # decode access token payload
     payload = jwt.decode(
         access_token,
         settings.SECRET_KEY,
         algorithms=['HS256']
     )
 
+    # get the user with the same id as the token's user_id
     user = User.objects.filter(id=payload.get('user_id')).first()
-    
+
     if user is None:
-        response.data = {'msg':'User not found'}
+        response.data = {'msg': ['User not found']}
         response.status_code = status.HTTP_401_UNAUTHORIZED
         return response
-    
+
     if not user.is_active:
-        response.data = {'msg':'User not active'}
+        response.data = {'msg': ['User not active']}
         response.status_code = status.HTTP_401_UNAUTHORIZED
         return response
 
+    # serialize the User object and attach to response data
     serialized_user = UserDetailSerializer(instance=user)
-    response.data = {'user':serialized_user.data}
-
+    response.data = {'user': serialized_user.data}
     return response
 
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
 @ensure_csrf_cookie
-def refresh_token(request):
+def extend_token(request):
+    '''Return new access token if request's refresh token cookie is valid'''
+    # create response object
     response = Response()
+
+    # get the refresh token cookie
     refresh_token = request.COOKIES.get('refreshtoken')
 
+    # if the refresh token doesn't exist
+    # return 401 - Unauthorized
     if refresh_token is None:
         response.data = {
-            'msg': 'Authentication credentials were not provided'
+            'msg': ['Authentication credentials were not provided']
         }
+
         response.status_code = status.HTTP_401_UNAUTHORIZED
         return response
 
+    # if the refresh_token doesn't exist in the database,
+    # return 401 - Unauthorized
+    user_refresh_token = RefreshToken.objects.filter(
+        token=refresh_token).first()
+
+    if user_refresh_token is None:
+        response.data = {
+            'msg': ['Authentication credentials were not provided']
+        }
+
+        response.status_code = status.HTTP_401_UNAUTHORIZED
+        return response
+
+    # if a token is found,
+    # try to decode it
     try:
         payload = jwt.decode(
             refresh_token,
             settings.REFRESH_TOKEN_SECRET,
-            algorithms=["HS256"]
+            algorithms=['HS256']
         )
 
-
+    # if the token is expired, delete it from the database
+    # return 401 Unauthorized
     except jwt.ExpiredSignatureError:
+        # find the expired token in the database
+        expired_token = RefreshToken.objects.filter(
+            token=refresh_token).first()
 
-        expired_token = RefreshToken.objects.get(token=refresh_token)
-        
         # delete the old token
         expired_token.delete()
 
         response.data = {
-            'msg': 'Expired refresh token, please log in again.'
+            'msg': ['Expired refresh token, please log in again.']
         }
         response.status_code = status.HTTP_401_UNAUTHORIZED
+
+        # remove exipred refresh token cookie
         response.delete_cookie('refreshtoken')
         return response
 
+    # if the token is valid,
+    # get the user asscoiated with token
     user = User.objects.filter(id=payload.get('user_id')).first()
     if user is None:
         response.data = {
-            'msg': 'User not found'
+            'msg': ['User not found']
         }
         response.status_code = status.HTTP_401_UNAUTHORIZED
         return response
 
     if not user.is_active:
         response.data = {
-            'msg': 'User is inactive'
+            'msg': ['User is inactive']
         }
         response.status_code = status.HTTP_401_UNAUTHORIZED
         return response
 
-    new_access_token = generate_access_token(user)
-    return Response(data={'accessToken': new_access_token})
+    # generate new refresh token for the user
+    new_refresh_token = generate_refresh_token(user)
 
-@api_view(['GET'])
+    # Delete old refresh token
+    # if the user has a refresh token in the db,
+    # get the old token
+    old_refresh_token = RefreshToken.objects.filter(user=user.id).first()
+    if old_refresh_token:
+        # delete the old token
+        old_refresh_token.delete()
+
+    # assign a new refresh token to the current user
+    RefreshToken.objects.create(user=user, token=new_refresh_token)
+
+    # change refreshtoken cookie
+    response.set_cookie(
+        key='refreshtoken',  # cookie name
+        value=new_refresh_token,  # cookie value
+        httponly=True,  # to help prevent XSS attacks
+        samesite='strict',  # to help prevent XSS attacks
+        domain='localhost',  # change in production
+        # secure=True # for https connections only
+    )
+
+    # generate new access token for the user
+    new_access_token = generate_access_token(user)
+
+    response.data = {'accessToken': new_access_token}
+    return response
+
+
+@api_view(['GET', 'PUT'])
 @permission_classes([IsAuthenticated])
-def logout(request):
+@authentication_classes([SafeJWTAuthentication])
+@ensure_csrf_cookie
+def user_detail(request, pk):
+    '''
+    GET: Get the user data associated with the pk
+    POST: Update the user data associated with the pk
+    '''
+    # Create response object
     response = Response()
 
-    # get the current user's refresh token
-    refresh_token = RefreshToken.objects.filter(user=request.user.id).first()
-    
-    if refresh_token is None:
-        response.data = {'msg':'No token found.'}
+    # find the user associated with
+    # the pk passed in the url
+    user = User.objects.filter(pk=pk).first()
+
+    if user is None:
+        response.data = {
+            'msg': ['User not found']
+        }
+        response.status_code = status.HTTP_401_UNAUTHORIZED
+
+        return response
+
+    if not user.is_active:
+        response.data = {
+            'msg': ['User is inactive']
+        }
+        response.status_code = status.HTTP_401_UNAUTHORIZED
+        return response
+
+    # Get the access token from request headers
+    access_token = request.headers.get('Authorization').split(' ')[1]
+
+    # decode token payload
+    payload = jwt.decode(
+        access_token,
+        settings.SECRET_KEY,
+        algorithms=['HS256']
+    )
+
+    # reject the request if the requested
+    # pk is not the owner of the token
+    if pk != payload.get('user_id'):
+        response.data = {
+            'msg': ['Not authorized']
+        }
+        response.status_code = status.HTTP_401_UNAUTHORIZED
+        return response
+
+    # GET = view user details
+    if request.method == 'GET':
+        serialized_user = UserDetailSerializer(instance=user)
+
+        response.data = {'user': serialized_user.data}
+        response.status_code = status.HTTP_200_OK
+
+        return response
+
+    # PUT = update user info
+    if request.method == 'PUT':
+
+        # partial = True will allow for User fields to be missing
+        serialized_user = UserCreateSerializer(data=request.data, partial=True)
+
+        if serialized_user.is_valid():
+            # combine updated with the current user instance and serialize
+            serialized_user.update(
+                instance=user, validated_data=serialized_user.validated_data)
+            response.data = {'msg': ['Account info updated successffully']}
+            response.status_code = status.HTTP_202_ACCEPTED
+            return response
+
+        response.data = {'msg': serialized_user.errors}
         response.status_code = status.HTTP_400_BAD_REQUEST
         return response
 
-    # if the token exists, delete it
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+@ensure_csrf_cookie
+def logout(request):
+    '''Delete refresh token from the database
+    and delete the refreshtoken cookie'''
+    # Create response object
+    response = Response()
+
+    # id of logged in user from request data
+    logged_in_user = request.data.get('user')
+
+    # find the logged in user's refresh token
+    refresh_token = RefreshToken.objects.filter(
+        user=logged_in_user).first()
+
+    if refresh_token is None:
+        response.data = {'msg': ['Not logged in']}
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return response
+
+    # if the token is found, delete it
     refresh_token.delete()
 
-    # remove the httponly cookie
+    # delete the refresh cookie
     response.delete_cookie('refreshtoken')
-    
-    response.data = {'msg':'Logout successful.'}
+
+    response.data = {
+        'msg': ['Logout successful. See you next time!']
+    }
+
     return response

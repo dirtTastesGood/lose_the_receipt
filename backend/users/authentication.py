@@ -32,15 +32,18 @@ class SafeJWTAuthentication(BaseAuthentication):
             payload = jwt.decode(
                 access_token, settings.SECRET_KEY, algorithms=['HS256'])
 
+        # if token is expired
         except jwt.ExpiredSignatureError:
             raise exceptions.AuthenticationFailed(
                 detail={
-                    'msg': 'access_token_expired',
+                    'msg': ['Access token expired'],
                 }
             )
+        # if token doesn't exist
         except IndexError:
             raise exceptions.AuthenticationFailed('Token prefix missing')
 
+        # get the user associated with the token
         user = User.objects.filter(id=payload['user_id']).first()
         if user is None:
             raise exceptions.AuthenticationFailed('User not found')
@@ -48,7 +51,10 @@ class SafeJWTAuthentication(BaseAuthentication):
         if not user.is_active:
             raise exceptions.AuthenticationFailed('user is inactive')
 
+        # check CSRF Cookie
         self.enforce_csrf(request)
+
+        # return the authenticated user object
         return (user, None)
 
     def enforce_csrf(self, request):
@@ -59,7 +65,9 @@ class SafeJWTAuthentication(BaseAuthentication):
         # populates request.META['CSRF_COOKIE'], which is used in process_view()
         check.process_request(request)
         reason = check.process_view(request, None, (), {})
-        print(reason)
         if reason:
             # CSRF failed, bail with explicit error message
             raise exceptions.PermissionDenied('CSRF Failed: %s' % reason)
+
+# Thanks to Ahmed Atalla for this code
+# https://dev.to/a_atalla/django-rest-framework-custom-jwt-authentication-5n5
