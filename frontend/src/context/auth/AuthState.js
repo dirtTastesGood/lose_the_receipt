@@ -19,8 +19,6 @@ import {
   CLEAR_ALERTS,
 } from '../types'; // action types to dispatch to reducer
 
-const BASE_URL = 'http://localhost:8000/api/v1/users';
-
 const AuthState = props => {
   const initialState = {
     accessToken: null, // logged in user's current access token
@@ -40,6 +38,9 @@ const AuthState = props => {
   // set 'Authorization' header in Axios
   setAccessToken(accessToken);
 
+  // get the base url from axios
+  const BASE_URL = axios.defaults.baseURL + 'users/';
+
   // request a new access token
   const requestAccessToken = async () => {
     try {
@@ -47,7 +48,7 @@ const AuthState = props => {
         'Content-Type': 'application/json',
         withCredentials: true,
       };
-      const response = await axios.get(BASE_URL + '/token/', config);
+      const response = await axios.get(BASE_URL + 'token/', config);
 
       // Dispatch accessToken to state
       dispatch({
@@ -80,7 +81,7 @@ const AuthState = props => {
 
     try {
       // POST to api register view
-      const response = await axios.post(BASE_URL + '/', formData, config);
+      const response = await axios.post(BASE_URL, formData, config);
 
       // dispatch register success to user and pass the user's token as payload
       dispatch({
@@ -114,7 +115,7 @@ const AuthState = props => {
 
     try {
       // POST to users/login/
-      const response = await axios.post(BASE_URL + '/login/', formData, config);
+      const response = await axios.post(BASE_URL + 'login/', formData, config);
 
       dispatch({
         type: LOGIN_SUCCESS,
@@ -145,7 +146,7 @@ const AuthState = props => {
     };
 
     try {
-      const response = await axios.get(BASE_URL + '/auth/');
+      const response = await axios.get(BASE_URL + 'auth/', headers);
 
       dispatch({
         // payload is the user object
@@ -173,9 +174,13 @@ const AuthState = props => {
     };
 
     try {
-      const response = await axios.post(BASE_URL + '/logout/', {
-        user: state.user.id,
-      });
+      const response = await axios.post(
+        BASE_URL + 'logout/',
+        {
+          user: state.user.id,
+        },
+        headers
+      );
 
       dispatch({
         type: LOGOUT,

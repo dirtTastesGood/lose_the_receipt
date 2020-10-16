@@ -8,12 +8,15 @@ import './index.css';
 import App from './components/App';
 import AuthState from './context/auth/AuthState';
 import AlertState from './context/alerts/AlertState';
+import ApplianceState from './context/appliances/ApplianceState';
 
 ReactDOM.render(
   <React.StrictMode>
     <AuthState>
       <AlertState>
-        <App />
+        <ApplianceState>
+          <App />
+        </ApplianceState>
       </AlertState>
     </AuthState>
   </React.StrictMode>,

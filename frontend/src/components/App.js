@@ -27,7 +27,7 @@ const App = () => {
   const { setAlert } = alertContext;
 
   useEffect(() => {
-    const BASE_URL = 'http://localhost:8000/api/v1/users';
+    const BASE_URL = 'http://localhost:8000/api/v1/';
     setAxiosBaseURL(BASE_URL);
 
     // if refresh token exists, request new access token
