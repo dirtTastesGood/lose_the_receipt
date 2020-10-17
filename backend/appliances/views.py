@@ -22,8 +22,6 @@ from .models import Appliance
 @ensure_csrf_cookie
 def appliance_list(request):
 
-    print(request.user.is_authenticated)
-
     appliances = Appliance.objects.all()
 
     return Response(data=appliances)

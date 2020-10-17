@@ -54,8 +54,6 @@ class SafeJWTAuthentication(BaseAuthentication):
         # check CSRF Cookie
         self.enforce_csrf(request)
 
-        print(request.headers)
-
         # return the authenticated user object
         return (user, None)
 
