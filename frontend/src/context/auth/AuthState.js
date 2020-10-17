@@ -38,8 +38,7 @@ const AuthState = props => {
   // set 'Authorization' header in Axios
   setAccessToken(accessToken);
 
-  // get the base url from axios
-  const BASE_URL = axios.defaults.baseURL + 'users/';
+  const BASE_URL = 'http://localhost:8000/api/v1/';
 
   // request a new access token
   const requestAccessToken = async () => {
@@ -48,7 +47,7 @@ const AuthState = props => {
         'Content-Type': 'application/json',
         withCredentials: true,
       };
-      const response = await axios.get(BASE_URL + 'token/', config);
+      const response = await axios.get(BASE_URL + 'users/token/', config);
 
       // Dispatch accessToken to state
       dispatch({
@@ -81,7 +80,7 @@ const AuthState = props => {
 
     try {
       // POST to api register view
-      const response = await axios.post(BASE_URL, formData, config);
+      const response = await axios.post(BASE_URL + 'users/', formData, config);
 
       // dispatch register success to user and pass the user's token as payload
       dispatch({
@@ -115,7 +114,11 @@ const AuthState = props => {
 
     try {
       // POST to users/login/
-      const response = await axios.post(BASE_URL + 'login/', formData, config);
+      const response = await axios.post(
+        BASE_URL + 'users/login/',
+        formData,
+        config
+      );
 
       dispatch({
         type: LOGIN_SUCCESS,
@@ -146,7 +149,7 @@ const AuthState = props => {
     };
 
     try {
-      const response = await axios.get(BASE_URL + 'auth/', headers);
+      const response = await axios.get(BASE_URL + 'users/auth/', headers);
 
       dispatch({
         // payload is the user object
@@ -175,7 +178,7 @@ const AuthState = props => {
 
     try {
       const response = await axios.post(
-        BASE_URL + 'logout/',
+        BASE_URL + 'users/logout/',
         {
           user: state.user.id,
         },

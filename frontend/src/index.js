@@ -1,10 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import '../node_modules/bootstrap/dist/css/bootstrap.css';
-import $ from 'jquery';
-import Popper from 'popper.js';
-import '../node_modules/bootstrap/dist/js/bootstrap';
-import './index.css';
+// import $ from 'jquery';
+// import Popper from 'popper.js';
+// import '../node_modules/bootstrap/dist/js/bootstrap';
+import './index.scss';
 import App from './components/App';
 import AuthState from './context/auth/AuthState';
 import AlertState from './context/alerts/AlertState';

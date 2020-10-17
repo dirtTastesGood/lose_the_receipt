@@ -1,9 +1,7 @@
 import React, { useContext, useEffect } from 'react';
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap/dist/js/bootstrap.bundle';
 import './App.css';
 
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import setAxiosBaseURL from '../utils/setAxiosBaseURL';
 
@@ -14,12 +12,14 @@ import Register from './auth/Register';
 import Login from './auth/Login';
 import PrivateRoute from './auth/PrivateRoute';
 
+import Appliances from './appliances/Appliances';
+
 import Alerts from './layout/Alerts';
 import Navbar from './layout/Navbar';
 import Home from './pages/Home';
 import UserDetail from './pages/UserDetail';
 
-const App = () => {
+const App = props => {
   const authContext = useContext(AuthContext);
   const alertContext = useContext(AlertContext);
 
@@ -33,17 +33,20 @@ const App = () => {
     // if refresh token exists, request new access token
     requestAccessToken();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // empty [] ensures this only runs once when App.js is mounted
+  }, [props.history]); // empty [] ensures this only runs once when App.js is mounted
 
   return (
     <div className='App'>
       <Router>
         <Navbar />
         <Alerts />
-        <Route exact path='/' component={Home} />
-        <Route exact path='/register' component={Register} />
-        <Route exact path='/login' component={Login} />
-        <PrivateRoute path='/account' component={UserDetail} user={user} />
+        <Switch>
+          <Route exact path='/' component={Home} />
+          <Route exact path='/register' component={Register} />
+          <Route exact path='/login' component={Login} />
+          <PrivateRoute path='/account' component={UserDetail} user={user} />
+          <PrivateRoute path='/appliances' component={Appliances} user={user} />
+        </Switch>
       </Router>
     </div>
   );

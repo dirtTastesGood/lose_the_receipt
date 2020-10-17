@@ -21,16 +21,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'rest_framework',  # add
-    'corsheaders',  # add
+    'rest_framework',
+    'corsheaders',
 
     'appliances',
     'accessories',
-    'users',  # add
+    'users',
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',  # add
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -91,10 +91,14 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# add everything from here to the bottom
-
 # Use custom user model for authentication
 AUTH_USER_MODEL = 'users.User'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'users.authentication.SafeJWTAuthentication'
+    ]
+}
 
 # Secret for encoding User refresh tokens
 REFRESH_TOKEN_SECRET = decouple.config('DJANGO_REFRESH_TOKEN_SECRET')

@@ -1,5 +1,6 @@
 import jwt
 
+from django.contrib.auth import authenticate, login, logout
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect
@@ -374,6 +375,7 @@ def user_detail(request, pk):
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
+@authentication_classes([])
 @ensure_csrf_cookie
 def logout(request):
     '''Delete refresh token from the database

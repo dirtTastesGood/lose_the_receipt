@@ -1,9 +1,11 @@
+import React, { useReducer, useContext } from 'react';
+
 import axios from 'axios';
-import React, { useReducer } from 'react';
 
 import ApplianceContext from './applianceContext';
 import applianceReducer from './applianceReducer';
 
+import AuthContext from '../auth/authContext';
 // import {} from '../types';
 
 const ApplianceState = props => {
@@ -14,6 +16,8 @@ const ApplianceState = props => {
     error: null,
   };
 
+  const authContext = useContext(AuthContext);
+  const { accessToken } = authContext;
   const [state, dispatch] = useReducer(applianceReducer, initialState);
 
   const config = {
@@ -21,11 +25,17 @@ const ApplianceState = props => {
     withCredentials: true,
   };
 
-  const BASE_URL = axios.defaults.baseURL;
+  const BASE_URL = 'http://localhost:8000/api/v1/';
 
   // get all appliances
   const getAppliances = async () => {
-    const response = await axios.get(BASE_URL + '');
+    try {
+      const response = await axios.get(BASE_URL + 'appliances/', config);
+
+      console.log(response.data);
+    } catch (error) {
+      console.log(error.response.data);
+    }
   };
 
   return (
@@ -33,6 +43,7 @@ const ApplianceState = props => {
       value={{
         // provide appliances to app
         appliances: state,
+        getAppliances,
       }}
     >
       {props.children}
