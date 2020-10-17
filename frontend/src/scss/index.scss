@@ -1,0 +1,13 @@
+@import './variables.scss';
+
+$theme-colors: (
+  'primary': $color1,
+  'danger': $color6,
+  'info': darken($color5, 25%)
+);
+
+@import '~bootstrap/scss/bootstrap';
+
+body {
+    background-color: lighten($color1, 25%);
+}

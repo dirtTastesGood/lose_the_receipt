@@ -1,6 +1,6 @@
 import React, { Fragment, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-
+import './scss/navbar.scss';
 import AuthContext from '../../context/auth/authContext';
 
 const Navbar = () => {
@@ -36,7 +36,7 @@ const Navbar = () => {
 
   const authLinks = (
     <Fragment>
-      <li className='nav-item'>
+      <li className='nav-item m-0 p-0'>
         <Link className='nav-link' to='/account'>
           <h4 className='m-0'>Account</h4>
         </Link>
@@ -52,7 +52,7 @@ const Navbar = () => {
   return (
     <nav className='navbar navbar-expand-lg navbar-dark bg-info'>
       <Link className='navbar-brand' to='/'>
-        <h1>JWT Auth</h1>
+        <h1>Lose the Receipt</h1>
       </Link>
       <button
         className='navbar-toggler'
@@ -66,7 +66,7 @@ const Navbar = () => {
         <span className='navbar-toggler-icon'></span>
       </button>
       <div className='collapse navbar-collapse' id='navbarNav'>
-        <ul className='navbar-nav ml-auto mr-4'>
+        <ul className='navbar-nav text-center'>
           {isAuthenticated ? authLinks : guestLinks}
         </ul>
       </div>
