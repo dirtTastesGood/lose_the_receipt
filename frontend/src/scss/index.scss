@@ -3,11 +3,20 @@
 $theme-colors: (
   'primary': $color1,
   'danger': $color6,
-  'info': darken($color5, 25%)
+  'info': darken($color5, 25%),
 );
 
 @import '~bootstrap/scss/bootstrap';
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&family=Raleway&display=swap');
 
 body {
-    background-color: lighten($color1, 25%);
+  background-color: lighten($color1, 25%);
+}
+* {
+  font-family: 'Quicksand', 'sans-serif';
+  font-weight: bolder;
+}
+
+.font2 {
+  font-family: 'Raleway', 'sans-serif';
 }
