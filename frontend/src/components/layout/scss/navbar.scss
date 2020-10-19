@@ -1,36 +1,40 @@
-@import '../../../scss/variables.scss';
+@import "../../../scss/variables.scss";
 
-@media screen and (min-width:992px){
-nav {
-    padding:0;
-}
-    .navbar {
-        border-bottom: 15px solid darken($color5, 20%);
-        height: 15vh;
-        margin:0;
-        padding:0;
-
-        .navbar-nav {
-            margin:0;
-            margin-left:auto;
-            margin-right: 5vw;
-            height: 15vh;
-            display: flex;
-            align-items: flex-end;
-        }
-        .nav-item {
-            background-color: darken($color5, 30%);
-            display:flex;
-            align-items: flex-end;
-            min-height:50%;
-            margin: 8px 5px;
-            padding: 15px 5px 0px 5px;
-            transition: all .3s ease-in-out;
-    
-            &:hover {
-                background-color: darken($color5, 50%);
-                min-height: 100%;
-            }
-        }
+@media screen and (min-width: 992px) {
+  nav {
+    padding: 0;
+    svg {
+      height: 100px;
+      width: auto;
+      margin: 0 1vw;
     }
+  }
+
+  .navbar {
+    border-bottom: 15px solid darken($color5, 20%);
+    margin: 0;
+    padding: 0;
+
+    .navbar-nav {
+      margin-left: auto;
+      margin-right: 5vw;
+      display: flex;
+      height: 26vh;
+      align-items: flex-end;
+    }
+    .nav-item {
+      align-items: flex-end;
+      background-color: darken($color5, 30%);
+      display: flex;
+      padding: 0 10px;
+      margin: 0 5px;
+      min-height: 50%;
+      transition: all 0.3s ease-in-out;
+
+      &:hover {
+        background-color: darken($color5, 50%);
+        min-height: 100%;
+      }
+    }
+  }
 }
