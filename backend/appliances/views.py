@@ -25,3 +25,11 @@ def appliance_list(request):
     appliances = Appliance.objects.all()
 
     return Response(data=appliances)
+
+@api_view(['POST'])
+@authentication_classes([SafeJWTAuthentication])
+@permission_classes([IsAuthenticated])
+@ensure_csrf_cookie
+def add_appliance(request):
+    
+    return Response(data="Yo Yo!")

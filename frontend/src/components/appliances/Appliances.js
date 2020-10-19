@@ -4,6 +4,7 @@ import ApplianceContext from '../../context/appliances/applianceContext';
 import AuthContext from '../../context/auth/authContext';
 
 import Spinner from '../layout/Spinner';
+import ApplianceForm from './ApplianceForm';
 const Appliances = () => {
   const applianceContext = useContext(ApplianceContext);
   const authContext = useContext(AuthContext);
@@ -21,6 +22,7 @@ const Appliances = () => {
         <Fragment>
           <h1>Appliances</h1>
           <p>{user && user.email}</p>
+          <ApplianceForm/>
         </Fragment>
       ) : (
         <Spinner />

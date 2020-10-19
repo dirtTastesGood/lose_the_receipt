@@ -94,11 +94,13 @@ STATIC_URL = '/static/'
 # Use custom user model for authentication
 AUTH_USER_MODEL = 'users.User'
 
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'users.authentication.SafeJWTAuthentication'
+        'users.authentication.SafeJWTAuthentication',
     ]
 }
+
 
 # Secret for encoding User refresh tokens
 REFRESH_TOKEN_SECRET = decouple.config('DJANGO_REFRESH_TOKEN_SECRET')
@@ -135,5 +137,6 @@ CORS_ALLOW_HEADERS = [
     'content-type',
     'refresh_token',
     'x-csrftoken',
+    'x-xsrftoken',
     'withcredentials'
 ]
