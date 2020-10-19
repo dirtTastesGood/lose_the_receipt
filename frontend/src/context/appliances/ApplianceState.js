@@ -6,7 +6,12 @@ import ApplianceContext from './applianceContext';
 import applianceReducer from './applianceReducer';
 
 import AuthContext from '../auth/authContext';
-// import {} from '../types';
+import {
+  GET_APPLIANCES_SUCCESS,
+  GET_APPLIANCES_FAIL,
+  CREATE_APPLIANCE_SUCCESS,
+  CREATE_APPLIANCE_FAIL,
+} from '../types';
 
 const ApplianceState = props => {
   const initialState = {
@@ -32,6 +37,17 @@ const ApplianceState = props => {
     try {
       const response = await axios.get(BASE_URL + 'appliances/', config);
 
+      console.log(response.data);
+    } catch (error) {
+      console.log(error.response.data);
+    }
+  };
+
+  // Create new appliance
+  const addAppliance = async (formData) => {
+
+    try {
+      const response = await axios.post('Yo!')
       console.log(response.data);
     } catch (error) {
       console.log(error.response.data);

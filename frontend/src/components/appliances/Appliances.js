@@ -8,7 +8,7 @@ const Appliances = () => {
   const applianceContext = useContext(ApplianceContext);
   const authContext = useContext(AuthContext);
 
-  const { appliances, getAppliances } = applianceContext;
+  const { appliances, createAppliance, getAppliances } = applianceContext;
   const { user, loading } = authContext;
 
   useEffect(() => {
