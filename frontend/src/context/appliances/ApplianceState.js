@@ -35,21 +35,25 @@ const ApplianceState = props => {
 
   // get all appliances
   const getAppliances = async () => {
+    console.log('get appliances called');
     try {
-      const response = await axios.get(BASE_URL, config);
+      const response = await axios.get(BASE_URL + '/', config);
 
-      console.log(response.data);
+      dispatch({
+        type: GET_APPLIANCES_SUCCESS,
+        payload: response.data,
+      });
     } catch (error) {
       console.log(error.response.data);
     }
   };
 
   // Create new appliance
-  const addAppliance = async (formData) => {
+  const addAppliance = async formData => {
     try {
-      console.log('config:',config);
+      console.log('config:', config);
       console.log(axios.defaults.withCredentials);
-      const response = await axios.post(BASE_URL + '/add/', {}, config)
+      const response = await axios.post(BASE_URL + '/add/', {}, config);
       console.log(response.data);
     } catch (error) {
       console.log(error.response.data);

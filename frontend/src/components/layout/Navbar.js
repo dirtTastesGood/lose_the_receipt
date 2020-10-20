@@ -39,17 +39,17 @@ const Navbar = () => {
     <Fragment>
       <li className='nav-item'>
         <Link className='nav-link' to='/appliances'>
-          <h4 className='mr-2'>Appliances</h4>
+          <h4>Appliances</h4>
         </Link>
       </li>
       <li className='nav-item'>
         <Link className='nav-link' to='/account'>
-          <h4 className=''>Account</h4>
+          <h4>Account</h4>
         </Link>
       </li>
       <li className='nav-item'>
         <Link className='nav-link' onClick={onLogout}>
-          <h4 className=''>Logout</h4>
+          <h4>Logout</h4>
         </Link>
       </li>
     </Fragment>

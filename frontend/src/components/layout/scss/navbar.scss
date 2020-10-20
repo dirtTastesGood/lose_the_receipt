@@ -1,5 +1,14 @@
 @import '../../../scss/variables.scss';
 
+nav {
+  padding: 0;
+  svg {
+    height: 10vh;
+    width: auto;
+    margin: 0 1vw;
+  }
+}
+
 @media screen and (min-width: 992px) {
   nav {
     padding: 0;
@@ -18,10 +27,8 @@
   .navbar-nav {
     margin-left: auto;
     margin-right: 5vw;
-    // display: flex;
     height: 15vh;
     align-items: flex-end;
-    justify-content: space-between;
 
     .nav-item {
       align-items: flex-end;
@@ -35,6 +42,10 @@
       &:hover {
         background-color: darken($color5, 50%);
         min-height: 100%;
+      }
+
+      .nav-link {
+        padding: 0;
       }
     }
   }

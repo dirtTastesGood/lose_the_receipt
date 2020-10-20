@@ -12,7 +12,7 @@ export default (state, action) => {
     case GET_APPLIANCES_FAIL:
       return {
         ...state,
-        appliances: []
-      }
+        appliances: [],
+      };
   }
 };
