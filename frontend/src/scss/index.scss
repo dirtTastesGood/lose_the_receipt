@@ -2,7 +2,9 @@
 
 $theme-colors: (
   'primary': $color1,
+  'secondary':$color2,
   'danger': $color6,
+  'warning': darken($color4, 10%),
   'info': darken($color5, 25%),
 );
 

@@ -18,13 +18,13 @@ const Appliances = () => {
   }, [user, accessToken]);
 
   return (
-    <div className='container my-5' id='appliance-list'>
+    <div className='container my-5 p-4' id='appliance-list'>
       {!loading ? (
         <Fragment>
           <h1 className='text-center text-lg-left'>
-            My Appliances{' '}
+            My Appliances
             <button
-              className='btn btn-sm bg-warning'
+              className='btn btn-sm bg-warning mx-3'
               data-toggle='tooltip'
               data-placement='right'
               title='add appliance'
