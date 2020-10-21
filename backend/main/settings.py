@@ -1,5 +1,7 @@
 from pathlib import Path
-import decouple   # add
+import decouple
+
+import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -140,3 +142,4 @@ CORS_ALLOW_HEADERS = [
     'x-xsrftoken',
     'withcredentials'
 ]
+

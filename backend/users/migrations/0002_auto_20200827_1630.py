@@ -17,10 +17,7 @@ class Migration(migrations.Migration):
                 ('objects', users.models.UserManager()),
             ],
         ),
-        migrations.RemoveField(
-            model_name='user',
-            name='username',
-        ),
+
         migrations.AlterField(
             model_name='user',
             name='email',

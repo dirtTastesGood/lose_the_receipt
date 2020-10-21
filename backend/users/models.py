@@ -39,6 +39,7 @@ class UserManager(BaseUserManager):
 
 class User(AbstractUser):
     username = None
+    username = models.CharField(_('username'), max_length=20, unique=True, error_messages={'unique':'This username has already been registered.'})
     email = models.EmailField(_('email address'), unique=True, error_messages={'unique':"This email has already been registered."})
 
     USERNAME_FIELD = 'email'
@@ -47,7 +48,7 @@ class User(AbstractUser):
     objects = UserManager()
 
     def __str__(self):
-        return self.email
+        return f'{self.username} - {self.email}'
 
 class RefreshToken(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
