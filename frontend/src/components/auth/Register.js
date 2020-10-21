@@ -23,11 +23,12 @@ const Register = props => {
   // setup component-level state to hold form data
   const [userForm, setUser] = useState({
     email: '',
+    username: '',
     password: '',
     password2: '',
   });
 
-  const { email, password, password2 } = userForm;
+  const { email, username, password, password2 } = userForm;
 
   // add new form changes to state
   const onChange = e =>
@@ -47,6 +48,7 @@ const Register = props => {
       // if all info is valid, pass the form data to register() from AuthState
       register({
         email,
+        username,
         password,
         password2,
       });
@@ -66,6 +68,16 @@ const Register = props => {
                 type='text'
                 name='email'
                 id='email'
+                onChange={onChange}
+              />
+            </div>
+            <div className='form-group'>
+              <label htmlFor='username'>Username</label>
+              <input
+                className='form-control'
+                type='text'
+                name='username'
+                id='username'
                 onChange={onChange}
               />
             </div>
