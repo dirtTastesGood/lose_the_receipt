@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useState } from "react";
+import React, { Fragment, useContext, useReducer } from "react";
 
 import ApplianceItem from "./ApplianceItem";
 import ApplianceForm from "./ApplianceForm";
@@ -9,14 +9,8 @@ import ApplianceContext from "../../context/appliances/applianceContext";
 const ApplianceList = ({ appliances }) => {
   const applianceContext = useContext(ApplianceContext);
 
-  const { loading } = applianceContext;
+  const { loading, showForm, toggleForm } = applianceContext;
   
-  const [state,setState] = useState({
-    showForm: false
-  })
-
-  const toggleForm = () => setState({showForm:!state.showForm})
-
   return (
     <div className="container-fluid text-center">
       {loading ? (
@@ -27,8 +21,7 @@ const ApplianceList = ({ appliances }) => {
         <Fragment>
           <h1 className="text-center text-lg-left">
             <button
-              className="btn btn-sm bg-warning mx-3"
-              data-toggle="tooltip"
+              className="btn btn bg-warning mx-3"
               data-toggle="collapse"
               data-target="#form-collapse"
               data-placement="right"
@@ -36,24 +29,29 @@ const ApplianceList = ({ appliances }) => {
               onClick={toggleForm}
             >
               <span
-                className="text-bold"
+                className="font-weight-bold"
                 aria-label="add appliance"
                 alt="add appliance"
               >
-                {state.showForm ? "- close" : "+ new"}
+                {showForm ? "- close" : "+ new"}
               </span>
             </button>
           </h1>
 
           <div className="collapse py-5" id="form-collapse">
-            <ApplianceForm/>
+            <ApplianceForm toggleForm={toggleForm}/>
           </div>
+
+        <div className="container-fluid">
 
           <div className="row">
             {appliances.map((appliance, i) => (
-              <ApplianceItem appliance={appliance} key={i} />
+              <div className="col col-12 col-md-6 my-2">
+                <ApplianceItem appliance={appliance} key={i} />
+              </div>
             ))}
           </div>
+        </div>
         </Fragment>
       ) : (
         <Fragment>

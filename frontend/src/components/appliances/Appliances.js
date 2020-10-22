@@ -23,7 +23,7 @@ const Appliances = () => {
 
 
   return (
-    <div className='container my-5' id='appliance-list'>
+    <div className='container my-5 p-0 pb-3' id='appliance-list'>
       {!loading ? (
         <Fragment>
           <ApplianceList appliances={appliances}/>

@@ -11,6 +11,7 @@ import {
   GET_APPLIANCES_FAIL,
   CREATE_APPLIANCE_SUCCESS,
   CREATE_APPLIANCE_FAIL,
+  TOGGLE_APPLIANCE_FORM,
 } from '../types';
 
 const ApplianceState = props => {
@@ -19,7 +20,8 @@ const ApplianceState = props => {
     current: null,
     filtered: null,
     error: null,
-    loading: true
+    loading: true,
+    showForm:false,
   };
 
   const authContext = useContext(AuthContext);
@@ -31,6 +33,9 @@ const ApplianceState = props => {
   };
 
   const BASE_URL = 'http://localhost:8000/api/v1/appliances';
+
+  // toggle form
+  const toggleForm = () => dispatch({type:TOGGLE_APPLIANCE_FORM})
 
   // get all appliances
   const getAppliances = async () => {
@@ -62,6 +67,8 @@ const ApplianceState = props => {
         // provide appliances to app
         appliances: state.appliances,
         loading: state.loading,
+        showForm:state.showForm,
+        toggleForm,
         getAppliances,
         addAppliance,
       }}

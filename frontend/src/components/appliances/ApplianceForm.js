@@ -4,7 +4,7 @@ import ApplianceContext from "../../context/appliances/applianceContext";
 
 import "./scss/applianceForm.scss";
 
-const ApplianceForm = () => {
+const ApplianceForm = (props) => {
   const [appliance, setAppliance] = useState({
     brand: "",
     appliance_type: "",
@@ -21,6 +21,8 @@ const ApplianceForm = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
+
+    props.toggleForm();
 
     addAppliance(appliance);
 

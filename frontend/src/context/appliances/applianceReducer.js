@@ -1,4 +1,4 @@
-import { GET_APPLIANCES_SUCCESS, GET_APPLIANCES_FAIL } from '../types';
+import { GET_APPLIANCES_SUCCESS, GET_APPLIANCES_FAIL, TOGGLE_APPLIANCE_FORM } from '../types';
 
 export default (state, action) => {
   switch (action.type) {
@@ -16,5 +16,10 @@ export default (state, action) => {
         appliances: [],
         loading: false
       };
+    case TOGGLE_APPLIANCE_FORM:
+      return {
+        ...state,
+        showForm:!state.showForm
+      }
   }
 };
