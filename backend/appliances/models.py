@@ -7,9 +7,9 @@ class Appliance(models.Model):
     brand = models.CharField(max_length=50)
     appliance_type = models.CharField(max_length=50)
     model_number = models.CharField(max_length=50, blank=True)
-    serial_number = models.CharField(max_length=50, blank=True)
-    purchase_date = models.DateTimeField(blank=True, null=True)
-    last_serviced = models.DateTimeField(blank=True, null=True)
+    serial_number = models.CharField(max_length=50, unique=True, blank=True, error_messages={'unique':'An appliance already exists with that serial number'})
+    purchase_date = models.DateField(blank=True, null=True)
+    last_serviced = models.DateField(blank=True, null=True)
     # images
     # category = models.ManyToManyField(Category)
     manual_url = models.URLField(blank=True, null=True)

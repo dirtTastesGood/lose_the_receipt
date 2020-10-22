@@ -8,11 +8,13 @@ export default (state, action) => {
       return {
         ...state,
         appliances: action.payload.appliances,
+        loading: false
       };
     case GET_APPLIANCES_FAIL:
       return {
         ...state,
         appliances: [],
+        loading: false
       };
   }
 };
