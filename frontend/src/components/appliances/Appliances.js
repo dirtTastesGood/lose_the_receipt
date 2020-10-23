@@ -13,14 +13,17 @@ const Appliances = () => {
   const applianceContext = useContext(ApplianceContext);
   const authContext = useContext(AuthContext);
 
-  const { appliances, getAppliances } = applianceContext;
+  const { appliances, getAppliances, current } = applianceContext;
   const { user, loading, accessToken } = authContext;
 
-  useEffect(() => {
-    $('[data-toggle="tooltip"]').tooltip();
-    getAppliances();
-  }, [user, accessToken]);
+  useEffect(()=> {$('[data-toggle="tooltip"]').tooltip()}, [])
 
+  useEffect(() => {
+   
+    getAppliances();
+
+  }, [user, accessToken]);
+  
 
   return (
     <div className='container my-5 p-0 pb-3' id='appliance-list'>

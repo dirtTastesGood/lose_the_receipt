@@ -1,4 +1,4 @@
-import { GET_APPLIANCES_SUCCESS, GET_APPLIANCES_FAIL, TOGGLE_APPLIANCE_FORM } from '../types';
+import { GET_APPLIANCES_SUCCESS, GET_APPLIANCES_FAIL, TOGGLE_APPLIANCE_FORM, SET_CURRENT_APPLIANCE } from '../types';
 
 export default (state, action) => {
   switch (action.type) {
@@ -20,6 +20,11 @@ export default (state, action) => {
       return {
         ...state,
         showForm:!state.showForm
+      }
+    case SET_CURRENT_APPLIANCE:
+      return {
+        ...state,
+        current: action.payload
       }
   }
 };

@@ -12,6 +12,7 @@ import {
   CREATE_APPLIANCE_SUCCESS,
   CREATE_APPLIANCE_FAIL,
   TOGGLE_APPLIANCE_FORM,
+  SET_CURRENT_APPLIANCE,
 } from '../types';
 
 const ApplianceState = props => {
@@ -37,6 +38,9 @@ const ApplianceState = props => {
   // toggle form
   const toggleForm = () => dispatch({type:TOGGLE_APPLIANCE_FORM})
 
+  // set current appliance
+  const setCurrent = appliance => dispatch({type:SET_CURRENT_APPLIANCE, payload: appliance})
+
   // get all appliances
   const getAppliances = async () => {
     try {
@@ -46,6 +50,8 @@ const ApplianceState = props => {
         type: GET_APPLIANCES_SUCCESS,
         payload: response.data,
       });
+
+      return response
     } catch (error) {
       console.log(error.response.data);
     }
@@ -68,10 +74,13 @@ const ApplianceState = props => {
         // provide appliances to app
         appliances: state.appliances,
         loading: state.loading,
+        filtered: state.filtered,
         showForm:state.showForm,
+        current:state.current,
         toggleForm,
         getAppliances,
         addAppliance,
+        setCurrent,
       }}
     >
       {props.children}
