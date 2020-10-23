@@ -47,7 +47,7 @@ const ApplianceList = ({ appliances }) => {
           <div className="row">
             {appliances.map((appliance, i) => (
               <div className="col col-12 col-md-6 my-2">
-                <ApplianceItem appliance={appliance} key={i} />
+                <ApplianceItem appliance={appliance} index={i} key={i} />
               </div>
             ))}
           </div>

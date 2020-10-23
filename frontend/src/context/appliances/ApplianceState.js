@@ -56,6 +56,7 @@ const ApplianceState = props => {
     try {
       const response = await axios.post(BASE_URL + '/', formData, config);
       console.log(response.data);
+      getAppliances();
     } catch (error) {
       console.log(error.response.data);
     }

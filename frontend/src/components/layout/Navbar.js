@@ -22,13 +22,13 @@ const Navbar = () => {
 
   const guestLinks = (
     <Fragment>
-      <li className='nav-item'>
-        <Link className='nav-link' to='/register'>
+      <li className='nav-item mx-2'>
+        <Link className='nav-link' to='/register/'>
           <h4 className=''>Register</h4>
         </Link>
       </li>
-      <li className='nav-item'>
-        <Link className='nav-link' to='/login'>
+      <li className='nav-item mx-2'>
+        <Link className='nav-link' to='/login/'>
           <h4 className=''>Login</h4>
         </Link>
       </li>
@@ -37,17 +37,17 @@ const Navbar = () => {
 
   const authLinks = (
     <Fragment>
-      <li className='nav-item'>
-        <Link className='nav-link' to='/appliances'>
+      <li className='nav-item mx-2'>
+        <Link className='nav-link' to='/appliances/'>
           <h4>Appliances</h4>
         </Link>
       </li>
-      <li className='nav-item'>
-        <Link className='nav-link' to='/account'>
+      <li className='nav-item mx-2'>
+        <Link className='nav-link' to='/account/'>
           <h4>Account</h4>
         </Link>
       </li>
-      <li className='nav-item'>
+      <li className='nav-item mx-2'>
         <Link className='nav-link' onClick={onLogout}>
           <h4>Logout</h4>
         </Link>
@@ -72,7 +72,7 @@ const Navbar = () => {
         <span className='navbar-toggler-icon'></span>
       </button>
       <div className='collapse navbar-collapse' id='navbarNav'>
-        <ul className='navbar-nav text-center'>
+        <ul className='navbar-nav d-flex flex-row justify-content-end'>
           {isAuthenticated ? authLinks : guestLinks}
         </ul>
       </div>

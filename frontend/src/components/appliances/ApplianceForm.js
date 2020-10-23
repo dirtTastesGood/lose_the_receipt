@@ -14,7 +14,7 @@ const ApplianceForm = (props) => {
   });
 
   const applianceContext = useContext(ApplianceContext);
-  const { addAppliance } = applianceContext;
+  const { addAppliance, toggleForm } = applianceContext;
 
   const onChange = (e) =>
     setAppliance({ ...appliance, [e.target.name]: e.target.value });
@@ -22,7 +22,7 @@ const ApplianceForm = (props) => {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    props.toggleForm();
+    toggleForm();
 
     addAppliance(appliance);
 
