@@ -9,13 +9,13 @@ class Accessory(models.Model):
     name = models.CharField(max_length=50)
     description = models.TextField(max_length=1000)
     # category = models.ManyToManyField(Category)
-    model_number = models.CharField(max_length=50)
-    serial_number = models.CharField(max_length=50)
+    model_number = models.CharField(max_length=50, null=True, blank=True)
+    serial_number = models.CharField(max_length=50, null=True, blank=True)
     appliance = models.ForeignKey(Appliance, on_delete=models.CASCADE)
     rating = models.IntegerField(
         null=True,
         validators=[MinValueValidator(1), MaxValueValidator(5)]
     )
     purchase_date = models.DateTimeField(blank=True,null=True)
-    notes = models.TextField(max_length=10000)
+    notes = models.TextField(max_length=10000, blank=True, null=True)
 
