@@ -14,6 +14,7 @@ import {
   TOGGLE_APPLIANCE_FORM,
   SET_CURRENT_APPLIANCE,
 } from '../types';
+import { cleanData } from 'jquery';
 
 const ApplianceState = props => {
   const initialState = {
@@ -39,8 +40,7 @@ const ApplianceState = props => {
   const toggleForm = () => dispatch({type:TOGGLE_APPLIANCE_FORM})
 
   // set current appliance
-  const setCurrent = appliance => dispatch({type:SET_CURRENT_APPLIANCE, payload: appliance})
-
+  const setCurrent = appliance => dispatch({type: SET_CURRENT_APPLIANCE, payload: appliance})
   // get all appliances
   const getAppliances = async () => {
     try {

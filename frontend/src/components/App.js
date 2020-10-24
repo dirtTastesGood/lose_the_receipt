@@ -13,6 +13,7 @@ import Login from './auth/Login';
 import PrivateRoute from './auth/PrivateRoute';
 
 import Appliances from './appliances/Appliances';
+import ApplianceDetail from './appliances/ApplianceDetail';
 
 import Alerts from './layout/Alerts';
 import Navbar from './layout/Navbar';
@@ -45,7 +46,8 @@ const App = props => {
           <Route exact path='/register' component={Register} />
           <Route exact path='/login' component={Login} />
           <PrivateRoute path='/account' component={UserDetail} user={user} />
-          <PrivateRoute path='/appliances' component={Appliances} user={user} />
+          <PrivateRoute exact path='/appliances' component={Appliances} user={user} />
+          <PrivateRoute exact path='/appliances/detail' component={ApplianceDetail} user={user}/>
         </Switch>
       </Router>
     </div>

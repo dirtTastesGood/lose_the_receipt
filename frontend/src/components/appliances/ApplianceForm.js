@@ -26,14 +26,14 @@ const ApplianceForm = (props) => {
 
     addAppliance(appliance);
 
-    // setAppliance({
-    //   brand: "",
-    //   appliance_type: "",
-    //   model_number: "",
-    //   serial_number: "",
-    //   purchase_date: "",
-    //   // manualUrl:'',
-    // });
+    setAppliance({
+      brand: "",
+      appliance_type: "",
+      model_number: "",
+      serial_number: "",
+      purchase_date: "",
+      // manualUrl:'',
+    });
   };
   return (
     <div className="container">
