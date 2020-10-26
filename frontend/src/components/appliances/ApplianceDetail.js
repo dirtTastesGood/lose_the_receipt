@@ -1,22 +1,38 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 
 import ApplianceContext from "../../context/appliances/applianceContext";
 
-const ApplianceDetail = () => {
+import ApplianceDetailTabs from "./ApplianceDetailTabs";
+
+import {
+  GET_APPLIANCE_DETAIL_SUCCESS,
+  GET_APPLIANCE_DETAIL_FAIL,
+  SET_CURRENT_APPLIANCE,
+} from "../../context/types";
+
+const ApplianceDetail = (props) => {
   const applianceContext = useContext(ApplianceContext);
 
-  const { current } = applianceContext;
-  const {
-    brand,
-    appliance_type,
-    model_number,
-    serial_number,
-    purchase_date,
-  } = current;
+  const { getAppliance } = applianceContext;
 
-  return <div className='container-fluid'>
-    {brand} {appliance_type}
-  </div>;
+  // const {
+  //   brand,
+  //   appliance_type,
+  //   model_number,
+  //   serial_number,
+  //   purchase_date,
+  // } = current;
+
+  useEffect(() => {
+    const {slug} = props.match.params
+    getAppliance(slug)
+  }, [props.match.params, getAppliance]);
+
+  return (
+    <div className="container-fluid">
+      <ApplianceDetailTabs />
+    </div>
+  );
 };
 
 export default ApplianceDetail;

@@ -68,6 +68,17 @@ const ApplianceState = props => {
     }
   };
 
+
+  // appliance detail
+  const getAppliance = async slug => {
+    try {
+      const response = await axios.get(BASE_URL + `/${slug}`, config)
+      console.log(response.data)
+    } catch (error) {
+      console.log(error.response.data)
+    }
+  }
+
   return (
     <ApplianceContext.Provider
       value={{
@@ -79,7 +90,9 @@ const ApplianceState = props => {
         current:state.current,
         toggleForm,
         getAppliances,
+        getAppliance,
         addAppliance,
+        
         setCurrent,
       }}
     >

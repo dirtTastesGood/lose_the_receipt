@@ -27,6 +27,7 @@ const App = props => {
   const { requestAccessToken, user, messages } = authContext;
   const { setAlert } = alertContext;
 
+
   useEffect(() => {
     const BASE_URL = 'http://localhost:8000/api/v1/';
     setAxiosBaseURL(BASE_URL);
@@ -47,7 +48,8 @@ const App = props => {
           <Route exact path='/login' component={Login} />
           <PrivateRoute path='/account' component={UserDetail} user={user} />
           <PrivateRoute exact path='/appliances' component={Appliances} user={user} />
-          <PrivateRoute exact path='/appliances/detail' component={ApplianceDetail} user={user}/>
+          <PrivateRoute exact path='/appliances/:slug' component={ApplianceDetail} user={user}/>
+          {/* <Route path="*" component={NotFound}/> */}
         </Switch>
       </Router>
     </div>

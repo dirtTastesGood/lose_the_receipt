@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect
 from django.contrib.auth import login, logout, get_user_model
 
+from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import (
@@ -31,7 +32,8 @@ def appliance_list(request):
     if request.method == 'GET':
         appliances = Appliance.objects.filter(owner=request.user.id)
 
-        appliances_serializer = ApplianceDetailSerializer(appliances, many=True)
+        appliances_serializer = ApplianceDetailSerializer(
+            appliances, many=True)
 
         response.data = {'appliances': appliances_serializer.data}
         return response
@@ -44,22 +46,38 @@ def appliance_list(request):
 
         if new_appliance_serializer.is_valid():
 
-            
             owner = get_user_model().objects.filter(pk=request.user.id).first()
-
 
             created = new_appliance_serializer.save(owner=owner)
 
-            print(created)
         else:
             response.data = new_appliance_serializer.errors
         return response
 
 
-@api_view(['POST'])
+@api_view(['GET', 'PUT'])
 @authentication_classes([SafeJWTAuthentication])
 @permission_classes([IsAuthenticated])
 @ensure_csrf_cookie
-def add_appliance(request):
+def appliance_detail(request, slug):
+    response = Response()
+    user = get_user_model().objects.get(id=request.user.id)
 
-    return Response(data="Yo Yo!")
+    # handle user not found?
+
+    appliance = Appliance.objects.filter(owner=user.id, slug=slug).first()
+
+    if appliance is None:
+        response.data = {'msg': ['Appliance not found']}
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return response
+
+    serialized_appliance = ApplianceDetailSerializer(appliance)
+
+    if request.method == 'GET':
+        response.data = {"appliance": serialized_appliance.data}
+
+    if request.method == 'PUT':
+        ...
+    
+    return response
