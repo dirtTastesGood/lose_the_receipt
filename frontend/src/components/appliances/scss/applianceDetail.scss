@@ -1,0 +1,27 @@
+@import '../../../scss/variables.scss';
+
+#appliance-detail {
+    .appliance-tabs {
+        .appliance-tab {
+            background-color: $color4;
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
+            height:6vh;
+            max-height: 5vh;
+            transition: all .3s ease-in-out;
+
+            &:hover {
+                cursor: pointer;
+                background-color: darken($color4, 25%);
+                border-bottom: 4px solid darken($color4, 10%);
+                max-height: 6vh;
+            }
+        }
+
+        .active {
+            background-color: darken($color4, 25%);
+            border-bottom: 4px solid darken($color4, 10%);
+            max-height: 6vh;
+        }
+    }
+}

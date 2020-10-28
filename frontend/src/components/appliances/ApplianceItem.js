@@ -16,7 +16,7 @@ const ApplianceItem = (props) => {
   const {setCurrent} = applianceContext;
 
   return (
-    <Link to="/appliances/detail/">
+    <Link to={`/appliances/${appliance.slug}`}>
       <div className="appliance-item" onClick={()=>setCurrent(appliance)}>
         <header className="p-2">
           {appliance.brand} <span>{appliance.appliance_type}</span>
