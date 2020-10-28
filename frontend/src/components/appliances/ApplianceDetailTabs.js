@@ -3,7 +3,7 @@ import React from "react";
 const ApplianceDetailTabs = () => {
   return (
     <nav>
-      <div className="nav nav-tabs" id="appliance-nav-tabs" role="tablist">
+      <div className="nav nav-tabs justify-content-center" id="appliance-nav-tabs" role="tablist">
         <a
           href="#nav-general"
           className="nav-link active"

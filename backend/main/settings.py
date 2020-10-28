@@ -107,6 +107,21 @@ REST_FRAMEWORK = {
 # Secret for encoding User refresh tokens
 REFRESH_TOKEN_SECRET = decouple.config('DJANGO_REFRESH_TOKEN_SECRET')
 
+# define refresh token lifetime
+REFRESH_TOKEN_EXPIRY = {
+    'days': 7,
+    'hours': 0,
+    'minutes': 0,
+    'seconds': 0
+}
+
+# define refresh token lifetime
+ACCESS_TOKEN_EXPIRY = {
+    'days': 0,
+    'hours': 0,
+    'minutes': 0,
+    'seconds': 10
+}
 # to accept cookies via axios
 CORS_ALLOW_CREDENTIALS = True
 

@@ -42,13 +42,15 @@ def register(request):
         new_user = new_user_serializer.save()
 
         # generate access and refresh tokens for the new user
-        access_token = generate_access_token(new_user)
-        refresh_token = generate_refresh_token(new_user)
+        access_token = generate_access_token(new_user, settings.ACCESS_TOKEN_EXPIRY)
+        refresh_token = generate_refresh_token(new_user, settings.REFRESH_TOKEN_EXPIRY)
 
         # attach the access token to the response data
         # and set the response status code to 201
         new_email = new_user.email
         response.data = {'accessToken': access_token,
+                         'accessExpiry': settings.ACCESS_TOKEN_EXPIRY,
+                         'refreshExpiry': settings.REFRESH_TOKEN_EXPIRY,
                          'msg': ['Account created. Welcome!']}
         response.status_code = status.HTTP_201_CREATED
 
@@ -102,8 +104,8 @@ def login(request):
         return response
 
     # generate access and refresh tokens for the current user
-    access_token = generate_access_token(user)
-    refresh_token = generate_refresh_token(user)
+    access_token = generate_access_token(user, settings.ACCESS_TOKEN_EXPIRY)
+    refresh_token = generate_refresh_token(user, settings.REFRESH_TOKEN_EXPIRY)
 
     try:
         # if the user has a refresh token in the db,
@@ -132,6 +134,8 @@ def login(request):
     # return the access token in the reponse
     response.data = {
         'accessToken': access_token,
+        'accessExpiry': settings.ACCESS_TOKEN_EXPIRY,
+        'refreshExpiry': settings.REFRESH_TOKEN_EXPIRY,
         'msg': ['Login successful!']
     }
     response.status_code = status.HTTP_200_OK
@@ -187,6 +191,7 @@ def auth(request):
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
+@authentication_classes([])
 @ensure_csrf_cookie
 def extend_token(request):
     '''Return new access token if request's refresh token cookie is valid'''
@@ -265,7 +270,7 @@ def extend_token(request):
         return response
 
     # generate new refresh token for the user
-    new_refresh_token = generate_refresh_token(user)
+    new_refresh_token = generate_refresh_token(user, settings.REFRESH_TOKEN_EXPIRY)
 
     # Delete old refresh token
     # if the user has a refresh token in the db,
@@ -289,9 +294,11 @@ def extend_token(request):
     )
 
     # generate new access token for the user
-    new_access_token = generate_access_token(user)
+    new_access_token = generate_access_token(user, settings.ACCESS_TOKEN_EXPIRY)
 
-    response.data = {'accessToken': new_access_token}
+    response.data = {
+        'accessToken': new_access_token,
+    }
     return response
 
 

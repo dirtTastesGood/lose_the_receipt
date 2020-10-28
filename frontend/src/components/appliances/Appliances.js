@@ -22,7 +22,7 @@ const Appliances = () => {
    
     getAppliances();
 
-  }, [user, accessToken]);
+  }, [user]);
   
 
   return (

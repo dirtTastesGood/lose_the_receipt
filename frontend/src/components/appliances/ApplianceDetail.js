@@ -26,7 +26,7 @@ const ApplianceDetail = (props) => {
   useEffect(() => {
     const {slug} = props.match.params
     getAppliance(slug)
-  }, [props.match.params, getAppliance]);
+  }, []);
 
   return (
     <div className="container-fluid">

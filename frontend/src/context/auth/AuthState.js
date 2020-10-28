@@ -1,9 +1,10 @@
-import React, { useReducer } from 'react';
-import axios from 'axios';
-import setAccessToken from '../../utils/setAccessToken';
+import React, { useReducer } from "react";
+import axios from "axios";
+import setAccessToken from "../../utils/setAccessToken";
+import setTokenRenewInterval from "../../utils/setTokenRenewInterval";
 
-import AuthContext from './authContext';
-import authReducer from './authReducer';
+import AuthContext from "./authContext";
+import authReducer from "./authReducer";
 
 import {
   REGISTER_SUCCESS,
@@ -17,14 +18,14 @@ import {
   EXTEND_TOKEN_FAIL,
   SET_ALERT,
   CLEAR_ALERTS,
-} from '../types'; // action types to dispatch to reducer
+} from "../types"; // action types to dispatch to reducer
 
-const AuthState = props => {
+const AuthState = (props) => {
   const initialState = {
     accessToken: null, // logged in user's current access token
     isAuthenticated: false, // boolean indicating if a user is logged in
     messages: null, // response messages
-    messageType: '',
+    messageType: "",
     user: null, // object with auth user data
     loading: true, // no response yet from api
   };
@@ -38,49 +39,50 @@ const AuthState = props => {
   // set 'Authorization' header in Axios
   setAccessToken(accessToken);
 
-  const BASE_URL = 'http://localhost:8000/api/v1/';
+  const BASE_URL = "http://localhost:8000/api/v1/";
 
   // request a new access token
   const requestAccessToken = async () => {
-    try {
-      const config = {
-        'Content-Type': 'application/json',
-        withCredentials: true,
-      };
-      const response = await axios.get(BASE_URL + 'users/token/', config);
+    const config = {
+      "Content-Type": "application/json",
+      withCredentials: true,
+    };
+    return await axios
+      .get(BASE_URL + "users/token/", config)
+      .then((response) => {
+        dispatch({
+          type: EXTEND_TOKEN_SUCCESS,
+          // payload is the new access token
+          payload: response.data,
+        });
 
-      // Dispatch accessToken to state
-      dispatch({
-        type: EXTEND_TOKEN_SUCCESS,
-        // payload is the new access token
-        payload: response.data,
-      });
+        console.log(response)
 
-      loadUser();
-    } catch (error) {
-      dispatch({
-        type: EXTEND_TOKEN_FAIL,
-        // no message to display
-        payload: {
-          messages: null,
-          messageType: null,
-        },
+      })
+      .catch((error) => {
+        dispatch({
+          type: EXTEND_TOKEN_FAIL,
+          // no message to display
+          payload: {
+            messages: null,
+            messageType: null,
+          },
+        });
       });
-    }
   };
 
   // register new user. async because of axios call
-  const register = async formData => {
+  const register = async (formData) => {
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         withCredentials: true, // required to set the refreshtoken cookie in the browser!!!
       },
     };
 
     try {
       // POST to api register view
-      const response = await axios.post(BASE_URL + 'users/', formData, config);
+      const response = await axios.post(BASE_URL + "users/", formData, config);
 
       // dispatch register success to user and pass the user's token as payload
       dispatch({
@@ -89,7 +91,7 @@ const AuthState = props => {
           accessToken: response.data.accessToken,
           // 'Login successful!
           messages: response.data.msg,
-          messageType: 'success',
+          messageType: "success",
         },
       });
       loadUser();
@@ -99,23 +101,23 @@ const AuthState = props => {
         type: REGISTER_FAIL,
         payload: {
           messages: error.response.data.msg,
-          messageType: 'danger',
+          messageType: "danger",
         },
       });
     }
   };
 
   // login user. async because of axios call
-  const login = async formData => {
+  const login = async (formData) => {
     const config = {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       withCredentials: true, // required to set the refreshtoken cookie in the browser!!!
     };
 
     try {
       // POST to users/login/
       const response = await axios.post(
-        BASE_URL + 'users/login/',
+        BASE_URL + "users/login/",
         formData,
         config
       );
@@ -125,7 +127,7 @@ const AuthState = props => {
         payload: {
           accessToken: response.data.accessToken,
           messages: response.data.msg,
-          messageType: 'success',
+          messageType: "success",
         },
       });
 
@@ -135,7 +137,7 @@ const AuthState = props => {
         type: LOGIN_FAIL,
         payload: {
           messages: error.response.data.msg,
-          messageType: 'danger',
+          messageType: "danger",
         },
       });
     }
@@ -144,12 +146,12 @@ const AuthState = props => {
   // get user object from accessToken
   const loadUser = async () => {
     const headers = {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       withCredentials: true,
     };
 
     try {
-      const response = await axios.get(BASE_URL + 'users/auth/', headers);
+      const response = await axios.get(BASE_URL + "users/auth/", headers);
 
       dispatch({
         // payload is the user object
@@ -159,7 +161,7 @@ const AuthState = props => {
     } catch (error) {
       // if the access token is expired when the request is made,
       // use the refresh token to request a new one
-      if (error.response.data.msg === 'Access token expired') {
+      if (error.response.data.msg === "Access token expired") {
         requestAccessToken();
       }
 
@@ -172,13 +174,13 @@ const AuthState = props => {
 
   const logout = async () => {
     const headers = {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       withCredentials: true,
     };
 
     try {
       const response = await axios.post(
-        BASE_URL + 'users/logout/',
+        BASE_URL + "users/logout/",
         {
           user: state.user.id,
         },
@@ -187,7 +189,7 @@ const AuthState = props => {
 
       dispatch({
         type: LOGOUT,
-        payload: { messages: response.data.msg, messageType: 'success' },
+        payload: { messages: response.data.msg, messageType: "success" },
       });
     } catch (error) {
       dispatch({

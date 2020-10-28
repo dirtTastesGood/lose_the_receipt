@@ -34,8 +34,9 @@ const App = props => {
 
     // if refresh token exists, request new access token
     requestAccessToken();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.history]); // empty [] ensures this only runs once when App.js is mounted
+  }, []);
 
   return (
     <div className='App'>

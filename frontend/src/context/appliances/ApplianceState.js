@@ -29,6 +29,8 @@ const ApplianceState = props => {
   const authContext = useContext(AuthContext);
   const [state, dispatch] = useReducer(applianceReducer, initialState);
 
+  const { requestAccessToken } = authContext;
+
   axios.defaults.withCredentials = true;
   const config = {
     'Content-Type': 'application/json',
@@ -44,6 +46,9 @@ const ApplianceState = props => {
   // get all appliances
   const getAppliances = async () => {
     try {
+      // wait for new access token
+      await requestAccessToken();
+
       const response = await axios.get(BASE_URL + '/', config);
 
       dispatch({
@@ -51,15 +56,17 @@ const ApplianceState = props => {
         payload: response.data,
       });
 
-      return response
     } catch (error) {
-      console.log(error.response.data);
+      console.log('ERROR:', error.response.data);
     }
   };
 
   // Create new appliance
   const addAppliance = async formData => {
     try {
+      // wait for new access token
+      await requestAccessToken();
+
       const response = await axios.post(BASE_URL + '/', formData, config);
       console.log(response.data);
       getAppliances();
@@ -71,7 +78,10 @@ const ApplianceState = props => {
 
   // appliance detail
   const getAppliance = async slug => {
+
     try {
+      // wait for new access token
+      await requestAccessToken();
       const response = await axios.get(BASE_URL + `/${slug}`, config)
       console.log(response.data)
     } catch (error) {
