@@ -23,7 +23,7 @@ const ApplianceState = props => {
     filtered: null,
     error: null,
     loading: true,
-    showForm:false,
+    showForm: false,
   };
 
   const authContext = useContext(AuthContext);
@@ -39,10 +39,11 @@ const ApplianceState = props => {
   const BASE_URL = 'http://localhost:8000/api/v1/appliances';
 
   // toggle form
-  const toggleForm = () => dispatch({type:TOGGLE_APPLIANCE_FORM})
+  const toggleForm = () => dispatch({ type: TOGGLE_APPLIANCE_FORM });
 
   // set current appliance
-  const setCurrent = appliance => dispatch({type: SET_CURRENT_APPLIANCE, payload: appliance})
+  const setCurrent = appliance =>
+    dispatch({ type: SET_CURRENT_APPLIANCE, payload: appliance });
   // get all appliances
   const getAppliances = async () => {
     try {
@@ -55,7 +56,6 @@ const ApplianceState = props => {
         type: GET_APPLIANCES_SUCCESS,
         payload: response.data,
       });
-
     } catch (error) {
       console.log('ERROR:', error.response.data);
     }
@@ -63,31 +63,30 @@ const ApplianceState = props => {
 
   // Create new appliance
   const addAppliance = async formData => {
+    console.log(formData);
     try {
       // wait for new access token
       await requestAccessToken();
 
       const response = await axios.post(BASE_URL + '/', formData, config);
-      console.log(response.data);
+      // console.log(response.data);
       getAppliances();
     } catch (error) {
       console.log(error.response.data);
     }
   };
 
-
   // appliance detail
   const getAppliance = async slug => {
-
     try {
       // wait for new access token
       await requestAccessToken();
-      const response = await axios.get(BASE_URL + `/${slug}`, config)
-      console.log(response.data)
+      const response = await axios.get(BASE_URL + `/${slug}`, config);
+      console.log(response.data);
     } catch (error) {
-      console.log(error.response.data)
+      console.log(error.response.data);
     }
-  }
+  };
 
   return (
     <ApplianceContext.Provider
@@ -96,13 +95,13 @@ const ApplianceState = props => {
         appliances: state.appliances,
         loading: state.loading,
         filtered: state.filtered,
-        showForm:state.showForm,
-        current:state.current,
+        showForm: state.showForm,
+        current: state.current,
         toggleForm,
         getAppliances,
         getAppliance,
         addAppliance,
-        
+
         setCurrent,
       }}
     >

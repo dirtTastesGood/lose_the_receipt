@@ -14,6 +14,15 @@ const ApplianceForm = props => {
     location: '',
   });
 
+  const {
+    brand,
+    appliance_type,
+    model_number,
+    serial_number,
+    purchase_date,
+    location,
+  } = appliance;
+
   const applianceContext = useContext(ApplianceContext);
   const { addAppliance, toggleForm } = applianceContext;
 
@@ -51,6 +60,7 @@ const ApplianceForm = props => {
                     type='text'
                     name='brand'
                     id='brand'
+                    value={brand}
                     onChange={onChange}
                   />
                 </div>
@@ -63,6 +73,7 @@ const ApplianceForm = props => {
                     type='text'
                     name='appliance_type'
                     id='appliance-type'
+                    value={appliance_type}
                     onChange={onChange}
                   />
                 </div>
@@ -77,6 +88,7 @@ const ApplianceForm = props => {
                     type='text'
                     name='model_number'
                     id='model-number'
+                    value={model_number}
                     onChange={onChange}
                   />
                 </div>
@@ -89,6 +101,7 @@ const ApplianceForm = props => {
                     type='text'
                     name='serial_number'
                     id='serial-number'
+                    value={serial_number}
                     onChange={onChange}
                   />
                 </div>
@@ -98,7 +111,7 @@ const ApplianceForm = props => {
             <div className='form-row'>
               <div className='col-md-6'>
                 <div className='form-group'>
-                  <label htmlFor='serial-number'>Location</label>
+                  <label htmlFor='location'>Location</label>
                   <input
                     className='form-control'
                     type='text'
@@ -116,6 +129,7 @@ const ApplianceForm = props => {
                     type='date'
                     id='purchase-date'
                     name='purchase_date'
+                    value={purchase_date}
                     onChange={onChange}
                   />
                 </div>
