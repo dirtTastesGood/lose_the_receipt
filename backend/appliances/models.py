@@ -6,7 +6,7 @@ from django.utils.text import slugify
 class Appliance(models.Model):
     owner = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     brand = models.CharField(max_length=50)
-    location = models.CharField(max_length=100, null=True)
+    location = models.CharField(max_length=100)
     appliance_type = models.CharField(max_length=50)
     model_number = models.CharField(max_length=50, blank=True)
     serial_number = models.CharField(max_length=50, unique=True, blank=True, error_messages={
@@ -16,7 +16,7 @@ class Appliance(models.Model):
     # images
     # category = models.ManyToManyField(Category)
     manual_url = models.URLField(blank=True, null=True)
-    slug = models.SlugField(max_length=200, null=True, blank=True)
+    slug = models.SlugField(max_length=200)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(

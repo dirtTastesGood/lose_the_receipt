@@ -1,6 +1,7 @@
 import React, { Fragment, useContext, useState } from 'react';
 
 import ApplianceContext from '../../context/appliances/applianceContext';
+import AlertContext from '../../context/alerts/alertContext';
 
 import './scss/applianceForm.scss';
 
@@ -26,26 +27,34 @@ const ApplianceForm = props => {
   const applianceContext = useContext(ApplianceContext);
   const { addAppliance, toggleForm } = applianceContext;
 
+  const alertContext = useContext(AlertContext);
+  const { setAlert } = alertContext;
+
   const onChange = e =>
     setAppliance({ ...appliance, [e.target.name]: e.target.value });
 
   const onSubmit = e => {
     e.preventDefault();
 
-    toggleForm();
+    if (brand === '' || appliance_type === '' || location === '') {
+      setAlert('Please enter all fields.', 'danger');
+    } else {
+      toggleForm();
 
-    addAppliance(appliance);
+      addAppliance(appliance);
 
-    setAppliance({
-      brand: '',
-      appliance_type: '',
-      model_number: '',
-      serial_number: '',
-      purchase_date: '',
-      location: '',
-      // manualUrl:'',
-    });
+      setAppliance({
+        brand: '',
+        appliance_type: '',
+        model_number: '',
+        serial_number: '',
+        purchase_date: '',
+        location: '',
+        // manualUrl:'',
+      });
+    }
   };
+
   return (
     <div className='container'>
       <div className='row'>
