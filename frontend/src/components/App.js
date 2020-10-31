@@ -13,7 +13,7 @@ import Login from './auth/Login';
 import PrivateRoute from './auth/PrivateRoute';
 
 import Appliances from './appliances/Appliances';
-import ApplianceDetail from './appliances/ApplianceDetail';
+import ApplianceDetail from './appliances/applianceDetail/ApplianceDetail';
 
 import Alerts from './layout/Alerts';
 import Navbar from './layout/Navbar';
@@ -24,16 +24,17 @@ const App = props => {
   const authContext = useContext(AuthContext);
   const alertContext = useContext(AlertContext);
 
-  const { requestAccessToken, user, messages } = authContext;
+  const { requestAccessToken, loadUser, user, messages } = authContext;
   const { setAlert } = alertContext;
 
 
-  useEffect(() => {
+  useEffect(async () => {
     const BASE_URL = 'http://localhost:8000/api/v1/';
     setAxiosBaseURL(BASE_URL);
 
     // if refresh token exists, request new access token
-    requestAccessToken();
+    await requestAccessToken();
+    loadUser();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

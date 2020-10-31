@@ -1,7 +1,6 @@
 import React, { useReducer } from "react";
 import axios from "axios";
 import setAccessToken from "../../utils/setAccessToken";
-import setTokenRenewInterval from "../../utils/setTokenRenewInterval";
 
 import AuthContext from "./authContext";
 import authReducer from "./authReducer";
@@ -55,8 +54,6 @@ const AuthState = (props) => {
           // payload is the new access token
           payload: response.data,
         });
-
-        console.log(response)
 
       })
       .catch((error) => {

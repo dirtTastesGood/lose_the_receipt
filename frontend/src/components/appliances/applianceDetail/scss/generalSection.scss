@@ -1,0 +1,22 @@
+@import '../../../../scss/variables.scss';
+
+#general-content-container {
+    background-color: $color4;
+
+    #left-column {
+        // background-color: lighten($color4, 15%);
+    }
+
+    #right-column {
+        // background-color: lighten($color4, 10%);
+        
+        .detail-label {
+            background-color: lighten($color4, 5%);
+            font-size: 1.2em;
+        }
+
+        .detail-text {
+            background-color: lighten($color4, 15%);
+        }
+    }
+}
