@@ -6,10 +6,10 @@ import Spinner from '../layout/Spinner';
 
 import ApplianceContext from '../../context/appliances/applianceContext';
 
-const ApplianceList = ({ appliances }) => {
+const ApplianceList = () => {
   const applianceContext = useContext(ApplianceContext);
 
-  const { loading, showForm, toggleForm } = applianceContext;
+  const { loading, showForm, toggleForm, appliances } = applianceContext;
 
   return (
     <div className='container-fluid text-center'>

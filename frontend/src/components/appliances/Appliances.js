@@ -26,10 +26,10 @@ const Appliances = () => {
   
 
   return (
-    <div className='container my-5 p-0 pb-3' id='appliance-list'>
+    <div className='container-fluid my-5 p-0 pb-3' id='appliance-list'>
       {!loading ? (
         <Fragment>
-          <ApplianceList appliances={appliances}/>
+          <ApplianceList />
         </Fragment>
       ) : (
         <div className='row my-0'>

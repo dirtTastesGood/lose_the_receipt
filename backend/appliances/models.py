@@ -15,6 +15,7 @@ class Appliance(models.Model):
     last_serviced = models.DateField(blank=True, null=True)
     # images
     # category = models.ManyToManyField(Category)
+    description = models.TextField(max_length=10000, blank=True, null=True)
     manual_url = models.URLField(blank=True, null=True)
     slug = models.SlugField(max_length=200)
 

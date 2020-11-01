@@ -1,15 +1,17 @@
 @import "../../../../scss/variables.scss";
 
 #general-content-container {
-  background-color: lighten($color4, 15%);
+//   background-color: lighten($color4, 15%);
+    
 
   #left-column {
     background-color: lighten($color1, 10%);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
     color: lighten($color1, 75%);
   }
 
   #right-column {
-    background-color: lighten($color4, 10%);
 
     .detail-label {
       background-color: lighten($color1, 50%);
