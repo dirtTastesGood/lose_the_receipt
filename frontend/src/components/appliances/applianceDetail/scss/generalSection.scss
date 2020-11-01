@@ -1,22 +1,25 @@
-@import '../../../../scss/variables.scss';
+@import "../../../../scss/variables.scss";
 
 #general-content-container {
-    background-color: $color4;
+  background-color: lighten($color4, 15%);
 
-    #left-column {
-        // background-color: lighten($color4, 15%);
+  #left-column {
+    background-color: lighten($color1, 10%);
+    color: lighten($color1, 75%);
+  }
+
+  #right-column {
+    background-color: lighten($color4, 10%);
+
+    .detail-label {
+      background-color: lighten($color1, 50%);
+      border-bottom: 1px solid lighten($color1, 30%);
+      font-size: 1.2em;
     }
 
-    #right-column {
-        // background-color: lighten($color4, 10%);
-        
-        .detail-label {
-            background-color: lighten($color4, 5%);
-            font-size: 1.2em;
-        }
-
-        .detail-text {
-            background-color: lighten($color4, 15%);
-        }
+    .detail-text {
+      background-color: lighten($color1, 60%);
+      border-bottom: 1px solid lighten($color1, 40%);
     }
+  }
 }

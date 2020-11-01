@@ -20,7 +20,7 @@ const GeneralSection = () => {
     <div className="container-fluid" id="general-content-container">
       <div className="row py-3">
         <div
-          className="col col-12 col-lg-4 offset-lg-1 text-center"
+          className="col col-12 col-lg-4 offset-lg-1 text-center py-2"
           id="left-column"
         >
           <h1 className="font2 text-bold mb-0">{brand}</h1>
@@ -29,8 +29,27 @@ const GeneralSection = () => {
 
         <div className="col col-12 col-lg-6" id="right-column">
           <div className="row">
-            <div className="col col-4 col-lg-2 detail-label">Location</div>
-            <div className="col col-8 col-lg-10 detail-text">{location}</div>
+            <div className="col col-5 col-lg-3 detail-label text-center text-lg-right pt-1">Location</div>
+            <div className="col col-7 col-lg-9 detail-text text-center text-lg-left p-2">{location}</div>
+          </div>
+          <div className="row">
+            <div className="col col-5 col-lg-3 detail-label text-center text-lg-right pt-1">Purchased</div>
+            <div className="col col-7 col-lg-9 detail-text text-center text-lg-left p-2">
+              {purchase_date}
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col col-5 col-lg-3 detail-label text-center text-lg-right pt-1">Model</div>
+            <div className="col col-7 col-lg-9 detail-text text-center text-lg-left p-2">
+              {model_number}
+            </div>
+          </div>
+          <div className="row">
+            <div className="col col-5 col-lg-3 detail-label text-center text-lg-right pt-1">Serial</div>
+            <div className="col col-7 col-lg-9 detail-text text-center text-lg-left p-2">
+              {serial_number}
+            </div>
           </div>
         </div>
       </div>
