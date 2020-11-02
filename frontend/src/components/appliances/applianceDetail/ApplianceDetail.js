@@ -68,6 +68,15 @@ const ApplianceDetail = ({ match }) => {
               </li>
             ))}
           </ul>
+
+          <div className="row mb-2">
+            <div className="col col-12 d-flex justify-content-between" id="appliance-controls">
+                <button className="btn btn-sm btn-warning py-0" id="prev-button">Prev</button>
+                <button className="btn btn-lg text-light py-0" id="add-button"><span>&#x2B;</span></button>
+                <button className="btn btn-sm btn-warning py-0" id="next-button">Next</button>
+                
+            </div>
+          </div>
           {getActiveSection()}
         </Fragment>
       )}

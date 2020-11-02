@@ -11,7 +11,7 @@ const ApplianceList = () => {
   const { loading, showForm, toggleForm, appliances } = applianceContext;
 
   return (
-    <div className='container-fluid text-center'>
+    <div className='text-center'>
       {loading ? (
         <div className='justify-self-center'>
           <Spinner />
@@ -39,12 +39,12 @@ const ApplianceList = () => {
 
           <div className='collapse py-5' id='form-collapse'>
             <ApplianceForm toggleForm={toggleForm} />
-          </div>
+          </div>  
 
           <div className='container-fluid'>
             <div className='row'>
               {appliances.map((appliance, i) => (
-                <div className='col col-12 col-md-6 my-2' key={i}>
+                <div className='col col-12 col-lg-6 offset-lg-3 my-2 px-1' key={i}>
                   <ApplianceItem appliance={appliance} index={i} />
                 </div>
               ))}

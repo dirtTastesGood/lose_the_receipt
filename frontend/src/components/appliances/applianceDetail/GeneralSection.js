@@ -18,10 +18,10 @@ const GeneralSection = () => {
   } = current;
 
   return (
-    <div className="container-fluid p-0" id="general-content-container">
+    <div className="container-fluid p-1" id="general-content-container">
       <div className="row">
         <div
-          className="col col-12 col-lg-4 offset-lg-1 text-center py-2"
+          className="col col-12 col-lg-4 offset-lg-1 text-center py-2 my-1"
           id="left-column"
         >
           <h1 className="font2 text-bold mb-0">{brand}</h1>

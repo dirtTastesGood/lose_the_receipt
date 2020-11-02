@@ -34,7 +34,7 @@ const ApplianceItem = (props) => {
         <div className="row pb-1">
             <div className="col-6 text-right font-weight-bold">Location</div>
             <div className="col-6 text-left">
-              {truncateText(location)}
+              {truncateText(location, 15)}
             </div>
           </div>
           <div className="row pb-1">
@@ -43,7 +43,7 @@ const ApplianceItem = (props) => {
             </div>
             <div className="col-6 text-left">{purchase_date}</div>
           </div>
-          <div className="row pb-1">
+          {/* <div className="row pb-1">
             <div className="col-6 text-right font-weight-bold">Model</div>
             <div className="col-6 text-left">
               {truncateText(model_number)}
@@ -54,7 +54,7 @@ const ApplianceItem = (props) => {
             <div className="col-6 text-left">
               {truncateText(serial_number)}
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </Link>
