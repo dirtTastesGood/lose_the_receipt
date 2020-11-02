@@ -3,6 +3,8 @@ import "../scss/applianceDetail.scss";
 
 import ApplianceContext from "../../../context/appliances/applianceContext";
 
+import Spinner from "../../layout/Spinner";
+
 import GeneralSection from "./GeneralSection";
 import AccessoriesSection from "./AccessoriesSection";
 import ServiceSection from "./ServiceSection";
@@ -13,7 +15,7 @@ import {
   SET_CURRENT_APPLIANCE,
 } from "../../../context/types";
 
-const ApplianceDetail = (props) => {
+const ApplianceDetail = ({ match }) => {
   const applianceContext = useContext(ApplianceContext);
 
   const { getAppliance, current } = applianceContext;
@@ -24,7 +26,7 @@ const ApplianceDetail = (props) => {
   const changeTab = (e) => setActiveTab(e.target.id);
 
   useEffect(() => {
-    const { slug } = props.match.params;
+    const { slug } = match.params;
     getAppliance(slug);
   }, []);
 
@@ -43,7 +45,11 @@ const ApplianceDetail = (props) => {
   return (
     <div className="container-fluid" id="appliance-detail">
       {!current ? (
-        "loading"
+        <div className="row mt-5">
+          <div className="col col-6 offset-3 text-center">
+            <Spinner />
+          </div>
+        </div>
       ) : (
         <Fragment>
           {/* Appliance Section Tabs */}

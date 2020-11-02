@@ -30,7 +30,7 @@ const GeneralSection = () => {
 
         <div className="col col-12 col-lg-6" id="right-column">
         <div className="row mb-1">
-            <div className="col col-12 col-lg-9 detail-text text-center text-lg-left p-2">
+            <div className="col col-12 col-lg-12 detail-text text-center text-lg-left p-2">
               {description}
             </div>
           </div>

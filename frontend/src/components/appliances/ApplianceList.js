@@ -1,5 +1,4 @@
 import React, { Fragment, useContext } from 'react';
-
 import ApplianceItem from './ApplianceItem';
 import ApplianceForm from './ApplianceForm';
 import Spinner from '../layout/Spinner';
