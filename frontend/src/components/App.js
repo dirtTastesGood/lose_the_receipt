@@ -28,12 +28,15 @@ const App = props => {
   const { setAlert } = alertContext;
 
 
-  useEffect(async () => {
+  useEffect(() => {
     const BASE_URL = 'http://localhost:8000/api/v1/';
     setAxiosBaseURL(BASE_URL);
 
+    async function getAccessToken(){
+      await requestAccessToken();
+    }
+    getAccessToken();
     // if refresh token exists, request new access token
-    await requestAccessToken();
     loadUser();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
