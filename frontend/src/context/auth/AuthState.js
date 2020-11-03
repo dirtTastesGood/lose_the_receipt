@@ -54,7 +54,6 @@ const AuthState = (props) => {
           // payload is the new access token
           payload: response.data,
         });
-
       })
       .catch((error) => {
         dispatch({
@@ -66,6 +65,36 @@ const AuthState = (props) => {
           },
         });
       });
+  };
+
+  // get user object from accessToken
+  const loadUser = async () => {
+    const headers = {
+      "Content-Type": "application/json",
+      withCredentials: true,
+    };
+
+    await requestAccessToken();
+
+    return await axios
+      .get(BASE_URL + "users/auth/", headers)
+      .then(response =>{
+
+        dispatch({
+          // payload is the user object
+          type: LOAD_USER_SUCCESS,
+          payload: response.data.user,
+        })
+      }
+      )
+      .catch(error=>{
+
+        dispatch({
+          type: LOAD_USER_FAIL,
+          payload: { messages: null, messageType: null },
+        })
+      }
+      );
   };
 
   // register new user. async because of axios call
@@ -136,35 +165,6 @@ const AuthState = (props) => {
           messages: error.response.data.msg,
           messageType: "danger",
         },
-      });
-    }
-  };
-
-  // get user object from accessToken
-  const loadUser = async () => {
-    const headers = {
-      "Content-Type": "application/json",
-      withCredentials: true,
-    };
-
-    try {
-      const response = await axios.get(BASE_URL + "users/auth/", headers);
-
-      dispatch({
-        // payload is the user object
-        type: LOAD_USER_SUCCESS,
-        payload: response.data.user,
-      });
-    } catch (error) {
-      // if the access token is expired when the request is made,
-      // use the refresh token to request a new one
-      if (error.response.data.msg === "Access token expired") {
-        requestAccessToken();
-      }
-
-      dispatch({
-        type: LOAD_USER_FAIL,
-        payload: { messages: null, messageType: null },
       });
     }
   };
