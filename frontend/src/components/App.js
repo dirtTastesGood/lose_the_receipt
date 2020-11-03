@@ -53,7 +53,7 @@ const App = props => {
           <Route exact path='/login' component={Login} />
           <PrivateRoute path='/account' component={UserDetail} user={user} />
           <PrivateRoute exact path='/appliances' component={Appliances} user={user} />
-          <PrivateRoute exact path='/appliances/:slug' component={ApplianceDetail} user={user}/>
+          <PrivateRoute path='/appliances/:slug' component={ApplianceDetail} user={user}/>
           {/* <Route path="*" component={NotFound}/> */}
         </Switch>
       </Router>

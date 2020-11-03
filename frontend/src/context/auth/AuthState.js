@@ -120,7 +120,7 @@ const AuthState = (props) => {
           messageType: "success",
         },
       });
-      loadUser();
+      await loadUser();
     } catch (error) {
       // dispatch register fail to reducer and display alerts
       dispatch({
@@ -157,7 +157,7 @@ const AuthState = (props) => {
         },
       });
 
-      loadUser();
+      await loadUser();
     } catch (error) {
       dispatch({
         type: LOGIN_FAIL,

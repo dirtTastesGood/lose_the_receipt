@@ -1,4 +1,5 @@
 import React, { Fragment, useContext, useEffect, useState } from "react";
+import {Link} from 'react-router-dom';
 import "../scss/applianceDetail.scss";
 
 import ApplianceContext from "../../../context/appliances/applianceContext";
@@ -70,11 +71,10 @@ const ApplianceDetail = ({ match }) => {
           </ul>
 
           <div className="row mb-2">
-            <div className="col col-12 d-flex justify-content-between" id="appliance-controls">
-                <button className="btn btn-sm btn-warning py-0" id="prev-button">Prev</button>
-                <button className="btn btn-lg text-light py-0" id="add-button"><span>&#x2B;</span></button>
-                <button className="btn btn-sm btn-warning py-0" id="next-button">Next</button>
-                
+            <div className="col col-12 d-flex justify-content-between p-1" id="appliance-controls">
+                <button className="btn btn-sm btn-secondary text-light" id="prev-button">
+                  <Link className="text-light" to='/appliances'>Back</Link>
+                </button>
             </div>
           </div>
           {getActiveSection()}

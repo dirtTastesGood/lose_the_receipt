@@ -1,4 +1,5 @@
 import React, { Fragment, useContext } from 'react';
+import {Route, Link, Switch, useRouteMatch} from 'react-router-dom';
 import ApplianceItem from './ApplianceItem';
 import ApplianceForm from './ApplianceForm';
 import Spinner from '../layout/Spinner';
@@ -9,6 +10,8 @@ const ApplianceList = () => {
   const applianceContext = useContext(ApplianceContext);
 
   const { loading, showForm, toggleForm, appliances } = applianceContext;
+
+  let {path} = useRouteMatch();
 
   return (
     <div className='text-center'>
@@ -24,6 +27,7 @@ const ApplianceList = () => {
               data-toggle='collapse'
               data-target='#form-collapse'
               data-placement='right'
+              href={`${path}/new`}
               title='add appliance'
               onClick={toggleForm}
             >

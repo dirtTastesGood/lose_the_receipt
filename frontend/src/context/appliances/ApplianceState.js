@@ -6,6 +6,9 @@ import ApplianceContext from "./applianceContext";
 import applianceReducer from "./applianceReducer";
 
 import AuthContext from "../auth/authContext";
+
+import Paginator from '../../utils/Paginator'
+
 import {
   GET_APPLIANCES_SUCCESS,
   GET_APPLIANCES_FAIL,
@@ -17,7 +20,6 @@ import {
   SET_CURRENT_APPLIANCE,
   CLEAR_CURRENT_APPLIANCE,
 } from "../types";
-import { cleanData } from "jquery";
 
 const ApplianceState = (props) => {
   const initialState = {
@@ -27,6 +29,8 @@ const ApplianceState = (props) => {
     error: null,
     loading: true,
     showForm: false,
+    page: 1,
+    perPage: 4,
   };
 
   const authContext = useContext(AuthContext);
@@ -50,6 +54,11 @@ const ApplianceState = (props) => {
 
   // get all appliances
   const getAppliances = async () => {
+    const data = {
+      page: state.page,
+      perPage: state.perPage,
+    }
+
     try {
       // wait for new access token
       await requestAccessToken();
@@ -91,6 +100,8 @@ const ApplianceState = (props) => {
     } catch (error) {}
   };
 
+  
+
   return (
     <ApplianceContext.Provider
       value={{
@@ -100,11 +111,12 @@ const ApplianceState = (props) => {
         filtered: state.filtered,
         showForm: state.showForm,
         current: state.current,
+        page: state.page,
+        perPage: state.perPage,
         toggleForm,
         getAppliances,
         getAppliance,
         addAppliance,
-
         setCurrent,
       }}
     >
