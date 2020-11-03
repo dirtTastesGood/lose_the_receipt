@@ -8,7 +8,6 @@ import Spinner from '../layout/Spinner';
 import ApplianceForm from './ApplianceForm';
 import ApplianceList from './ApplianceList';
 
-
 const Appliances = () => {
   const applianceContext = useContext(ApplianceContext);
   const authContext = useContext(AuthContext);
@@ -16,14 +15,13 @@ const Appliances = () => {
   const { appliances, getAppliances, current } = applianceContext;
   const { user, loading, accessToken } = authContext;
 
-  useEffect(()=> {$('[data-toggle="tooltip"]').tooltip()}, [])
+  useEffect(() => {
+    $('[data-toggle="tooltip"]').tooltip();
+  }, []);
 
   useEffect(() => {
-   
     getAppliances();
-
-  }, [user]);
-  
+  }, []);
 
   return (
     <div className='container-fluid my-5 p-0 pb-3' id='appliance-list'>

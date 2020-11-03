@@ -27,17 +27,16 @@ const App = props => {
   const { requestAccessToken, loadUser, user, messages } = authContext;
   const { setAlert } = alertContext;
 
-
   useEffect(() => {
     const BASE_URL = 'http://localhost:8000/api/v1/';
     setAxiosBaseURL(BASE_URL);
 
-    async function getAccessToken(){
-      await requestAccessToken();
-    }
-    getAccessToken();
     // if refresh token exists, request new access token
-    loadUser();
+    async function getUser() {
+      await requestAccessToken();
+      await loadUser();
+    }
+    getUser();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -52,8 +51,17 @@ const App = props => {
           <Route exact path='/register' component={Register} />
           <Route exact path='/login' component={Login} />
           <PrivateRoute path='/account' component={UserDetail} user={user} />
-          <PrivateRoute exact path='/appliances' component={Appliances} user={user} />
-          <PrivateRoute path='/appliances/:slug' component={ApplianceDetail} user={user}/>
+          <PrivateRoute
+            exact
+            path='/appliances'
+            component={Appliances}
+            user={user}
+          />
+          <PrivateRoute
+            path='/appliances/:slug'
+            component={ApplianceDetail}
+            user={user}
+          />
           {/* <Route path="*" component={NotFound}/> */}
         </Switch>
       </Router>

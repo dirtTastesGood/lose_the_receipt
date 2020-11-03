@@ -37,7 +37,6 @@ export default (state, action) => {
       return {
         ...state,
         accessToken: null,
-        accessRenewInterval: null,
         isAuthenticated: false,
         user: null,
         messages: action.payload.messages,
