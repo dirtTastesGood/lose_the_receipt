@@ -1,13 +1,11 @@
-import React, { useReducer, useContext } from "react";
+import React, { useReducer, useContext } from 'react';
 
-import axios from "axios";
+import axios from 'axios';
 
-import ApplianceContext from "./applianceContext";
-import applianceReducer from "./applianceReducer";
+import ApplianceContext from './applianceContext';
+import applianceReducer from './applianceReducer';
 
-import AuthContext from "../auth/authContext";
-
-import Paginator from '../../utils/Paginator'
+import AuthContext from '../auth/authContext';
 
 import {
   GET_APPLIANCES_SUCCESS,
@@ -19,9 +17,10 @@ import {
   GET_APPLIANCE_FAIL,
   SET_CURRENT_APPLIANCE,
   CLEAR_CURRENT_APPLIANCE,
-} from "../types";
+  ADD_APPLIANCE_SUCCESS,
+} from '../types';
 
-const ApplianceState = (props) => {
+const ApplianceState = props => {
   const initialState = {
     appliances: [],
     current: null,
@@ -40,16 +39,16 @@ const ApplianceState = (props) => {
 
   axios.defaults.withCredentials = true;
   const config = {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   };
 
-  const BASE_URL = "http://localhost:8000/api/v1/appliances";
+  const BASE_URL = 'http://localhost:8000/api/v1/appliances';
 
   // toggle form
   const toggleForm = () => dispatch({ type: TOGGLE_APPLIANCE_FORM });
 
   // set current appliance
-  const setCurrent = (appliance) =>
+  const setCurrent = appliance =>
     dispatch({ type: SET_CURRENT_APPLIANCE, payload: appliance });
 
   // get all appliances
@@ -57,50 +56,73 @@ const ApplianceState = (props) => {
     const data = {
       page: state.page,
       perPage: state.perPage,
-    }
+    };
 
     try {
       // wait for new access token
       await requestAccessToken();
 
-      const response = await axios.get(BASE_URL + "/", config);
+      const response = await axios.get(BASE_URL + '/', config);
 
       dispatch({
         type: GET_APPLIANCES_SUCCESS,
         payload: response.data,
       });
     } catch (error) {
-      console.log("ERROR:", error.response.data);
+      console.log('ERROR:', error.response.data);
       dispatch({ type: GET_APPLIANCES_FAIL });
     }
   };
 
   // Create new appliance
-  const addAppliance = async (formData) => {
+  const addAppliance = async formData => {
     console.log(formData);
-    try {
-      // wait for new access token
-      await requestAccessToken();
 
-      const response = await axios.post(BASE_URL + "/", formData, config);
-      getAppliances();
+    console.log('add appliance then called');
+    await requestAccessToken();
+
+    try {
+      let res = await axios.post(BASE_URL + '/', formData, config);
+      console.log(res.data);
     } catch (error) {
+      console.log('FAILED!');
       console.log(error.response.data);
     }
+
+    // .catch(error => {
+    //   console.log('EROEROEROR');
+    //   console.log(error.response);
+    // })
+    // .then(response => {
+    //   console.log(response);
+    // });
+    // .then(
+    //   response => {
+    //     getAppliances();
+    //     dispatch({ type: ADD_APPLIANCE_SUCCESS });
+    //   },
+    //   error => {
+    //     console.log('ADD APPLIANCE ERROR!');
+    //     console.log('ADD APPLIANCE ERROR:', error.response);
+    //   }
+    // );
   };
 
   // appliance detail
-  const getAppliance = async (slug) => {
+  const getAppliance = async slug => {
     try {
       // wait for new access token
       await requestAccessToken();
       const response = await axios.get(BASE_URL + `/${slug}`, config);
 
-      dispatch({ type: GET_APPLIANCE_SUCCESS, payload: response.data.appliance });
-    } catch (error) {}
+      dispatch({
+        type: GET_APPLIANCE_SUCCESS,
+        payload: response.data.appliance,
+      });
+    } catch (error) {
+      dispatch({ type: GET_APPLIANCE_FAIL });
+    }
   };
-
-  
 
   return (
     <ApplianceContext.Provider

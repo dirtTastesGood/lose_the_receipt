@@ -33,25 +33,32 @@ const ApplianceForm = props => {
   const onChange = e =>
     setAppliance({ ...appliance, [e.target.name]: e.target.value });
 
-  const onSubmit = e => {
+  const onSubmit = async e => {
+    console.log('TEST');
     e.preventDefault();
 
     if (brand === '' || appliance_type === '' || location === '') {
       setAlert('Please enter all fields.', 'danger');
     } else {
-      toggleForm();
+      let newAppliance = addAppliance(appliance);
+      console.log('new', newAppliance);
+      // .then(response => {
+      //   console.log('then: ', response);
+      //   toggleForm();
 
-      addAppliance(appliance);
-
-      setAppliance({
-        brand: '',
-        appliance_type: '',
-        model_number: '',
-        serial_number: '',
-        purchase_date: '',
-        location: '',
-        // manualUrl:'',
-      });
+      //   setAppliance({
+      //     brand: '',
+      //     appliance_type: '',
+      //     model_number: '9999999999',
+      //     serial_number: '',
+      //     purchase_date: '',
+      //     location: '',
+      //     // manualUrl:'',
+      //   });
+      // })
+      // .catch(error => {
+      //   // console.log(error);
+      // });
     }
   };
 
@@ -126,6 +133,7 @@ const ApplianceForm = props => {
                     type='text'
                     name='location'
                     id='location'
+                    value={location}
                     onChange={onChange}
                   />
                 </div>

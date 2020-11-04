@@ -7,7 +7,7 @@ import Spinner from '../layout/Spinner';
 const Home = () => {
   const authContext = useContext(AuthContext);
 
-  const { isAuthenticated, loading, user } = authContext;
+  const { loading, user } = authContext;
 
   return (
     <div className='container text-center'>

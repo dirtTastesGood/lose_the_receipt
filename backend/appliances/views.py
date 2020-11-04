@@ -48,10 +48,16 @@ def appliance_list(request):
 
             owner = get_user_model().objects.filter(pk=request.user.id).first()
 
-            created = new_appliance_serializer.save(owner=owner)
+            new_appliance = new_appliance_serializer.save(owner=owner)
+
+            response.data = {
+                'appliance': new_appliance_serializer.validated_data}
+            response.status_code = status.HTTP_201_CREATED
 
         else:
             response.data = new_appliance_serializer.errors
+            response.status_code = status.HTTP_400_BAD_REQUEST
+
         return response
 
 
@@ -79,5 +85,5 @@ def appliance_detail(request, slug):
 
     if request.method == 'PUT':
         ...
-    
+
     return response
