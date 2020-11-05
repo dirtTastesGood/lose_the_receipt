@@ -118,7 +118,7 @@ REFRESH_TOKEN_EXPIRY = {
 # define refresh token lifetime
 ACCESS_TOKEN_EXPIRY = {
     'days': 0,
-    'hours': 0,
+    'hours': 10,
     'minutes': 0,
     'seconds': 10
 }

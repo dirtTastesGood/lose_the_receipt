@@ -3,13 +3,12 @@ from django.shortcuts import render
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect
 from django.contrib.auth import login, logout, get_user_model
 
-from rest_framework import status
-from rest_framework import viewsets
+from rest_framework import status, pagination
 from rest_framework.response import Response
 from rest_framework.decorators import (
     api_view,
     authentication_classes,
-    permission_classes
+    permission_classes,
 )
 
 from .serializers import ApplianceDetailSerializer, ApplianceCreateSerializer
@@ -30,13 +29,19 @@ def appliance_list(request):
     response = Response()
 
     if request.method == 'GET':
+        paginator = pagination.PageNumberPagination()
+        paginator.page_size_query_param = 'per_page'
+        paginator.page_query_param = 'page'
         appliances = Appliance.objects.filter(owner=request.user.id)
+        appliance_page = paginator.paginate_queryset(appliances, request)
 
-        appliances_serializer = ApplianceDetailSerializer(
-            appliances, many=True)
+        appliances_serializer = ApplianceDetailSerializer(appliance_page, many=True)
+        print('all:', appliances)
+        print('page:', appliance_page)
+        print('serialized:', appliances_serializer.data)
 
-        response.data = {'appliances': appliances_serializer.data}
-        return response
+
+        return paginator.get_paginated_response(appliances_serializer.data)
 
     elif request.method == 'POST':
 

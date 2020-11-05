@@ -11,7 +11,7 @@ const ApplianceList = () => {
 
   const { loading, showForm, toggleForm, appliances } = applianceContext;
 
-  let {path} = useRouteMatch();
+  let { path } = useRouteMatch();
 
   return (
     <div className='text-center'>
