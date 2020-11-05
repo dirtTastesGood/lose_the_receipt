@@ -30,6 +30,10 @@ const ApplianceState = props => {
     showForm: false,
     page: 1,
     perPage: 4,
+    prevPageUrl: null,
+    nextPageUrl: null,
+    applianceCount: null,
+    totalPages: null,
   };
 
   const authContext = useContext(AuthContext);
@@ -62,7 +66,10 @@ const ApplianceState = props => {
       // wait for new access token
       await requestAccessToken();
 
-      const response = await axios.get(BASE_URL + '/', config);
+      const response = await axios.get(
+        BASE_URL + `/?page=${state.page}&per_page=${state.perPage}`,
+        config
+      );
 
       dispatch({
         type: GET_APPLIANCES_SUCCESS,
@@ -81,8 +88,7 @@ const ApplianceState = props => {
     console.log('add appliance then called');
     await requestAccessToken();
 
-    return await axios
-    .post(BASE_URL + '/', formData, config)
+    return await axios.post(BASE_URL + '/', formData, config);
   };
 
   // appliance detail

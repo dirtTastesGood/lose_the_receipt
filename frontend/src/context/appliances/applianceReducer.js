@@ -6,22 +6,31 @@ import {
   GET_APPLIANCE_FAIL,
   SET_CURRENT_APPLIANCE,
   CLEAR_CURRENT_APPLIANCE,
-} from "../types";
+} from '../types';
 
 export default (state, action) => {
   switch (action.type) {
     default:
       return state;
     case GET_APPLIANCES_SUCCESS:
+      const { results, previous, next, count } = action.payload;
       return {
         ...state,
-        appliances: action.payload.appliances,
+        appliances: results,
+        prevPageUrl: previous,
+        nextPageUrl: next,
+        applianceCount: count,
+        totalPages: Math.ceil(count / state.perPage),
         loading: false,
       };
     case GET_APPLIANCES_FAIL:
       return {
         ...state,
         appliances: [],
+        prevPageUrl: null,
+        nextPageUrl: null,
+        applianceCount: null,
+        totalPages: null,
         loading: false,
       };
     case TOGGLE_APPLIANCE_FORM:
