@@ -81,31 +81,8 @@ const ApplianceState = props => {
     console.log('add appliance then called');
     await requestAccessToken();
 
-    try {
-      let res = await axios.post(BASE_URL + '/', formData, config);
-      console.log(res.data);
-    } catch (error) {
-      console.log('FAILED!');
-      console.log(error.response.data);
-    }
-
-    // .catch(error => {
-    //   console.log('EROEROEROR');
-    //   console.log(error.response);
-    // })
-    // .then(response => {
-    //   console.log(response);
-    // });
-    // .then(
-    //   response => {
-    //     getAppliances();
-    //     dispatch({ type: ADD_APPLIANCE_SUCCESS });
-    //   },
-    //   error => {
-    //     console.log('ADD APPLIANCE ERROR!');
-    //     console.log('ADD APPLIANCE ERROR:', error.response);
-    //   }
-    // );
+    return await axios
+    .post(BASE_URL + '/', formData, config)
   };
 
   // appliance detail
