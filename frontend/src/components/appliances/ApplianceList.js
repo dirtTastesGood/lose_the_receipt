@@ -1,5 +1,7 @@
-import React, { Fragment, useContext } from 'react';
-import {Route, Link, Switch, useRouteMatch} from 'react-router-dom';
+import React, { Fragment, useEffect, useContext } from 'react';
+import { Route, Link, Switch, useRouteMatch } from 'react-router-dom';
+import Pagination from '../layout/Pagination';
+
 import ApplianceItem from './ApplianceItem';
 import ApplianceForm from './ApplianceForm';
 import Spinner from '../layout/Spinner';
@@ -8,8 +10,29 @@ import ApplianceContext from '../../context/appliances/applianceContext';
 
 const ApplianceList = () => {
   const applianceContext = useContext(ApplianceContext);
+  let {
+    loading,
+    showForm,
+    toggleForm,
+    page,
+    perPage,
+    appliances,
+    totalPages,
+    nextPageUrl,
+    prevPageUrl,
+  } = applianceContext;
 
-  const { loading, showForm, toggleForm, appliances } = applianceContext;
+  // let {
+  //   loading,
+  //   showForm,
+  //   toggleForm,
+  //   page,
+  //   perPage,
+  //   appliances,
+  //   totalPages,
+  //   nextPageUrl,
+  //   prevPageUrl,
+  // } = applianceContext;
 
   let { path } = useRouteMatch();
 
@@ -40,11 +63,16 @@ const ApplianceList = () => {
               </span>
             </button>
           </h1>
-
+          <Pagination
+            page={page}
+            perPage={perPage}
+            totalPages={totalPages}
+            nextPageUrl={nextPageUrl}
+            prevPageUrl={prevPageUrl}
+          />
           <div className='collapse py-5' id='form-collapse'>
             <ApplianceForm toggleForm={toggleForm} />
-          </div>  
-
+          </div>
           <div className='container-fluid container-lg'>
             <div className='row'>
               {appliances.map((appliance, i) => (
