@@ -22,18 +22,6 @@ const ApplianceList = () => {
     prevPageUrl,
   } = applianceContext;
 
-  // let {
-  //   loading,
-  //   showForm,
-  //   toggleForm,
-  //   page,
-  //   perPage,
-  //   appliances,
-  //   totalPages,
-  //   nextPageUrl,
-  //   prevPageUrl,
-  // } = applianceContext;
-
   let { path } = useRouteMatch();
 
   return (

@@ -6,7 +6,7 @@ import {
   Route,
   useRouteMatch,
 } from 'react-router-dom';
-import '../scss/applianceDetail.scss';
+import './scss/applianceDetail.scss';
 
 import ApplianceContext from '../../../context/appliances/applianceContext';
 
