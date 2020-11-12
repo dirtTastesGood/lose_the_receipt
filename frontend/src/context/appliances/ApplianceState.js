@@ -7,6 +7,9 @@ import applianceReducer from './applianceReducer';
 
 import AuthContext from '../auth/authContext';
 
+import PaginationContext from '../pagination/paginationContext';
+import paginationReducer from '../pagination/paginationReducer';
+
 import {
   GET_APPLIANCES_SUCCESS,
   GET_APPLIANCES_FAIL,
@@ -18,6 +21,7 @@ import {
   SET_CURRENT_APPLIANCE,
   CLEAR_CURRENT_APPLIANCE,
   ADD_APPLIANCE_SUCCESS,
+  UPDATE_PAGINATION,
 } from '../types';
 
 const ApplianceState = props => {
@@ -28,18 +32,19 @@ const ApplianceState = props => {
     error: null,
     loading: true,
     showForm: false,
-    page: 1,
-    perPage: 4,
-    prevPageUrl: null,
-    nextPageUrl: null,
     applianceCount: null,
-    totalPages: null,
   };
 
   const authContext = useContext(AuthContext);
-  const [state, dispatch] = useReducer(applianceReducer, initialState);
-
   const { requestAccessToken } = authContext;
+
+  const paginationContext = useContext(PaginationContext);
+  const [pageState, pageDispatch] = useReducer(paginationReducer, initialState);
+
+  // pagination
+  let { page, perPage, updatePagination } = paginationContext;
+
+  const [state, dispatch] = useReducer(applianceReducer, initialState);
 
   axios.defaults.withCredentials = true;
   const config = {
@@ -58,8 +63,8 @@ const ApplianceState = props => {
   // get all appliances
   const getAppliances = async () => {
     const data = {
-      page: state.page,
-      perPage: state.perPage,
+      page: page,
+      perPage: perPage,
     };
 
     try {
@@ -67,14 +72,25 @@ const ApplianceState = props => {
       await requestAccessToken();
 
       const response = await axios.get(
-        BASE_URL + `/?page=${state.page}&per_page=${state.perPage}`,
+        BASE_URL + `/?page=${page}&per_page=${perPage}`,
         config
       );
+
+      console.log('appliances', response.data);
 
       dispatch({
         type: GET_APPLIANCES_SUCCESS,
         payload: response.data,
       });
+
+      console.log(response.data);
+
+      pageDispatch({
+        type: UPDATE_PAGINATION,
+        payload: { totalPages: Math.ceil(response.data.count / perPage) },
+      });
+
+      updatePagination(Math.ceil(response.data.count / perPage));
     } catch (error) {
       console.log('ERROR:', error.response.data);
       dispatch({ type: GET_APPLIANCES_FAIL });

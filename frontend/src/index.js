@@ -8,14 +8,17 @@ import App from './components/App';
 import AuthState from './context/auth/AuthState';
 import AlertState from './context/alerts/AlertState';
 import ApplianceState from './context/appliances/ApplianceState';
+import PaginationState from './context/pagination/PaginationState';
 
 ReactDOM.render(
   <React.StrictMode>
     <AuthState>
       <AlertState>
-        <ApplianceState>
-          <App />
-        </ApplianceState>
+        <PaginationState>
+          <ApplianceState>
+            <App />
+          </ApplianceState>
+        </PaginationState>
       </AlertState>
     </AuthState>
   </React.StrictMode>,
