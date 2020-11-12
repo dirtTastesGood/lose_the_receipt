@@ -6,7 +6,7 @@ import range from '../../utils/range';
 import PaginationContext from './paginationContext';
 import paginationReducer from './paginationReducer';
 
-import { UPDATE_PAGINATION } from '../types';
+import { UPDATE_PAGINATION, CHANGE_PAGE } from '../types';
 
 const PaginationState = props => {
   const initialState = {
@@ -33,13 +33,18 @@ const PaginationState = props => {
     let top = page + 2 < newTotal ? bottomPage + (numOfButtons - 1) : newTotal;
     let pageRange = range(bottom, top);
 
+    console.log(page, bottom, top, pageRange);
+
     dispatch({
       type: UPDATE_PAGINATION,
       payload: { bottom, top, pageRange, newTotal },
     });
   };
 
-  const changePage = e => console.log(e.target.id);
+  // change page to the number id of the target button
+  const changePage = e => {
+    dispatch({ type: CHANGE_PAGE, payload: e.target.id });
+  };
 
   return (
     <PaginationContext.Provider
@@ -55,6 +60,7 @@ const PaginationState = props => {
         prevPageUrl: state.prevPageUrl,
         nextPageUrl: state.nextPageUrl,
         updatePagination,
+        changePage,
       }}
     >
       {props.children}

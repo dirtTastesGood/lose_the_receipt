@@ -8,21 +8,34 @@ import Spinner from '../layout/Spinner';
 
 import ApplianceContext from '../../context/appliances/applianceContext';
 
+import PaginationContext from '../../context/pagination/paginationContext';
+
 const ApplianceList = () => {
   const applianceContext = useContext(ApplianceContext);
   let {
     loading,
     showForm,
     toggleForm,
-    page,
-    perPage,
     appliances,
+    getAppliances,
+  } = applianceContext;
+
+  let paginationContext = useContext(PaginationContext);
+  const {
     totalPages,
     nextPageUrl,
     prevPageUrl,
-  } = applianceContext;
+    page,
+    perPage,
+    updatePagination,
+    changePage,
+  } = paginationContext;
 
   let { path } = useRouteMatch();
+
+  useEffect(() => {
+    updatePagination();
+  }, []);
 
   return (
     <div className='text-center'>
@@ -57,6 +70,7 @@ const ApplianceList = () => {
             totalPages={totalPages}
             nextPageUrl={nextPageUrl}
             prevPageUrl={prevPageUrl}
+            pageChangeCallback={getAppliances}
           />
           <div className='collapse py-5' id='form-collapse'>
             <ApplianceForm toggleForm={toggleForm} />

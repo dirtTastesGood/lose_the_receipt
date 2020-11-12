@@ -10,9 +10,8 @@ export const EXTEND_TOKEN_SUCCESS = 'EXTEND_TOKEN_SUCCESS';
 export const EXTEND_TOKEN_FAIL = 'EXTEND_TOKEN_FAIL';
 
 // pagination
-// export const SET_TOTAL_PAGES = 'SET_TOTAL_PAGES';
-// export const SET_PAGE_RANGE = 'SET_PAGE_RANGE';
 export const UPDATE_PAGINATION = 'UPDATE_PAGINATION';
+export const CHANGE_PAGE = 'CHANGE_PAGE';
 
 // alerts
 export const SET_ALERT = 'SET_ALERT';

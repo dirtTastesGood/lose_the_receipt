@@ -1,20 +1,38 @@
 @import '../../../scss/variables.scss';
 
 #pagination {
-    .pageNum {
-        background-color: $color4;
-        border-radius: 5px;
-        height: 1.5em;
-        transition: all .3s ease-in-out;
-        width: 1.5em;
+  .pageNum {
+    background-color: $color4;
+    border-radius: 5px;
+    height: 1.5em;
+    transition: all 0.3s ease-in-out;
+    width: 1.5em;
 
-        &:hover {
-            background-color: darken($color4, 25%);
-            cursor: pointer;
-        }
+    &:hover {
+      background-color: darken($color4, 25%);
+      cursor: pointer;
     }
+  }
+  .pageArrow {
+    background-color: $color4;
+    border-radius: 5px;
+    height: 1.5em;
+    transition: all 0.3s ease-in-out;
+    width: 1.5em;
 
-    .active {
-        background-color: darken($color4, 25%);
+    &:hover {
+      background-color: darken($color4, 25%);
+      cursor: pointer;
     }
+  }
+
+  .active {
+    background-color: darken($color4, 25%);
+  }
+
+  .disabled {
+    background-color: $color4;
+
+    opacity: 0.5;
+  }
 }
