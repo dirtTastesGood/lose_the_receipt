@@ -14,6 +14,7 @@ import PrivateRoute from './auth/PrivateRoute';
 
 import Appliances from './appliances/Appliances';
 import ApplianceDetail from './appliances/applianceDetail/ApplianceDetail';
+import ApplianceForm from './appliances/ApplianceForm';
 
 import Alerts from './layout/Alerts';
 import Navbar from './layout/Navbar';
@@ -57,6 +58,11 @@ const App = props => {
             component={Appliances}
             user={user}
           />
+          <PrivateRoute
+            exact
+            path='/appliances/add'
+            component={ApplianceForm}
+          ></PrivateRoute>
           <PrivateRoute
             path='/appliances/:slug'
             component={ApplianceDetail}

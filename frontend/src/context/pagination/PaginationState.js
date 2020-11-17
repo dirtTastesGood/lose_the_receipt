@@ -14,7 +14,7 @@ const PaginationState = props => {
     page: 1,
     perPage: 4,
     numOfButtons: 5,
-    totalPages: 5,
+    totalPages: 0,
     bottomPage: 1,
     topPage: 5,
     pageRange: [],

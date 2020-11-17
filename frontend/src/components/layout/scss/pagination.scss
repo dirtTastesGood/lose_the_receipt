@@ -16,9 +16,10 @@
   .pageArrow {
     background-color: $color4;
     border-radius: 5px;
-    height: 1.5em;
+    height: 1.3em;
+    line-height: 1.1em;
     transition: all 0.3s ease-in-out;
-    width: 1.5em;
+    width: 1.3em;
 
     &:hover {
       background-color: darken($color4, 25%);
@@ -30,9 +31,14 @@
     background-color: darken($color4, 25%);
   }
 
+  .disabled:hover {
+    background-color: $color4;
+    cursor: default;
+  }
+
   .disabled {
     background-color: $color4;
 
-    opacity: 0.5;
+    opacity: 0.33;
   }
 }

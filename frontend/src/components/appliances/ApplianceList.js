@@ -39,43 +39,27 @@ const ApplianceList = () => {
 
   return (
     <div className='text-center'>
-      {loading ? (
+      {loading || !totalPages ? (
         <div className='justify-self-center'>
           <Spinner />
         </div>
       ) : appliances && appliances.length > 0 ? (
         <Fragment>
-          <h1 className='text-center text-lg-left'>
-            <button
-              className='btn btn bg-warning mx-3'
-              data-toggle='collapse'
-              data-target='#form-collapse'
-              data-placement='right'
-              href={`${path}/new`}
-              title='add appliance'
-              onClick={toggleForm}
-            >
-              <span
-                className='font-weight-bold'
-                aria-label='add appliance'
-                alt='add appliance'
-              >
-                {showForm ? '- close' : '+ new'}
-              </span>
-            </button>
-          </h1>
-          <Pagination
-            page={page}
-            perPage={perPage}
-            totalPages={totalPages}
-            nextPageUrl={nextPageUrl}
-            prevPageUrl={prevPageUrl}
-            pageChangeCallback={getAppliances}
-          />
+          {!totalPages ? (
+            <Spinner />
+          ) : (
+            <Pagination
+              page={page}
+              perPage={perPage}
+              totalPages={totalPages}
+              nextPageUrl={nextPageUrl}
+              prevPageUrl={prevPageUrl}
+            />
+          )}
           <div className='collapse py-5' id='form-collapse'>
             <ApplianceForm toggleForm={toggleForm} />
           </div>
-          <div className='container-fluid container-lg'>
+          <div className='container-fluid container-lg mt-3'>
             <div className='row'>
               {appliances.map((appliance, i) => (
                 <div className='col col-12 col-lg-6 my-3 px-lg-3' key={i}>

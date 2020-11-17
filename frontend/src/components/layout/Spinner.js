@@ -1,11 +1,238 @@
 import React from 'react';
 import './scss/spinner.scss';
 
-
 const Loadbar = () => {
   return (
-    <div className="spinner">
-      <svg viewBox="0 0 102 102">
+    <div className='spinner'>
+      <svg
+        xmlns='http://www.w3.org/2000/svg'
+        width='84px'
+        height='84px'
+        viewBox='0 0 100 100'
+        preserveAspectRatio='xMidYMid'
+      >
+        <g transform='rotate(0 50 50)'>
+          <rect
+            x='48.5'
+            y='35'
+            rx='1.5'
+            ry='6'
+            width='3'
+            height='12'
+            fill='#202c39'
+          >
+            <animate
+              attributeName='opacity'
+              values='1;0'
+              keyTimes='0;1'
+              dur='1.2987012987012987s'
+              begin='-1.1806375442739079s'
+              repeatCount='indefinite'
+            ></animate>
+          </rect>
+        </g>
+        <g transform='rotate(32.72727272727273 50 50)'>
+          <rect
+            x='48.5'
+            y='35'
+            rx='1.5'
+            ry='6'
+            width='3'
+            height='12'
+            fill='#202c39'
+          >
+            <animate
+              attributeName='opacity'
+              values='1;0'
+              keyTimes='0;1'
+              dur='1.2987012987012987s'
+              begin='-1.062573789846517s'
+              repeatCount='indefinite'
+            ></animate>
+          </rect>
+        </g>
+        <g transform='rotate(65.45454545454545 50 50)'>
+          <rect
+            x='48.5'
+            y='35'
+            rx='1.5'
+            ry='6'
+            width='3'
+            height='12'
+            fill='#202c39'
+          >
+            <animate
+              attributeName='opacity'
+              values='1;0'
+              keyTimes='0;1'
+              dur='1.2987012987012987s'
+              begin='-0.9445100354191263s'
+              repeatCount='indefinite'
+            ></animate>
+          </rect>
+        </g>
+        <g transform='rotate(98.18181818181819 50 50)'>
+          <rect
+            x='48.5'
+            y='35'
+            rx='1.5'
+            ry='6'
+            width='3'
+            height='12'
+            fill='#202c39'
+          >
+            <animate
+              attributeName='opacity'
+              values='1;0'
+              keyTimes='0;1'
+              dur='1.2987012987012987s'
+              begin='-0.8264462809917354s'
+              repeatCount='indefinite'
+            ></animate>
+          </rect>
+        </g>
+        <g transform='rotate(130.9090909090909 50 50)'>
+          <rect
+            x='48.5'
+            y='35'
+            rx='1.5'
+            ry='6'
+            width='3'
+            height='12'
+            fill='#202c39'
+          >
+            <animate
+              attributeName='opacity'
+              values='1;0'
+              keyTimes='0;1'
+              dur='1.2987012987012987s'
+              begin='-0.7083825265643446s'
+              repeatCount='indefinite'
+            ></animate>
+          </rect>
+        </g>
+        <g transform='rotate(163.63636363636363 50 50)'>
+          <rect
+            x='48.5'
+            y='35'
+            rx='1.5'
+            ry='6'
+            width='3'
+            height='12'
+            fill='#202c39'
+          >
+            <animate
+              attributeName='opacity'
+              values='1;0'
+              keyTimes='0;1'
+              dur='1.2987012987012987s'
+              begin='-0.5903187721369539s'
+              repeatCount='indefinite'
+            ></animate>
+          </rect>
+        </g>
+        <g transform='rotate(196.36363636363637 50 50)'>
+          <rect
+            x='48.5'
+            y='35'
+            rx='1.5'
+            ry='6'
+            width='3'
+            height='12'
+            fill='#202c39'
+          >
+            <animate
+              attributeName='opacity'
+              values='1;0'
+              keyTimes='0;1'
+              dur='1.2987012987012987s'
+              begin='-0.47225501770956313s'
+              repeatCount='indefinite'
+            ></animate>
+          </rect>
+        </g>
+        <g transform='rotate(229.0909090909091 50 50)'>
+          <rect
+            x='48.5'
+            y='35'
+            rx='1.5'
+            ry='6'
+            width='3'
+            height='12'
+            fill='#202c39'
+          >
+            <animate
+              attributeName='opacity'
+              values='1;0'
+              keyTimes='0;1'
+              dur='1.2987012987012987s'
+              begin='-0.3541912632821723s'
+              repeatCount='indefinite'
+            ></animate>
+          </rect>
+        </g>
+        <g transform='rotate(261.8181818181818 50 50)'>
+          <rect
+            x='48.5'
+            y='35'
+            rx='1.5'
+            ry='6'
+            width='3'
+            height='12'
+            fill='#202c39'
+          >
+            <animate
+              attributeName='opacity'
+              values='1;0'
+              keyTimes='0;1'
+              dur='1.2987012987012987s'
+              begin='-0.23612750885478156s'
+              repeatCount='indefinite'
+            ></animate>
+          </rect>
+        </g>
+        <g transform='rotate(294.54545454545456 50 50)'>
+          <rect
+            x='48.5'
+            y='35'
+            rx='1.5'
+            ry='6'
+            width='3'
+            height='12'
+            fill='#202c39'
+          >
+            <animate
+              attributeName='opacity'
+              values='1;0'
+              keyTimes='0;1'
+              dur='1.2987012987012987s'
+              begin='-0.11806375442739078s'
+              repeatCount='indefinite'
+            ></animate>
+          </rect>
+        </g>
+        <g transform='rotate(327.27272727272725 50 50)'>
+          <rect
+            x='48.5'
+            y='35'
+            rx='1.5'
+            ry='6'
+            width='3'
+            height='12'
+            fill='#202c39'
+          >
+            <animate
+              attributeName='opacity'
+              values='1;0'
+              keyTimes='0;1'
+              dur='1.2987012987012987s'
+              begin='0s'
+              repeatCount='indefinite'
+            ></animate>
+          </rect>
+        </g>
+      </svg>
+      {/* <svg viewBox='10 1.5 49 51'>
         <path
           fill='#b8b08d'
           d='M6.4,4.8A3.2,3.2,0,1,1,3.2,8,3.2,3.2,0,0,1,6.4,4.8Zm12.8,0A3.2,3.2,0,1,1,16,8,3.2,3.2,0,0,1,19.2,4.8ZM32,4.8A3.2,3.2,0,1,1,28.8,8,3.2,3.2,0,0,1,32,4.8Zm12.8,0A3.2,3.2,0,1,1,41.6,8,3.2,3.2,0,0,1,44.8,4.8Zm12.8,0A3.2,3.2,0,1,1,54.4,8,3.2,3.2,0,0,1,57.6,4.8Zm12.8,0A3.2,3.2,0,1,1,67.2,8,3.2,3.2,0,0,1,70.4,4.8Zm12.8,0A3.2,3.2,0,1,1,80,8,3.2,3.2,0,0,1,83.2,4.8ZM96,4.8A3.2,3.2,0,1,1,92.8,8,3.2,3.2,0,0,1,96,4.8Zm12.8,0A3.2,3.2,0,1,1,105.6,8,3.2,3.2,0,0,1,108.8,4.8Zm12.8,0A3.2,3.2,0,1,1,118.4,8,3.2,3.2,0,0,1,121.6,4.8Z'
@@ -24,7 +251,7 @@ const Loadbar = () => {
             repeatCount='indefinite'
           />
         </g>
-      </svg>
+      </svg> */}
     </div>
   );
 };

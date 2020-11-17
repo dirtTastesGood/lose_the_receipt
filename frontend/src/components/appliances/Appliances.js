@@ -1,4 +1,5 @@
-import React, { Fragment, useContext, useEffect, useState } from 'react';
+import React, { Fragment, useContext, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import './scss/appliances.scss';
 import ApplianceContext from '../../context/appliances/applianceContext';
 import AuthContext from '../../context/auth/authContext';
@@ -30,6 +31,15 @@ const Appliances = () => {
     <div className='container-fluid my-5' id='appliance-list'>
       {!loading ? (
         <Fragment>
+          <h1 className='text-center text-lg-left'>
+            <Link to='/appliances/add'>
+              <button className='btn btn bg-warning mx-3' title='add appliance'>
+                <span className='font-weight-bold' alt='add appliance'>
+                  + add
+                </span>
+              </button>
+            </Link>
+          </h1>
           <ApplianceList />
         </Fragment>
       ) : (
