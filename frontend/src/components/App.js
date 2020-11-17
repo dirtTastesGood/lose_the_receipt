@@ -62,6 +62,7 @@ const App = props => {
             exact
             path='/appliances/add'
             component={ApplianceForm}
+            mode={'add'}
           ></PrivateRoute>
           <PrivateRoute
             path='/appliances/:slug'

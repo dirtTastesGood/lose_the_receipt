@@ -2,6 +2,7 @@ import datetime
 from django.shortcuts import render
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect
 from django.contrib.auth import login, logout, get_user_model
+from django.utils.text import slugify
 
 from rest_framework import status, pagination
 from rest_framework.response import Response
@@ -35,17 +36,22 @@ def appliance_list(request):
         appliances = Appliance.objects.filter(owner=request.user.id)
         appliance_page = paginator.paginate_queryset(appliances, request)
 
-        appliances_serializer = ApplianceDetailSerializer(appliance_page, many=True)
-        print('all:', appliances)
-        print('page:', appliance_page)
-        print('serialized:', appliances_serializer.data)
-
+        appliances_serializer = ApplianceDetailSerializer(
+            appliance_page, many=True)
 
         return paginator.get_paginated_response(appliances_serializer.data)
 
     elif request.method == 'POST':
 
         new_appliance_serializer = ApplianceCreateSerializer(data=request.data)
+
+        # generate slug
+        brand = request.data.get('brand')
+        appliance_type = request.data.get('appliance_type')
+        location = request.data.get('location')
+
+        new_appliance_serializer.initial_data['slug'] = slugify(
+            f'{brand} {appliance_type} {location}')
 
         # print(new_appliance_serializer.is_valid())
 

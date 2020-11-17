@@ -7,6 +7,8 @@ import applianceReducer from './applianceReducer';
 
 import AuthContext from '../auth/authContext';
 
+import AlertContext from '../alerts/alertContext';
+
 import PaginationContext from '../pagination/paginationContext';
 import paginationReducer from '../pagination/paginationReducer';
 
@@ -37,6 +39,9 @@ const ApplianceState = props => {
 
   const authContext = useContext(AuthContext);
   const { requestAccessToken } = authContext;
+
+  const alertContext = useContext(AlertContext);
+  const { setAlert } = alertContext;
 
   const paginationContext = useContext(PaginationContext);
   const [pageState, pageDispatch] = useReducer(paginationReducer, initialState);
@@ -104,7 +109,11 @@ const ApplianceState = props => {
     console.log('add appliance then called');
     await requestAccessToken();
 
-    return await axios.post(BASE_URL + '/', formData, config);
+    return await axios.post(BASE_URL + '/', formData, config).catch(error => {
+      Object.keys(error.response.data).map(key => {
+        setAlert(error.response.data[key], 'danger');
+      });
+    });
   };
 
   // appliance detail

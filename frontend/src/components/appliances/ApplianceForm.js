@@ -1,5 +1,5 @@
-import React, { Fragment, useContext, useState } from 'react';
-
+import React, { useEffect, useContext, useState } from 'react';
+import { history } from 'react-router-dom';
 import ApplianceContext from '../../context/appliances/applianceContext';
 import AlertContext from '../../context/alerts/alertContext';
 
@@ -25,15 +25,18 @@ const ApplianceForm = props => {
   } = appliance;
 
   const applianceContext = useContext(ApplianceContext);
-  const {
-    addAppliance,
-    toggleForm,
-    setCurrent,
-    getAppliances,
-  } = applianceContext;
+  const { addAppliance, setCurrent, current, getAppliances } = applianceContext;
 
   const alertContext = useContext(AlertContext);
   const { setAlert } = alertContext;
+
+  console.log('mode:', props);
+
+  useEffect(() => {
+    if (current && props.history) {
+      props.history.push(`/appliances/${current.slug}`);
+    }
+  }, [current]);
 
   const onChange = e =>
     setAppliance({ ...appliance, [e.target.name]: e.target.value });
@@ -44,37 +47,31 @@ const ApplianceForm = props => {
     if (brand === '' || appliance_type === '' || location === '') {
       setAlert('Please enter all fields.', 'danger');
     } else {
-      addAppliance(appliance)
-        .then(response => {
-          setCurrent(response.data);
+      addAppliance(appliance).then(response => {
+        setCurrent(response.data.appliance);
 
-          setAppliance({
-            brand: '',
-            appliance_type: '',
-            model_number: '',
-            serial_number: '',
-            purchase_date: '',
-            location: '',
-            // manualUrl:'',
-          });
-          setAlert('Appliance added successfully!', 'success');
-
-          // update appliance list
-          getAppliances();
-        })
-        .catch(error => {
-          Object.keys(error.response.data).map(key => {
-            setAlert(error.response.data[key], 'danger');
-          });
+        setAppliance({
+          brand: '',
+          appliance_type: '',
+          model_number: '',
+          serial_number: '',
+          purchase_date: '',
+          location: '',
+          // manualUrl:'',
         });
+        setAlert('Appliance added successfully!', 'success');
+
+        // update appliance list
+        getAppliances();
+      });
     }
   };
 
   return (
-    <div className='container mt-5'>
+    <div className='container mt-5' id='appliance-form'>
       <div className='row'>
         <div className='col col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2'>
-          <form onSubmit={onSubmit}>
+          <form onSubmit={onSubmit} className='p-3'>
             <div className='form-row'>
               <div className='col-md-6'>
                 <div className='form-group'>

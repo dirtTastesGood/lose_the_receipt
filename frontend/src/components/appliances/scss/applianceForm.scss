@@ -1,5 +1,9 @@
-@import "../../../scss/variables.scss";
+@import '../../../scss/variables.scss';
 
-#form-collapse {
-  background-color: darken($color4, 20%);
+#appliance-form {
+  background-color: lighten($color2, 35%);
+
+  #form-collapse {
+    background-color: darken($color4, 20%);
+  }
 }

@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-from django.utils.text import slugify
 
 
 class Appliance(models.Model):
@@ -18,11 +17,6 @@ class Appliance(models.Model):
     description = models.TextField(max_length=10000, blank=True, null=True)
     manual_url = models.URLField(blank=True, null=True)
     slug = models.SlugField(max_length=200)
-
-    def save(self, *args, **kwargs):
-        self.slug = slugify(
-            f'{self.brand} {self.appliance_type} {self.location}')
-        super(Appliance, self).save(*args, **kwargs)
 
     def __str__(self):
         return f'{self.owner}\'s {self.brand} {self.appliance_type}'
