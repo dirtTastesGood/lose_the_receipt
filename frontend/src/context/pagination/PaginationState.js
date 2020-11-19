@@ -29,11 +29,37 @@ const PaginationState = props => {
   const { page, bottomPage, topPage, numOfButtons } = state;
 
   const updatePagination = newTotal => {
-    let bottom = page - 2 >= 1 ? page - 2 : 1;
-    let top = page + 2 < newTotal ? bottomPage + (numOfButtons - 1) : newTotal;
+    let bottom, top;
+    //  = page - 2 >= 1 ? page - 2 : 1;
+    // let top = page + 2 < newTotal ? bottomPage + (numOfButtons - 1) : newTotal;
+
+    // if (top === newTotal) {
+    //   bottom = newTotal - 4;
+    // }
+
+    // console.log('newTotal:', newTotal);
+
+    if (page <= numOfButtons / 2 + 1) {
+      bottom = 1;
+    } else if (page > newTotal - (numOfButtons - 1)) {
+      bottom = newTotal - (numOfButtons - 1);
+    } else {
+      bottom = page - Math.floor(numOfButtons / 2);
+    }
+
+    if (bottom + (numOfButtons - 1) < newTotal) {
+      top = bottom + (numOfButtons - 1);
+    } else {
+      top = newTotal;
+    }
+
+    if (newTotal < numOfButtons) {
+      top = newTotal;
+    }
+
     let pageRange = range(bottom, top);
 
-    console.log(page, bottom, top, pageRange);
+    // console.log(page, bottom, top, pageRange);
 
     dispatch({
       type: UPDATE_PAGINATION,

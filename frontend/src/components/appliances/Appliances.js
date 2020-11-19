@@ -31,15 +31,6 @@ const Appliances = () => {
     <div className='container-fluid my-5' id='appliance-list'>
       {!loading ? (
         <Fragment>
-          <h1 className='text-center text-lg-left'>
-            <Link to='/appliances/add'>
-              <button className='btn btn bg-warning mx-3' title='add appliance'>
-                <span className='font-weight-bold' alt='add appliance'>
-                  + add
-                </span>
-              </button>
-            </Link>
-          </h1>
           <ApplianceList />
         </Fragment>
       ) : (

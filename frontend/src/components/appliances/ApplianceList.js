@@ -38,8 +38,8 @@ const ApplianceList = () => {
   }, []);
 
   return (
-    <div className='text-center'>
-      {loading || !totalPages ? (
+    <div className='text-center py-2'>
+      {loading && totalPages !== null ? (
         <div className='justify-self-center'>
           <Spinner />
         </div>
@@ -77,27 +77,14 @@ const ApplianceList = () => {
           </h5>
 
           <h1 className='text-center text-lg-left'>
-            <button
-              className='btn btn bg-warning mx-3'
-              data-toggle='collapse'
-              data-target='#form-collapse'
-              data-placement='right'
-              title='add appliance'
-              onClick={toggleForm}
-            >
-              <span
-                className='font-weight-bold'
-                aria-label='add appliance'
-                alt='add appliance'
-              >
-                {showForm ? '- close' : '+ new'}
-              </span>
-            </button>
+            <Link to='/appliances/add'>
+              <button className='btn btn bg-warning mx-3' title='add appliance'>
+                <span className='font-weight-bold' alt='add appliance'>
+                  + add
+                </span>
+              </button>
+            </Link>
           </h1>
-
-          <div className='collapse py-5' id='form-collapse'>
-            <ApplianceForm toggleForm={toggleForm} />
-          </div>
         </Fragment>
       )}
     </div>

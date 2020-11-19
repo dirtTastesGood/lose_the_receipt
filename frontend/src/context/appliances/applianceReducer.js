@@ -30,7 +30,7 @@ export default (state, action) => {
         prevPageUrl: null,
         nextPageUrl: null,
         applianceCount: null,
-        totalPages: null,
+        totalPages: 1,
         loading: false,
       };
     case TOGGLE_APPLIANCE_FORM:

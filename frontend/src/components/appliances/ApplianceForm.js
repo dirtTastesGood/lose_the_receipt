@@ -32,6 +32,7 @@ const ApplianceForm = props => {
 
   console.log('mode:', props);
 
+  // redirect when appliance successfully added or updated
   useEffect(() => {
     if (current && props.history) {
       props.history.push(`/appliances/${current.slug}`);
@@ -68,7 +69,7 @@ const ApplianceForm = props => {
   };
 
   return (
-    <div className='container mt-5' id='appliance-form'>
+    <div className='container-fluid mt-5' id='appliance-form'>
       <div className='row'>
         <div className='col col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2'>
           <form onSubmit={onSubmit} className='p-3'>
