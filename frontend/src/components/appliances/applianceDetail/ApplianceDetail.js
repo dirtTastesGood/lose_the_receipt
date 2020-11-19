@@ -39,22 +39,10 @@ const ApplianceDetail = ({ match }) => {
 
   let { path, url } = useRouteMatch();
 
-  const getActiveSection = () => {
-    switch (activeTab) {
-      default:
-      case 'general':
-        return <GeneralSection />;
-      case 'accessories':
-        return <AccessoriesSection />;
-      case 'service':
-        return <ServiceSection />;
-    }
-  };
-
   return (
     <div className='container-fluid' id='appliance-detail'>
       {!current ? (
-        <div className='row mt-5'>
+        <div className='row no-gutters mt-5'>
           <div className='col col-6 offset-3 text-center'>
             <Spinner />
           </div>
@@ -79,9 +67,9 @@ const ApplianceDetail = ({ match }) => {
               </Link>
             ))}
           </ul>
-          <div className='row mb-2'>
+          <div className='row no-gutters mb-2'>
             <div
-              className='col col-12 d-flex justify-content-between p-1'
+              className='col col-12 d-flex justify-content-between'
               id='appliance-controls'
             >
               <button

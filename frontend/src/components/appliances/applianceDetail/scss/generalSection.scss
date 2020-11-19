@@ -1,33 +1,31 @@
-@import "../../../../scss/variables.scss";
+@import '../../../../scss/variables.scss';
 
 #general-content-container {
   background-color: lighten($color2, 35%);
-    
 
   #left-column {
-      #header {
+    #header {
+      background-color: lighten($color1, 10%);
+      border-radius: 5px;
+      color: lighten($color1, 75%);
+    }
+    .detail-label {
+      background-color: lighten($color1, 50%);
+      border-bottom: 1px solid lighten($color1, 30%);
+      font-size: 1.2em;
+    }
 
-          background-color: lighten($color1, 10%);
-          border-radius: 5px;
-          color: lighten($color1, 75%);
-      }
-      .detail-label {
-        background-color: lighten($color1, 50%);
-        border-bottom: 1px solid lighten($color1, 30%);
-        font-size: 1.2em;
-      }
-    
-      .detail-text {
-        background-color: lighten($color1, 60%);
-        border-bottom: 1px solid lighten($color1, 40%);
-      }
+    .detail-text {
+      background-color: lighten($color1, 60%);
+      border-bottom: 1px solid lighten($color1, 40%);
+    }
   }
 
   #right-column {
     #photos {
-        background-color: lighten($color2, 65%);
-        min-height: 25vh;
-        padding: 10px;
+      background-color: lighten($color2, 65%);
+      min-height: 25vh;
+      padding: 10px;
     }
   }
 }

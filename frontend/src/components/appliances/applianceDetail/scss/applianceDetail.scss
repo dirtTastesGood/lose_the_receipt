@@ -1,35 +1,40 @@
 @import '../../../../scss/variables.scss';
 
 #appliance-detail {
-    
-    .appliance-tabs {
-        height: 6vh;
-        
-        .appliance-tab {
-            background-color: $color4;
-            border-bottom-left-radius: 5px;
-            border-bottom-right-radius: 5px;
-            height:6vh;
-            max-height: 5vh;
-            transition: all .3s ease-in-out;
+  padding-left: 0px;
+  padding-right: 0px;
+  margin-right: auto;
+  margin-left: auto;
 
-            &:hover {
-                cursor: pointer;
-                background-color: darken($color4, 25%);
-                border-bottom: 4px solid darken($color4, 10%);
-                max-height: 6vh;
-            }
-        }
+  .appliance-tabs {
+    height: 6vh;
 
-        .active {
-            background-color: darken($color4, 25%);
-            border-bottom: 4px solid darken($color4, 10%);
-            max-height: 6vh;
-        }
+    .appliance-tab {
+      background-color: $color4;
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
+      border-color: $color4;
+      height: 6vh;
+      max-height: 5vh;
+      transition: all 0.3s ease-in-out;
+
+      &:hover {
+        cursor: pointer;
+        background-color: darken($color4, 25%);
+        border-bottom: 4px solid darken($color4, 10%);
+        max-height: 6vh;
+      }
     }
 
-    #appliance-controls {
-        #add-button {
-        }
+    .active {
+      background-color: darken($color4, 25%);
+      border-bottom: 4px solid darken($color4, 10%);
+      max-height: 6vh;
     }
+  }
+
+  #appliance-controls {
+    #add-button {
+    }
+  }
 }
