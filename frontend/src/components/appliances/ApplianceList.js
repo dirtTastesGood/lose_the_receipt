@@ -45,7 +45,7 @@ const ApplianceList = () => {
         </div>
       ) : appliances && appliances.length > 0 ? (
         <Fragment>
-          {!totalPages ? (
+          {totalPages === null ? (
             <Spinner />
           ) : (
             <Pagination
