@@ -1,5 +1,7 @@
 import React, { Fragment, useContext } from 'react';
+import { Link } from 'react-router-dom';
 import './scss/generalSection.scss';
+import { BsPencilSquare } from 'react-icons/bs';
 import ApplianceContext from '../../../context/appliances/applianceContext';
 
 const GeneralSection = () => {
@@ -27,7 +29,14 @@ const GeneralSection = () => {
           className='col col-12 col-lg-4 offset-lg-1 px-2 text-center'
           id='left-column'
         >
-          <div className='p-2' id='header'>
+          <div
+            className='p-2 d-flex flex-column align-items-center'
+            id='header'
+          >
+            <Link to='/appliances/edit' id='edit-icon'>
+              <BsPencilSquare />
+            </Link>
+
             <h1 className='font2 text-bold mb-0'>{brand}</h1>
             <h3 className='mb-4'>{appliance_type}</h3>
           </div>

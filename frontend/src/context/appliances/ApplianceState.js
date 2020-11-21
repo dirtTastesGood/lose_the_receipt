@@ -116,6 +116,20 @@ const ApplianceState = props => {
     });
   };
 
+  // Update Appliance
+  const updateAppliance = async formData => {
+    console.log(formData);
+
+    console.log('add appliance then called');
+    await requestAccessToken();
+
+    return await axios.put(BASE_URL + '/', formData, config).catch(error => {
+      Object.keys(error.response.data).map(key => {
+        setAlert(error.response.data[key], 'danger');
+      });
+    });
+  };
+
   // appliance detail
   const getAppliance = async slug => {
     try {
@@ -150,6 +164,7 @@ const ApplianceState = props => {
         getAppliances,
         getAppliance,
         addAppliance,
+        updateAppliance,
         setCurrent,
       }}
     >

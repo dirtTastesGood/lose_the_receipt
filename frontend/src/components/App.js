@@ -1,7 +1,12 @@
 import React, { useContext, useEffect } from 'react';
 import './App.scss';
 
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  useHistory,
+} from 'react-router-dom';
 
 import setAxiosBaseURL from '../utils/setAxiosBaseURL';
 
@@ -27,6 +32,8 @@ const App = props => {
 
   const { requestAccessToken, loadUser, user, messages } = authContext;
   const { setAlert } = alertContext;
+
+  const history = useHistory();
 
   useEffect(() => {
     const BASE_URL = 'http://localhost:8000/api/v1/';
@@ -62,8 +69,14 @@ const App = props => {
             exact
             path='/appliances/add'
             component={ApplianceForm}
-            mode={'add'}
-          ></PrivateRoute>
+            user={user}
+          />
+          <PrivateRoute
+            exact
+            path='/appliances/:slug/edit'
+            component={ApplianceForm}
+            user={user}
+          />
           <PrivateRoute
             path='/appliances/:slug'
             component={ApplianceDetail}

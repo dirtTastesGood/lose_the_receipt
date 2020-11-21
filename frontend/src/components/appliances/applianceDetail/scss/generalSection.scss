@@ -4,6 +4,20 @@
   background-color: lighten($color2, 35%);
 
   #left-column {
+    #edit-icon {
+      color: lighten($color1, 50%);
+
+      position: absolute;
+      top: 5px;
+      right: 5%;
+      transition: all 0.3s ease-in-out;
+
+      &:hover {
+        color: darken($color5, 25%);
+        cursor: pointer;
+      }
+    }
+
     #header {
       background-color: lighten($color1, 10%);
       border-radius: 5px;
