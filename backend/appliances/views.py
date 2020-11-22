@@ -66,7 +66,7 @@ def appliance_list(request):
             response.status_code = status.HTTP_201_CREATED
 
         else:
-            response.data = new_appliance_serializer.errors
+            response.data = {'msg': new_appliance_serializer.errors}
             response.status_code = status.HTTP_400_BAD_REQUEST
 
         return response
@@ -89,12 +89,37 @@ def appliance_detail(request, slug):
         response.status_code = status.HTTP_404_NOT_FOUND
         return response
 
-    serialized_appliance = ApplianceDetailSerializer(appliance)
-
     if request.method == 'GET':
+        serialized_appliance = ApplianceDetailSerializer(appliance)
         response.data = {"appliance": serialized_appliance.data}
 
-    if request.method == 'PUT':
-        ...
+    elif request.method == 'PUT':
+
+        print('slug', slug)
+        print('request data', request.data)
+
+        serialized_appliance = ApplianceCreateSerializer(
+            appliance,
+            data=request.data,
+        )
+
+        serialized_appliance.initial_data['slug'] = slug
+
+        print('serialized_appliance', serialized_appliance)
+        updated_appliance = serialized_appliance
+        if updated_appliance.is_valid():
+            updated_appliance.save(owner=user)
+
+            response.data = {
+                'appliance': updated_appliance.validated_data,
+                'msg': ['Appliance updated!']
+            }
+        else:
+            print('ERROR', serialized_appliance.errors)
+            response.data = {
+                'msg': serialized_appliance.errors,
+                'appliance': serialized_appliance.data
+            }
+            response.status_code = status.HTTP_400_BAD_REQUEST
 
     return response

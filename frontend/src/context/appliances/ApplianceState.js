@@ -117,17 +117,13 @@ const ApplianceState = props => {
   };
 
   // Update Appliance
-  const updateAppliance = async formData => {
+  const updateAppliance = async (formData, slug) => {
     console.log(formData);
 
     console.log('add appliance then called');
     await requestAccessToken();
 
-    return await axios.put(BASE_URL + '/', formData, config).catch(error => {
-      Object.keys(error.response.data).map(key => {
-        setAlert(error.response.data[key], 'danger');
-      });
-    });
+    return await axios.put(BASE_URL + `/${slug}`, formData, config);
   };
 
   // appliance detail

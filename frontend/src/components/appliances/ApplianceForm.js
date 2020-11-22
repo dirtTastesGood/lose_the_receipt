@@ -109,23 +109,32 @@ const ApplianceForm = props => {
         });
       } else {
         // formMode === 'edit
-        updateAppliance(appliance).then(response => {
-          setCurrent(response.data.appliance);
+        updateAppliance(appliance, current.slug)
+          .then(response => {
+            console.log('update response', response.data);
 
-          setAppliance({
-            brand: '',
-            appliance_type: '',
-            model_number: '',
-            serial_number: '',
-            purchase_date: '',
-            location: '',
-            // manualUrl:'',
+            setCurrent(response.data.appliance);
+
+            setAppliance({
+              brand: '',
+              appliance_type: '',
+              model_number: '',
+              serial_number: '',
+              purchase_date: '',
+              location: '',
+              // manualUrl:'',
+            });
+            setAlert('Appliance updated successfully!', 'success');
+
+            // update appliance list
+            getAppliances();
+            history.push(`/appliances/${current.slug}`);
+          })
+          .catch(error => {
+            Object.keys(error.response.data.msg).map(key => {
+              setAlert(error.response.data.msg[key], 'danger');
+            });
           });
-          setAlert('Appliance updated successfully!', 'success');
-
-          // update appliance list
-          getAppliances();
-        });
       }
     }
   };
