@@ -33,7 +33,7 @@ const GeneralSection = () => {
             className='p-2 d-flex flex-column align-items-center'
             id='header'
           >
-            <Link to='/appliances/edit' id='edit-icon'>
+            <Link to={`/appliances/${slug}/edit`} id='edit-icon'>
               <BsPencilSquare />
             </Link>
 

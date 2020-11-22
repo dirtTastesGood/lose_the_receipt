@@ -42,8 +42,10 @@ def register(request):
         new_user = new_user_serializer.save()
 
         # generate access and refresh tokens for the new user
-        access_token = generate_access_token(new_user, settings.ACCESS_TOKEN_EXPIRY)
-        refresh_token = generate_refresh_token(new_user, settings.REFRESH_TOKEN_EXPIRY)
+        access_token = generate_access_token(
+            new_user, settings.ACCESS_TOKEN_EXPIRY)
+        refresh_token = generate_refresh_token(
+            new_user, settings.REFRESH_TOKEN_EXPIRY)
 
         # attach the access token to the response data
         # and set the response status code to 201
@@ -270,12 +272,14 @@ def extend_token(request):
         return response
 
     # generate new refresh token for the user
-    new_refresh_token = generate_refresh_token(user, settings.REFRESH_TOKEN_EXPIRY)
+    new_refresh_token = generate_refresh_token(
+        user, settings.REFRESH_TOKEN_EXPIRY)
 
     # Delete old refresh token
     # if the user has a refresh token in the db,
     # get the old token
     old_refresh_token = RefreshToken.objects.filter(user=user.id).first()
+
     if old_refresh_token:
         # delete the old token
         old_refresh_token.delete()
@@ -294,7 +298,8 @@ def extend_token(request):
     )
 
     # generate new access token for the user
-    new_access_token = generate_access_token(user, settings.ACCESS_TOKEN_EXPIRY)
+    new_access_token = generate_access_token(
+        user, settings.ACCESS_TOKEN_EXPIRY)
 
     response.data = {
         'accessToken': new_access_token,

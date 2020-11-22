@@ -3,6 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.contrib.auth import get_user_model
 
+
 class UserManager(BaseUserManager):
     """Define a model manager for User model with no username field."""
 
@@ -39,8 +40,10 @@ class UserManager(BaseUserManager):
 
 class User(AbstractUser):
     username = None
-    username = models.CharField(_('username'), max_length=20, unique=True, error_messages={'unique':'This username has already been registered.'})
-    email = models.EmailField(_('email address'), unique=True, error_messages={'unique':"This email has already been registered."})
+    username = models.CharField(_('username'), max_length=20, unique=True, error_messages={
+                                'unique': 'This username has already been registered.'})
+    email = models.EmailField(_('email address'), unique=True, error_messages={
+                              'unique': "This email has already been registered."})
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -50,10 +53,10 @@ class User(AbstractUser):
     def __str__(self):
         return f'{self.username} - {self.email}'
 
+
 class RefreshToken(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     token = models.CharField(max_length=200)
-    
 
     def __str__(self):
-        return f"{self.user}'s refresh token."
+        return f"{self.user}'s refresh token - {self.token[-6:]}."
