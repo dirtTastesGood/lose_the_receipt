@@ -41,7 +41,7 @@ const PaginationState = props => {
 
     if (page <= numOfButtons / 2 + 1) {
       bottom = 1;
-    } else if (page > newTotal - (numOfButtons - 1)) {
+    } else if (page > newTotal - numOfButtons / 2) {
       bottom = newTotal - (numOfButtons - 1);
     } else {
       bottom = page - Math.floor(numOfButtons / 2);
