@@ -1,4 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
+import { Redirect } from 'react-router-dom';
+import Spinner from '../layout/Spinner';
 
 import AuthContext from '../../context/auth/authContext';
 import AlertContext from '../../context/alerts/alertContext';
@@ -7,7 +9,7 @@ const Login = props => {
   const authContext = useContext(AuthContext);
   const alertContext = useContext(AlertContext);
 
-  const { login, isAuthenticated } = authContext;
+  const { login, isAuthenticated, loading } = authContext;
   const { setAlert } = alertContext;
 
   // call useEffect when isAuthenticated or props.history are changed
@@ -43,39 +45,45 @@ const Login = props => {
 
   return (
     <div className='container'>
-      <div className='row'>
-        <div className='col col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2'>
-          <h1 className='text-center'>Login</h1>
-          <form onSubmit={onSubmit}>
-            <div className='form-group'>
-              <label htmlFor='email'>Email</label>
-              <input
-                className='form-control'
-                type='text'
-                name='email'
-                id='email'
-                onChange={onChange}
-              />
-            </div>
-            <div className='form-group'>
-              <label htmlFor='password'>Password</label>
-              <input
-                className='form-control'
-                type='password'
-                name='password'
-                id='password'
-                onChange={onChange}
-              />
-            </div>
+      {loading ? (
+        <Spinner />
+      ) : isAuthenticated ? (
+        <Redirect to='/' />
+      ) : (
+        <div className='row'>
+          <div className='col col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2'>
+            <h1 className='text-center'>Login</h1>
+            <form onSubmit={onSubmit}>
+              <div className='form-group'>
+                <label htmlFor='email'>Email</label>
+                <input
+                  className='form-control'
+                  type='text'
+                  name='email'
+                  id='email'
+                  onChange={onChange}
+                />
+              </div>
+              <div className='form-group'>
+                <label htmlFor='password'>Password</label>
+                <input
+                  className='form-control'
+                  type='password'
+                  name='password'
+                  id='password'
+                  onChange={onChange}
+                />
+              </div>
 
-            <input
-              className='btn btn-lg btn-primary'
-              type='submit'
-              value='Login'
-            />
-          </form>
+              <input
+                className='btn btn-lg btn-primary'
+                type='submit'
+                value='Login'
+              />
+            </form>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
