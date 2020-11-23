@@ -26,6 +26,7 @@ const ApplianceList = () => {
 
   useEffect(() => {
     updatePagination();
+    // eslint-disable-next-line
   }, []);
 
   return (

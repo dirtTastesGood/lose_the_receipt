@@ -15,7 +15,6 @@ import {
   LOGOUT,
   EXTEND_TOKEN_SUCCESS,
   EXTEND_TOKEN_FAIL,
-  SET_ALERT,
   CLEAR_ALERTS,
 } from '../types'; // action types to dispatch to reducer
 

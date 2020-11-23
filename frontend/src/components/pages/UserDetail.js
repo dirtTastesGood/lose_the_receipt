@@ -1,11 +1,11 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import AuthContext from '../../context/auth/authContext';
 
 import Spinner from '../layout/Spinner';
 const UserDetail = props => {
   const authContext = useContext(AuthContext);
 
-  const { user, requestAccessToken, accessToken } = authContext;
+  const { user } = authContext;
 
   return (
     <div>

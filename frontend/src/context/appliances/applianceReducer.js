@@ -50,10 +50,5 @@ export default (state, action) => {
         ...state,
         current: null,
       };
-    case SET_CURRENT_APPLIANCE:
-      return {
-        ...state,
-        current: action.payload,
-      };
   }
 };

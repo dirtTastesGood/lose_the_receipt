@@ -1,17 +1,11 @@
 import React, { useContext, useEffect } from 'react';
 import './App.scss';
 
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  useHistory,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import setAxiosBaseURL from '../utils/setAxiosBaseURL';
 
 import AuthContext from '../context/auth/authContext';
-import AlertContext from '../context/alerts/alertContext';
 
 import Register from './auth/Register';
 import Login from './auth/Login';
@@ -28,12 +22,8 @@ import UserDetail from './pages/UserDetail';
 
 const App = props => {
   const authContext = useContext(AuthContext);
-  const alertContext = useContext(AlertContext);
 
-  const { requestAccessToken, loadUser, user, messages } = authContext;
-  const { setAlert } = alertContext;
-
-  const history = useHistory();
+  const { requestAccessToken, loadUser, user } = authContext;
 
   useEffect(() => {
     const BASE_URL = 'http://localhost:8000/api/v1/';

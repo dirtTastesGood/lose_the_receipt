@@ -1,6 +1,5 @@
-import React, { useReducer, useContext } from 'react';
+import React, { useReducer } from 'react';
 
-import axios from 'axios';
 import range from '../../utils/range';
 
 import PaginationContext from './paginationContext';
@@ -22,22 +21,13 @@ const PaginationState = props => {
     nextPageUrl: null,
   };
 
-  const paginationContext = useContext(PaginationContext);
   const [state, dispatch] = useReducer(paginationReducer, initialState);
 
   // destructure state
-  const { page, bottomPage, topPage, numOfButtons } = state;
+  const { page, numOfButtons } = state;
 
   const updatePagination = newTotal => {
     let bottom, top;
-    //  = page - 2 >= 1 ? page - 2 : 1;
-    // let top = page + 2 < newTotal ? bottomPage + (numOfButtons - 1) : newTotal;
-
-    // if (top === newTotal) {
-    //   bottom = newTotal - 4;
-    // }
-
-    // console.log('newTotal:', newTotal);
 
     if (page <= numOfButtons / 2 + 1) {
       bottom = 1;
@@ -58,8 +48,6 @@ const PaginationState = props => {
     }
 
     let pageRange = range(bottom, top);
-
-    // console.log(page, bottom, top, pageRange);
 
     dispatch({
       type: UPDATE_PAGINATION,

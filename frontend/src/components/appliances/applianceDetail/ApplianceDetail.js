@@ -1,11 +1,5 @@
 import React, { Fragment, useContext, useEffect, useState } from 'react';
-import {
-  BrowserRouter as Router,
-  Link,
-  Switch,
-  Route,
-  useRouteMatch,
-} from 'react-router-dom';
+import { Link, Switch, Route, useRouteMatch } from 'react-router-dom';
 import './scss/applianceDetail.scss';
 
 import ApplianceContext from '../../../context/appliances/applianceContext';
@@ -15,12 +9,6 @@ import Spinner from '../../layout/Spinner';
 import GeneralSection from './GeneralSection';
 import AccessoriesSection from './AccessoriesSection';
 import ServiceSection from './ServiceSection';
-
-import {
-  GET_APPLIANCE_DETAIL_SUCCESS,
-  GET_APPLIANCE_DETAIL_FAIL,
-  SET_CURRENT_APPLIANCE,
-} from '../../../context/types';
 
 const ApplianceDetail = ({ match }) => {
   const applianceContext = useContext(ApplianceContext);
@@ -38,6 +26,7 @@ const ApplianceDetail = ({ match }) => {
       await getAppliance(slug);
     }
     fetchAppliance();
+    // eslint-disable-next-line
   }, []);
 
   let { url } = useRouteMatch();

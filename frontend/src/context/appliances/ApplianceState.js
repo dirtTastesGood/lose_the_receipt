@@ -40,6 +40,7 @@ const ApplianceState = props => {
   const { setAlert } = alertContext;
 
   const paginationContext = useContext(PaginationContext);
+  // eslint-disable-next-line
   const [pageState, pageDispatch] = useReducer(paginationReducer, initialState);
 
   // pagination
@@ -63,11 +64,6 @@ const ApplianceState = props => {
 
   // get all appliances
   const getAppliances = async () => {
-    const data = {
-      page: page,
-      perPage: perPage,
-    };
-
     // wait for new access token
     await requestAccessToken();
 
@@ -92,14 +88,12 @@ const ApplianceState = props => {
 
   // Create new appliance
   const addAppliance = async formData => {
-    console.log(formData);
-
-    console.log('add appliance then called');
     await requestAccessToken();
 
     return await axios.post(BASE_URL + '/', formData, config).catch(error => {
       Object.keys(error.response.data).map(key => {
         setAlert(error.response.data[key], 'danger');
+        return null;
       });
     });
   };

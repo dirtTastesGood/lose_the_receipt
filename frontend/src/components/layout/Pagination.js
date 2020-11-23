@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import './scss/pagination.scss';
 import PaginationContext from '../../context/pagination/paginationContext';
 

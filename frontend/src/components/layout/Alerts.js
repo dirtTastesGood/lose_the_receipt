@@ -12,9 +12,9 @@ const Alerts = () => {
 
   useEffect(() => {
     if (messages) {
-      const errorMsg = messages.map(msg => setAlert(msg, messageType));
+      messages.map(msg => setAlert(msg, messageType));
     }
-  }, [messages]);
+  }, [messages, messageType, setAlert]);
 
   return (
     <div className='container text-center alerts w-75'>

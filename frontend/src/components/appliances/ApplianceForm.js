@@ -139,6 +139,7 @@ const ApplianceForm = props => {
             history.push(`/appliances/${current.slug}`);
           })
           .catch(error => {
+            // eslint-disable-next-line
             Object.keys(error.response.data.msg).map(key => {
               setAlert(error.response.data.msg[key], 'danger');
             });

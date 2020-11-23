@@ -1,5 +1,4 @@
 import React, { Fragment, useContext, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import './scss/appliances.scss';
 import ApplianceContext from '../../context/appliances/applianceContext';
 import AuthContext from '../../context/auth/authContext';
@@ -28,6 +27,7 @@ const Appliances = () => {
       await getAppliances();
     }
     fetchAppliances();
+    // eslint-disable-next-line
   }, [page]);
 
   return (

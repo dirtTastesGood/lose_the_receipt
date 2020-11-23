@@ -1,4 +1,4 @@
-import React, { Fragment, useContext } from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import './scss/generalSection.scss';
 import { BsPencilSquare } from 'react-icons/bs';

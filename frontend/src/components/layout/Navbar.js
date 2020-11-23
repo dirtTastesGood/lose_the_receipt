@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useEffect } from 'react';
+import React, { Fragment, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import './scss/navbar.scss';
 import { ReactComponent as Logo } from '../../images/logo.svg';
@@ -13,12 +13,7 @@ const Navbar = () => {
     logout();
   };
 
-  const {
-    isAuthenticated,
-    user,
-    accessToken,
-    requestAccessToken,
-  } = authContext;
+  const { isAuthenticated } = authContext;
 
   const guestLinks = (
     <Fragment>
