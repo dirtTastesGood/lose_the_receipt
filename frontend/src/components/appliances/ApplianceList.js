@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useContext } from 'react';
-import { Route, Link, Switch, useRouteMatch } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Pagination from '../layout/Pagination';
 
 import ApplianceItem from './ApplianceItem';
@@ -12,13 +12,7 @@ import PaginationContext from '../../context/pagination/paginationContext';
 
 const ApplianceList = () => {
   const applianceContext = useContext(ApplianceContext);
-  let {
-    loading,
-    showForm,
-    toggleForm,
-    appliances,
-    getAppliances,
-  } = applianceContext;
+  let { loading, toggleForm, appliances } = applianceContext;
 
   let paginationContext = useContext(PaginationContext);
   const {
@@ -28,10 +22,7 @@ const ApplianceList = () => {
     page,
     perPage,
     updatePagination,
-    changePage,
   } = paginationContext;
-
-  let { path } = useRouteMatch();
 
   useEffect(() => {
     updatePagination();

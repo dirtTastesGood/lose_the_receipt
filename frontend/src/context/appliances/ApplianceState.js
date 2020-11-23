@@ -15,14 +15,10 @@ import paginationReducer from '../pagination/paginationReducer';
 import {
   GET_APPLIANCES_SUCCESS,
   GET_APPLIANCES_FAIL,
-  CREATE_APPLIANCE_SUCCESS,
-  CREATE_APPLIANCE_FAIL,
   TOGGLE_APPLIANCE_FORM,
   GET_APPLIANCE_SUCCESS,
   GET_APPLIANCE_FAIL,
   SET_CURRENT_APPLIANCE,
-  CLEAR_CURRENT_APPLIANCE,
-  ADD_APPLIANCE_SUCCESS,
   UPDATE_PAGINATION,
 } from '../types';
 
@@ -72,34 +68,26 @@ const ApplianceState = props => {
       perPage: perPage,
     };
 
-    try {
-      // wait for new access token
-      await requestAccessToken();
+    // wait for new access token
+    await requestAccessToken();
 
-      const response = await axios.get(
-        BASE_URL + `/?page=${page}&per_page=${perPage}`,
-        config
-      );
+    return await axios
+      .get(BASE_URL + `/?page=${page}&per_page=${perPage}`, config)
+      .then(response => {
+        dispatch({
+          type: GET_APPLIANCES_SUCCESS,
+          payload: response.data,
+        });
 
-      console.log('appliances', response.data);
-
-      dispatch({
-        type: GET_APPLIANCES_SUCCESS,
-        payload: response.data,
+        pageDispatch({
+          type: UPDATE_PAGINATION,
+          payload: { totalPages: Math.ceil(response.data.count / perPage) },
+        });
+        updatePagination(Math.ceil(response.data.count / perPage));
+      })
+      .catch(error => {
+        dispatch({ type: GET_APPLIANCES_FAIL });
       });
-
-      console.log(response.data);
-
-      pageDispatch({
-        type: UPDATE_PAGINATION,
-        payload: { totalPages: Math.ceil(response.data.count / perPage) },
-      });
-
-      updatePagination(Math.ceil(response.data.count / perPage));
-    } catch (error) {
-      console.log('ERROR:', error.response.data);
-      dispatch({ type: GET_APPLIANCES_FAIL });
-    }
   };
 
   // Create new appliance
@@ -128,18 +116,19 @@ const ApplianceState = props => {
 
   // appliance detail
   const getAppliance = async slug => {
-    try {
-      // wait for new access token
-      await requestAccessToken();
-      const response = await axios.get(BASE_URL + `/${slug}`, config);
-
-      dispatch({
-        type: GET_APPLIANCE_SUCCESS,
-        payload: response.data.appliance,
+    // wait for new access token
+    await requestAccessToken();
+    return await axios
+      .get(BASE_URL + `/${slug}`, config)
+      .then(response => {
+        dispatch({
+          type: GET_APPLIANCE_SUCCESS,
+          payload: response.data.appliance,
+        });
+      })
+      .catch(error => {
+        dispatch({ type: GET_APPLIANCE_FAIL });
       });
-    } catch (error) {
-      dispatch({ type: GET_APPLIANCE_FAIL });
-    }
   };
 
   return (

@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import ApplianceContext from '../../context/appliances/applianceContext';
 import AlertContext from '../../context/alerts/alertContext';
 
@@ -12,6 +12,7 @@ const ApplianceForm = props => {
     updateAppliance,
     current,
     setCurrent,
+    getAppliance,
     getAppliances,
   } = applianceContext;
 
@@ -30,8 +31,15 @@ const ApplianceForm = props => {
   const [formMode, setFormMode] = useState('add');
 
   let history = useHistory();
+  const { slug } = useParams();
 
   useEffect(() => {
+    async function fetchAppliance() {
+      console.log('slug', slug);
+      await getAppliance(slug);
+    }
+    fetchAppliance();
+
     if (current) {
       const {
         brand,
@@ -49,12 +57,11 @@ const ApplianceForm = props => {
         purchase_date,
         location,
       });
-
-      console.log(props);
     } else {
       // history.push('/appliances');
     }
-  }, []);
+    // eslint-disable-next-line
+  }, [current]);
 
   const {
     brand,
@@ -77,7 +84,8 @@ const ApplianceForm = props => {
       }
       setFormMode(mode);
     }
-  }, [current, setFormMode]);
+    // eslint-disable-next-line
+  }, [current, setFormMode, props.match]);
 
   const onChange = e =>
     setAppliance({ ...appliance, [e.target.name]: e.target.value });

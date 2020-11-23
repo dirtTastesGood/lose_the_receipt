@@ -24,7 +24,10 @@ const Appliances = () => {
   }, []);
 
   useEffect(() => {
-    getAppliances();
+    async function fetchAppliances() {
+      await getAppliances();
+    }
+    fetchAppliances();
   }, [page]);
 
   return (

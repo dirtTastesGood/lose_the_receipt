@@ -33,11 +33,14 @@ const ApplianceDetail = ({ match }) => {
   const changeTab = e => setActiveTab(e.target.id);
 
   useEffect(() => {
-    const { slug } = match.params;
-    getAppliance(slug);
+    async function fetchAppliance() {
+      const { slug } = match.params;
+      await getAppliance(slug);
+    }
+    fetchAppliance();
   }, []);
 
-  let { path, url } = useRouteMatch();
+  let { url } = useRouteMatch();
 
   return (
     <div className='container-fluid' id='appliance-detail'>
