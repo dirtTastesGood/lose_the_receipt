@@ -279,7 +279,6 @@ def extend_token(request):
     # if the user has a refresh token in the db,
     # get the old token
     old_refresh_token = RefreshToken.objects.filter(user=user.id).first()
-
     if old_refresh_token:
         # delete the old token
         old_refresh_token.delete()
