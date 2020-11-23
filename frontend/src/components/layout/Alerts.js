@@ -14,7 +14,8 @@ const Alerts = () => {
     if (messages) {
       messages.map(msg => setAlert(msg, messageType));
     }
-  }, [messages, messageType, setAlert]);
+    // eslint-disable-next-line
+  }, [messages]);
 
   return (
     <div className='container text-center alerts w-75'>
