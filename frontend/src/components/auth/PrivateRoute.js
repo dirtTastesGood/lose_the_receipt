@@ -6,7 +6,7 @@ import AuthContext from '../../context/auth/authContext';
 const PrivateRoute = props => {
   const authContext = useContext(AuthContext);
 
-  const { isAuthenticated, loading } = authContext;
+  const { isAuthenticated, loading, user } = authContext;
   const { component: Component, mode, x, ...rest } = props;
   console.log('rest', { ...rest });
   console.log('mode', mode);
@@ -18,7 +18,7 @@ const PrivateRoute = props => {
       {...rest}
       render={props =>
         // if not authenticated when loaded, redirect to login page
-        !isAuthenticated && !loading ? (
+        !isAuthenticated && !loading && !user ? (
           <Redirect to='/login' />
         ) : (
           // if authenticated, load the protected component

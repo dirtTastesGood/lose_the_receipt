@@ -16,7 +16,7 @@ const Pagination = () => {
   return (
     <div className='row' id='pagination'>
       {pageRange.length > 1 ? (
-        <div className='col col-10 offset-1 col-lg-4 offset-lg-4 d-flex justify-content-center'>
+        <div className='col col-12 col-lg-4 offset-lg-4 d-flex justify-content-center'>
           {pageRange.length >= 3 ? (
             <span
               className={
