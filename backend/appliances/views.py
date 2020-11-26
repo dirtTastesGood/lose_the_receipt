@@ -1,9 +1,9 @@
 import datetime
 from django.shortcuts import render
-from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect
-from django.contrib.auth import login, logout, get_user_model
+from django.contrib.auth import get_user_model
 from django.utils.text import slugify
 
+from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect
 from rest_framework import status, pagination
 from rest_framework.response import Response
 from rest_framework.decorators import (

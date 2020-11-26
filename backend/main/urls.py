@@ -7,10 +7,8 @@ from appliances import views as appliance_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-
     path('api-auth/', include('rest_framework.urls')),
     path('api/v1/', api_home),
     path('api/v1/users/', include('users.urls')),
     path('api/v1/appliances/', include('appliances.urls')),
 ]
-
