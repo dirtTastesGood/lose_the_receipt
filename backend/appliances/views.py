@@ -2,6 +2,7 @@ import datetime
 from django.shortcuts import render
 from django.contrib.auth import get_user_model
 from django.utils.text import slugify
+from django.db.models import Prefetch
 
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect
 from rest_framework import status, pagination
@@ -33,8 +34,15 @@ def appliance_list(request):
         paginator = pagination.PageNumberPagination()
         paginator.page_size_query_param = 'per_page'
         paginator.page_query_param = 'page'
-        appliances = Appliance.objects.filter(owner=request.user.id)
+        appliances = Appliance.objects.filter(owner=request.user.id).prefetch_related(
+            Prefetch('accessories', to_attr='accessories_list')
+        )
+
+        print(len(appliances))
+
         appliance_page = paginator.paginate_queryset(appliances, request)
+
+        print(appliance_page)
 
         appliances_serializer = ApplianceDetailSerializer(
             appliance_page, many=True)
@@ -94,6 +102,9 @@ def appliance_detail(request, slug):
         response.data = {"appliance": serialized_appliance.data}
 
     elif request.method == 'PUT':
+        brand = request.data['brand']
+        appliance_type = request.data['appliance_type']
+        location = request.data['location']
 
         print('slug', slug)
         print('request data', request.data)
@@ -103,12 +114,18 @@ def appliance_detail(request, slug):
             data=request.data,
         )
 
-        serialized_appliance.initial_data['slug'] = slug
+        serialized_appliance.initial_data['slug'] = slugify(
+            f'{brand} {appliance_type} {location}')
+
+        serialized_appliance.initial_data['owner'] = user.id
 
         print('serialized_appliance', serialized_appliance)
         updated_appliance = serialized_appliance
         if updated_appliance.is_valid():
-            updated_appliance.save(owner=user)
+            updated_appliance.update(
+                instance=appliance,
+                validated_data=updated_appliance.validated_data
+            )
 
             response.data = {
                 'appliance': updated_appliance.validated_data,

@@ -61,7 +61,7 @@ const ApplianceForm = props => {
       // history.push('/appliances');
     }
     // eslint-disable-next-line
-  }, [current]);
+  }, []);
 
   const {
     brand,
@@ -78,14 +78,14 @@ const ApplianceForm = props => {
       const { url, history } = props.match;
       const mode = url.split('/')[url.split('/').length - 1];
       if (mode === 'add') {
-        if (current && history) {
+        if (current) {
           history.push(`/appliances/${current.slug}`);
         }
       }
       setFormMode(mode);
     }
     // eslint-disable-next-line
-  }, [current, setFormMode, props.match]);
+  }, [current]);
 
   const onChange = e =>
     setAppliance({ ...appliance, [e.target.name]: e.target.value });
@@ -136,7 +136,7 @@ const ApplianceForm = props => {
 
             // update appliance list
             getAppliances();
-            history.push(`/appliances/${current.slug}`);
+            history.push(`/appliances/${response.data.appliance.slug}`);
           })
           .catch(error => {
             // eslint-disable-next-line

@@ -1,4 +1,6 @@
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect
+from django.contrib.auth import get_user_model
+from django.db.models import Q
 from rest_framework import status, pagination
 from rest_framework.response import Response
 from rest_framework.decorators import (
@@ -15,26 +17,72 @@ from rest_framework.permissions import IsAuthenticated
 from .models import Accessory
 from appliances.models import Appliance
 
+from .serializers import AccessoryCreateSerializer, AccessoryDetailSerializer
+from users.serializers import UserDetailSerializer
+
 
 @api_view(['POST', 'GET'])
 @authentication_classes([SafeJWTAuthentication])
 @permission_classes([IsAuthenticated])
 @ensure_csrf_cookie
 def accessory_list(request, slug):
+
+    print(slug)
+
     response = Response()
 
-    appliance = Appliance.objects.filter(slug=slug).first()
+    user = get_user_model().objects.filter(id=request.user.id).first()
 
     # ADD accessory
     if request.method == 'POST':
+        appliance = Appliance.objects.filter(slug=slug).first()
 
-        # set accessory.appliance to appliance variable
-        # serialize request data
-        #
+        formData = request.data['formData']
 
-        response.data = {
-            'data': request.data,
-        }
+        # add initial data to accessory serializer
+        serialized_accessory = AccessoryCreateSerializer(data=formData)
+
+        accessory_slug = slugify(formData['name'])
+        # check if the slug already exists for current appliance,
+        # if so, add a counter
+
+        duplicate_slugs = Accessory.objects.filter(
+            Q(appliance=appliance) & Q(slug__startswith=accessory_slug)
+        )
+
+        print('duplicate_slugs', duplicate_slugs)
+
+        if duplicate_slugs:
+            accessory_slug = f"{formData['name']}-{len(duplicate_slugs)}"
+
+        serialized_accessory.initial_data['slug'] = accessory_slug
+
+        serialized_accessory.initial_data['appliance'] = appliance.id
+        print(serialized_accessory.initial_data)
+
+        if serialized_accessory.is_valid():
+
+            new_accessory = serialized_accessory.save(
+                owner=user)
+
+            appliance.accessories.add(new_accessory)
+
+            print(new_accessory.appliance)
+
+            # appliance.accessories.add(new_accessory)
+            # new_accessory.appliances.add(appliance)
+
+            print('validated', serialized_accessory.validated_data)
+
+            response.data = {
+                'accessory': serialized_accessory.validated_data,
+            }
+        else:
+            response.data = {
+                'msg': serialized_accessory.errors,
+                'data': serialized_accessory.initial_data
+            }
+
         return response
 
     elif request.method == 'GET':
