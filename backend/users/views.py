@@ -116,11 +116,15 @@ def login(request):
         # delete the old token
         old_refresh_token.delete()
         # generate new token
-        RefreshToken.objects.create(user=user, token=refresh_token)
 
     except RefreshToken.DoesNotExist:
 
         # assign a new refresh token to the current user
+        RefreshToken.objects.create(user=user, token=refresh_token)
+
+    except Exception as error:
+        print(error)
+    else:
         RefreshToken.objects.create(user=user, token=refresh_token)
 
     # create refreshtoken cookie
