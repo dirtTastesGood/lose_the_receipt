@@ -17,6 +17,8 @@ import ApplianceForm from './appliances/ApplianceForm';
 
 import Alerts from './layout/Alerts';
 import Navbar from './layout/Navbar';
+import NotFound from './layout/NotFound';
+
 import Home from './pages/Home';
 import UserDetail from './pages/UserDetail';
 
@@ -68,11 +70,12 @@ const App = props => {
             user={user}
           />
           <PrivateRoute
+            exact
             path='/appliances/:slug'
             component={ApplianceDetail}
             user={user}
           />
-          {/* <Route path="*" component={NotFound}/> */}
+          <Route path='*' component={NotFound} />
         </Switch>
       </Router>
     </div>
