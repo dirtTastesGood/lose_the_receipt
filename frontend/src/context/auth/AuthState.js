@@ -48,6 +48,8 @@ const AuthState = props => {
     return await axios
       .get(BASE_URL + 'users/token/', config)
       .then(response => {
+        setAccessToken(response.data);
+
         dispatch({
           type: EXTEND_TOKEN_SUCCESS,
           // payload is the new access token

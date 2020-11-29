@@ -38,11 +38,7 @@ def appliance_list(request):
             Prefetch('accessories', to_attr='accessories_list')
         )
 
-        print(len(appliances))
-
         appliance_page = paginator.paginate_queryset(appliances, request)
-
-        print(appliance_page)
 
         appliances_serializer = ApplianceDetailSerializer(
             appliance_page, many=True)

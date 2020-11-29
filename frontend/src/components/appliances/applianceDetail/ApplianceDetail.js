@@ -23,7 +23,11 @@ const ApplianceDetail = ({ match }) => {
   useEffect(() => {
     async function fetchAppliance() {
       const { slug } = match.params;
-      await getAppliance(slug);
+
+      if (slug) {
+        console.log('SLUG', slug);
+        await getAppliance(slug);
+      }
     }
     fetchAppliance();
     // eslint-disable-next-line

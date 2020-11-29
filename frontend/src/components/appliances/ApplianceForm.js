@@ -38,7 +38,9 @@ const ApplianceForm = props => {
       console.log('slug', slug);
       await getAppliance(slug);
     }
-    fetchAppliance();
+    if (slug) {
+      fetchAppliance();
+    }
 
     if (current) {
       const {
@@ -57,10 +59,7 @@ const ApplianceForm = props => {
         purchase_date,
         location,
       });
-    } else {
-      // history.push('/appliances');
-    }
-    // eslint-disable-next-line
+    } // eslint-disable-next-line
   }, []);
 
   const {
@@ -115,12 +114,9 @@ const ApplianceForm = props => {
           getAppliances();
           history.push(`/appliances/${response.data.appliance.slug}`);
         });
-      } else {
-        // formMode === 'edit
+      } else if (formMode === 'edit') {
         updateAppliance(appliance, current.slug)
           .then(response => {
-            console.log('update response', response.data);
-
             setCurrent(response.data.appliance);
 
             setAppliance({

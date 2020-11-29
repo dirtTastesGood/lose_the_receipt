@@ -105,7 +105,7 @@ const ApplianceState = props => {
     console.log('add appliance then called');
     await requestAccessToken();
 
-    return await axios.put(BASE_URL + `/${slug}/`, formData, config);
+    return await axios.put(BASE_URL + `/${slug}`, formData, config);
   };
 
   // appliance detail
