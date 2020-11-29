@@ -35,8 +35,7 @@ const ApplianceForm = props => {
 
   useEffect(() => {
     async function fetchAppliance() {
-      console.log('slug', slug);
-      await getAppliance(slug);
+      let test = await getAppliance(slug);
     }
     if (slug) {
       fetchAppliance();

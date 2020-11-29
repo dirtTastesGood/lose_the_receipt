@@ -25,7 +25,6 @@ const ApplianceDetail = ({ match }) => {
       const { slug } = match.params;
 
       if (slug) {
-        console.log('SLUG', slug);
         await getAppliance(slug);
       }
     }

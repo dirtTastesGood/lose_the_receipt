@@ -4,6 +4,8 @@ import './scss/generalSection.scss';
 import { BsPencilSquare } from 'react-icons/bs';
 import ApplianceContext from '../../../context/appliances/applianceContext';
 
+import Accessories from '../accessories/Accessories';
+
 const GeneralSection = () => {
   const applianceContext = useContext(ApplianceContext);
 
@@ -83,6 +85,10 @@ const GeneralSection = () => {
 
         <div className='col col-12 col-lg-5 offset-lg-1' id='right-column'>
           <div id='photos'>Photos</div>
+        </div>
+
+        <div className='col col-12 col-lg-5 offset-lg-1' id='right-column'>
+          <Accessories />
         </div>
       </div>
     </div>

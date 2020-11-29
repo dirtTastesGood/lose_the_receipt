@@ -25,6 +25,7 @@ import {
 const ApplianceState = props => {
   const initialState = {
     appliances: [],
+    accessories: [],
     current: null,
     filtered: null,
     error: null,
@@ -60,7 +61,10 @@ const ApplianceState = props => {
 
   // set current appliance
   const setCurrent = appliance =>
-    dispatch({ type: SET_CURRENT_APPLIANCE, payload: appliance });
+    dispatch({
+      type: SET_CURRENT_APPLIANCE,
+      payload: { appliance: appliance, accessories: appliance.accessories },
+    });
 
   // get all appliances
   const getAppliances = async () => {
@@ -117,7 +121,10 @@ const ApplianceState = props => {
       .then(response => {
         dispatch({
           type: GET_APPLIANCE_SUCCESS,
-          payload: response.data.appliance,
+          payload: {
+            appliance: response.data.appliance,
+            accessories: response.data.appliance.accessories,
+          },
         });
       })
       .catch(error => {
@@ -130,6 +137,7 @@ const ApplianceState = props => {
       value={{
         // provide appliances to app
         appliances: state.appliances,
+        accessories: state.accessories,
         loading: state.loading,
         filtered: state.filtered,
         showForm: state.showForm,

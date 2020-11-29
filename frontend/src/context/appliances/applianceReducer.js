@@ -40,15 +40,18 @@ export default (state, action) => {
       };
     case GET_APPLIANCE_SUCCESS:
     case SET_CURRENT_APPLIANCE:
+      console.log('payload:', action.payload);
       return {
         ...state,
-        current: action.payload,
+        current: action.payload.appliance,
+        accessories: action.payload.accessories,
       };
     case GET_APPLIANCE_FAIL:
     case CLEAR_CURRENT_APPLIANCE:
       return {
         ...state,
         current: null,
+        accessories: [],
       };
   }
 };
