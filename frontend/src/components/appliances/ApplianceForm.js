@@ -74,7 +74,7 @@ const ApplianceForm = props => {
   // redirect when appliance successfully added or updated
   useEffect(() => {
     if (current && props.match) {
-      const { url, history } = props.match;
+      const { url } = props.match;
       const mode = url.split('/')[url.split('/').length - 1];
       if (mode === 'add') {
         if (current) {
@@ -84,7 +84,7 @@ const ApplianceForm = props => {
       setFormMode(mode);
     }
     // eslint-disable-next-line
-  }, [current]);
+  }, [current, history]);
 
   const onChange = e =>
     setAppliance({ ...appliance, [e.target.name]: e.target.value });
