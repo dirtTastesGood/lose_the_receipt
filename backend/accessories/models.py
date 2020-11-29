@@ -24,28 +24,12 @@ class Accessory(models.Model):
     notes = models.TextField(max_length=10000, blank=True, null=True)
     slug = models.SlugField(max_length=200)
 
-    # @property
-    # def accessory_of(self):
-    #     return self.appliance
-
-    # @accessory_of.setter
-    # def accessory_of(self, obj):
-    #     if type(obj) == Appliance:
-    #         self.electronic = None
-    #         self.appliance = obj
-    #     elif type(obj) == Electronic:
-    #         self.electronic = obj
-    #         self.appliance = None
-    #     else:
-    #         raise ValueError(
-    #             "obj parameter must be an object of Appliance or Electronic class")
-
     def __str__(self):
-        output = self.name
+        output = f'{self.appliance.owner}'
         if self.appliance:
-            output += f' {self.appliance.brand} - {self.appliance.appliance_type} - '
+            output += f' | {self.appliance.brand} - {self.appliance.appliance_type}'
 
-        output += f' - {self.description[:20]}' if len(
+        output += f' | {self.description[:20]}' if len(
             self.description) > 20 else self.description
         return output
 

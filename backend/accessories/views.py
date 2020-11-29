@@ -50,15 +50,12 @@ def accessory_list(request, slug):
             Q(appliance=appliance) & Q(slug__startswith=accessory_slug)
         )
 
-        print('duplicate_slugs', duplicate_slugs)
-
         if duplicate_slugs:
             accessory_slug = f"{formData['name']}-{len(duplicate_slugs)}"
 
         serialized_accessory.initial_data['slug'] = accessory_slug
 
         serialized_accessory.initial_data['appliance'] = appliance.id
-        print(serialized_accessory.initial_data)
 
         if serialized_accessory.is_valid():
 
@@ -67,12 +64,8 @@ def accessory_list(request, slug):
 
             appliance.accessories.add(new_accessory)
 
-            print(new_accessory.appliance)
-
             # appliance.accessories.add(new_accessory)
             # new_accessory.appliances.add(appliance)
-
-            print('validated', serialized_accessory.validated_data)
 
             response.data = {
                 'accessory': serialized_accessory.validated_data,
