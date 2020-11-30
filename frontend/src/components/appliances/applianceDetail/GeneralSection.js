@@ -22,10 +22,7 @@ const GeneralSection = () => {
   } = current;
 
   return (
-    <div
-      className='container-fluid py-3 px-auto'
-      id='general-content-container'
-    >
+    <div className='container-fluid py-3 px-2' id='general-content-container'>
       <div className='row no-gutters'>
         <div
           className='col col-12 col-lg-4 offset-lg-1 px-2 text-center'
@@ -85,9 +82,6 @@ const GeneralSection = () => {
 
         <div className='col col-12 col-lg-5 offset-lg-1' id='right-column'>
           <div id='photos'>Photos</div>
-        </div>
-
-        <div className='col col-12 col-lg-5 offset-lg-1' id='right-column'>
           <Accessories />
         </div>
       </div>
