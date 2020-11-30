@@ -62,6 +62,21 @@ const ApplianceDetail = ({ match }) => {
               </Link>
             ))}
           </ul>
+          {/* <div className='row no-gutters mb-2'>
+            <div
+              className='col col-12 d-flex justify-content-between'
+              id='appliance-controls'
+            >
+              <button
+                className='btn btn-sm btn-secondary text-light'
+                id='prev-button'
+              >
+                <Link className='text-light' to='/appliances'>
+                  Back
+                </Link>
+              </button>
+            </div>
+          </div> */}
 
           <Switch>
             <Route exact path={`${url}/accessories`}>
