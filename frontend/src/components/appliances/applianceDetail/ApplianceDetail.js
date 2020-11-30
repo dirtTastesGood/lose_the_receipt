@@ -37,7 +37,7 @@ const ApplianceDetail = ({ match }) => {
   return (
     <div className='container-fluid' id='appliance-detail'>
       {!current ? (
-        <div className='row no-gutters mt-5'>
+        <div className='row no-gutters'>
           <div className='col col-6 offset-3 text-center'>
             <Spinner />
           </div>
@@ -45,7 +45,7 @@ const ApplianceDetail = ({ match }) => {
       ) : (
         <Fragment>
           {/* Appliance Section Tabs */}
-          <ul className='appliance-tabs d-flex justify-content-center p-0 mb-5'>
+          <ul className='appliance-tabs d-flex justify-content-center p-0 mb-2'>
             {tabTitles.map((tabTitle, key) => (
               <Link to={`${url}/${tabTitle}`}>
                 <li
@@ -62,7 +62,7 @@ const ApplianceDetail = ({ match }) => {
               </Link>
             ))}
           </ul>
-          <div className='row no-gutters mb-2'>
+          {/* <div className='row no-gutters mb-2'>
             <div
               className='col col-12 d-flex justify-content-between'
               id='appliance-controls'
@@ -76,7 +76,7 @@ const ApplianceDetail = ({ match }) => {
                 </Link>
               </button>
             </div>
-          </div>
+          </div> */}
 
           <Switch>
             <Route exact path={`${url}/accessories`}>

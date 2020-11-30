@@ -10,11 +10,11 @@ const AccessoriesList = () => {
 
   return (
     <div className='row my-2' id='accessories-list'>
-      {accessories.map(accessory => (
-        <div className='col col-12' id='accessories-item' key={accessory.id}>
-          <AccessoriesItem accessory={accessory} />
-        </div>
-      ))}
+      <div className='col col-12 d-flex'>
+        {accessories.map(accessory => (
+          <AccessoriesItem accessory={accessory} key={accessory.id} />
+        ))}
+      </div>
     </div>
   );
 };
