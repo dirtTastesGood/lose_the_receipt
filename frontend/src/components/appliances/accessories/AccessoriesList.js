@@ -9,11 +9,15 @@ const AccessoriesList = () => {
   const { accessories } = applianceContext;
 
   return (
-    <div className='row my-2' id='accessories-list'>
-      <div className='col col-12 d-flex'>
-        {accessories.map(accessory => (
-          <AccessoriesItem accessory={accessory} key={accessory.id} />
-        ))}
+    <div className='rowno-gutters' id='accessories-list'>
+      <div className='col col-12 d-flex p-2'>
+        {accessories.length == 0 ? (
+          <div>No accessories yet for this appliance</div>
+        ) : (
+          accessories.map(accessory => (
+            <AccessoriesItem accessory={accessory} key={accessory.id} />
+          ))
+        )}
       </div>
     </div>
   );

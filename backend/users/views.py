@@ -112,9 +112,9 @@ def login(request):
     try:
         # if the user has a refresh token in the db,
         # get the old token
-        old_refresh_token = RefreshToken.objects.get(user=user.id)
+        old_refresh_token = RefreshToken.objects.filter(user=user.id)
         # delete the old token
-        old_refresh_token.delete()
+        old_refresh_token.all().delete()
         # generate new token
 
     except RefreshToken.DoesNotExist:
@@ -122,8 +122,6 @@ def login(request):
         # assign a new refresh token to the current user
         RefreshToken.objects.create(user=user, token=refresh_token)
 
-    except Exception as error:
-        print(error)
     else:
         RefreshToken.objects.create(user=user, token=refresh_token)
 
