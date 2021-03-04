@@ -9,9 +9,9 @@ const AccessoriesList = () => {
   const { accessories } = applianceContext;
 
   return (
-    <div className='rowno-gutters' id='accessories-list'>
+    <div className='row no-gutters' id='accessories-list'>
       <div className='col col-12 d-flex p-2'>
-        {accessories.length == 0 ? (
+        {accessories && accessories.length == 0 ? (
           <div>No accessories yet for this appliance</div>
         ) : (
           accessories.map(accessory => (
